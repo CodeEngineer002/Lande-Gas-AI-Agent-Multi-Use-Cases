@@ -57,14 +57,14 @@ export function isGreeting(q: string): boolean {
   return false;
 }
 
-/** Extract delivery data from response text */
+/** Extract delivery data from response text (fallback — used when N8N returns plain text) */
 export function extractDeliveryData(text: string): DeliveryData {
-  const d: DeliveryData = { current_status: '', order_number: '', shipped_via: '', expected_date: '' };
+  const d: DeliveryData = { order_id: '', current_status: '' };
 
   const orderMatch = text.match(/Order\s*ID[:\s]*([A-Z0-9\-]+)/i)
     || text.match(/LG[-_][A-Z0-9]+/i)
     || text.match(/([A-Z]{2}-\d+)/);
-  if (orderMatch) d.order_number = (orderMatch[1] || orderMatch[0]).trim();
+  if (orderMatch) d.order_id = (orderMatch[1] || orderMatch[0]).trim();
 
   const statusMatch = text.match(/Current\s*Status[:\s]*([^\n.]+)/i)
     || text.match(/Status[:\s]*([^\n.]+)/i)
@@ -74,25 +74,41 @@ export function extractDeliveryData(text: string): DeliveryData {
   const carrierMatch = text.match(/Carrier[:\s]*([^\n.]+)/i)
     || text.match(/Shipped Via[:\s]*([^\n.]+)/i)
     || text.match(/(UPS|DHL|FedEx|USPS)/i);
-  if (carrierMatch) d.shipped_via = (carrierMatch[1] || carrierMatch[0]).trim();
+  if (carrierMatch) d.carrier = (carrierMatch[1] || carrierMatch[0]).trim();
 
-  const dateMatch = text.match(/Expected[:\s]*([^\n.]+)/i)
+  const etaMatch = text.match(/ETA[:\s]*([^\n.]+)/i)
+    || text.match(/Expected[:\s]*([^\n.]+)/i)
     || text.match(/Promised[:\s]*([^\n.]+)/i)
     || text.match(/(November|December|January|February|March|April|May|June|July|August|September|October)\s+\d{1,2},?\s+\d{4}/i);
-  if (dateMatch) d.expected_date = (dateMatch[1] || dateMatch[0]).trim();
+  if (etaMatch) d.eta = (etaMatch[1] || etaMatch[0]).trim();
 
-  // Line-by-line fallback
+  const trackingMatch = text.match(/Tracking\s*(?:Number|No|#)[:\s]*([^\n.]+)/i);
+  if (trackingMatch) d.tracking_number = trackingMatch[1].trim();
+
+  const productMatch = text.match(/Product\s*(?:Name|)[:\s]*([^\n.]+)/i);
+  if (productMatch) d.product = productMatch[1].trim();
+
+  const destMatch = text.match(/(?:Destination|Ship\s*To\s*City)[:\s]*([^\n.]+)/i);
+  if (destMatch) d.ship_to_city = destMatch[1].trim();
+
+  const orderDateMatch = text.match(/Order\s*Date[:\s]*([^\n.]+)/i);
+  if (orderDateMatch) d.order_date = orderDateMatch[1].trim();
+
+  const deliveredMatch = text.match(/Delivered\s*(?:At|On|Date)[:\s]*([^\n.]+)/i);
+  if (deliveredMatch) d.delivered_date = deliveredMatch[1].trim();
+
+  // Line-by-line fallback for unparsed fields
   if (!d.current_status) {
     for (const raw of text.split('\n')) {
       const l = raw.replace(/\*\*/g, '').trim();
       if (l.toLowerCase().includes('current status') && !d.current_status)
         d.current_status = l.split(':')[1]?.trim() || '';
-      if (l.toLowerCase().includes('order id') && !d.order_number)
-        d.order_number = l.split(':')[1]?.trim() || '';
-      if ((l.toLowerCase().includes('carrier') || l.toLowerCase().includes('shipped via')) && !d.shipped_via)
-        d.shipped_via = l.split(':')[1]?.trim() || '';
-      if ((l.toLowerCase().includes('eta') || l.toLowerCase().includes('expected')) && !d.expected_date)
-        d.expected_date = l.split(':')[1]?.trim() || '';
+      if (l.toLowerCase().includes('order id') && !d.order_id)
+        d.order_id = l.split(':')[1]?.trim() || '';
+      if ((l.toLowerCase().includes('carrier') || l.toLowerCase().includes('shipped via')) && !d.carrier)
+        d.carrier = l.split(':')[1]?.trim() || '';
+      if ((l.toLowerCase().includes('eta') || l.toLowerCase().includes('expected')) && !d.eta)
+        d.eta = l.split(':')[1]?.trim() || '';
     }
   }
   return d;

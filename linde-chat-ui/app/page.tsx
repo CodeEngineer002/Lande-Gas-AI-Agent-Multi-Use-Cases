@@ -1,14 +1,15 @@
 "use client";
-import { useEffect, useCallback, useRef, useState } from "react";
+import { useEffect, useCallback, useRef, useState, useMemo } from "react";
 import BackgroundLayer from "@/components/BackgroundLayer";
-import Header from "@/components/Header";
-import LeftPanel from "@/components/LeftPanel";
+import TopBar from "@/components/TopBar";
+import LeftSidebarEnterprise from "@/components/LeftSidebarEnterprise";
 import ChatThread from "@/components/ChatThread";
 import Composer from "@/components/Composer";
+import type { ComposerHandle } from "@/components/Composer";
 import SuggestionChips from "@/components/SuggestionChips";
 import ToastHost from "@/components/ToastHost";
 import DropVeil from "@/components/DropVeil";
-import AITransparencyCard from "@/components/AITransparencyCard";
+import RightPanelContextSources from "@/components/RightPanelContextSources";
 import { useChat } from "@/hooks/useChat";
 import { useDownload } from "@/hooks/useDownload";
 import { useDownloadHistory } from "@/hooks/useDownloadHistory";
@@ -21,9 +22,19 @@ export default function Page() {
   const { history: dlHistory, push: pushDlHistory } = useDownloadHistory();
   const [dragOver, setDragOver] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
   const dragCountRef = useRef(0);
   const hasWelcome = useRef(false);
+  const composerRef = useRef<ComposerHandle>(null);
   const messageCount = state.messages.filter(m => m.role === 'user').length;
+
+  // Derive conversation title from first user message
+  const conversationTitle = useMemo(() => {
+    const firstUser = state.messages.find(m => m.role === 'user');
+    if (!firstUser) return 'New Conversation';
+    const words = firstUser.text.trim().split(/\s+/).slice(0, 6).join(' ');
+    return words.length < firstUser.text.trim().length ? words + '…' : words;
+  }, [state.messages]);
 
   useEffect(() => {
     if (!hasWelcome.current) {
@@ -31,6 +42,17 @@ export default function Page() {
       initWelcome();
     }
   }, [initWelcome]);
+
+  // Re-focus the composer whenever the AI finishes responding (isTyping goes false)
+  const prevIsTyping = useRef(false);
+  useEffect(() => {
+    if (prevIsTyping.current && !state.isTyping) {
+      // Small tick so the DOM fully settles before focusing
+      const id = setTimeout(() => composerRef.current?.focus(), 80);
+      return () => clearTimeout(id);
+    }
+    prevIsTyping.current = state.isTyping;
+  }, [state.isTyping]);
 
   useEffect(() => {
     const enter = (e: DragEvent) => { e.preventDefault(); dragCountRef.current++; setDragOver(true); };
@@ -68,7 +90,7 @@ export default function Page() {
   });
 
   const handleDownload = useCallback(
-    (payload: DownloadPayload) => { showToast('info', 'Downloading the PDF now\u2026', 0); startDownload(payload); },
+    (payload: DownloadPayload) => { showToast('info', 'Downloading the PDF now…', 0); startDownload(payload); },
     [startDownload, showToast]
   );
 
@@ -81,7 +103,7 @@ export default function Page() {
       if (!addr) return;
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(addr)) { showToast('error', 'Invalid email address.', 1600); return; }
       localStorage.setItem('linde_last_email', addr);
-      showToast('info', 'Sending email\u2026', 0);
+      showToast('info', 'Sending email…', 0);
       startDownload({ doc_id: s.doc_id, filename: s.title, file_url: s.file_url, email: addr });
     },
     [startDownload, showToast]
@@ -96,7 +118,6 @@ export default function Page() {
   const handleClear = useCallback(() => { clear(); setTimeout(() => initWelcome(), 0); }, [clear, initWelcome]);
 
   const hasUserMessages = state.messages.some(m => m.role === 'user');
-  // hasResponded = at least one real AI reply (not just the welcome message)
   const hasResponded = state.messages.filter(m => m.role === 'assistant').length > 1;
 
   return (
@@ -105,39 +126,53 @@ export default function Page() {
       <DropVeil visible={dragOver} />
       <ToastHost toasts={toasts} onDismiss={dismissToast} />
 
-      <div style={{ display:'flex', flexDirection:'column', height:'100dvh', overflow:'hidden', color:'var(--ink)' }}>
-        <Header
+      <div className="enterprise-shell">
+        {/* ── Top Bar ── */}
+        <TopBar
           onToggleSidebar={() => setSidebarOpen(o => !o)}
           sidebarOpen={sidebarOpen}
           messageCount={messageCount}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
         />
-        <div style={{ flex:1, minHeight:0, display:'flex', gap:12, padding:'10px 14px', overflow:'hidden' }}>
-          <div style={{ flex:'0 0 20%', minWidth:0, overflow:'hidden' }}>
-            <LeftPanel
-              open={sidebarOpen}
-              downloadHistory={dlHistory}
-              onClearChat={handleClear}
-              onDownloadLast={handleDownloadLast}
-              lastSources={state.lastSources}
-              onDownload={handleDownload}
-            />
-          </div>
-          <section style={{ display:'flex', flexDirection:'column', flex:'0 0 55%', minWidth:0, overflow:'hidden' }}>
+
+        {/* ── Body ── */}
+        <div className="enterprise-body">
+          {/* ── Left Sidebar (icon rail + main panel) ── */}
+          <LeftSidebarEnterprise
+            open={sidebarOpen}
+            downloadHistory={dlHistory}
+            onClearChat={handleClear}
+            onDownloadLast={handleDownloadLast}
+            lastSources={state.lastSources}
+            onDownload={handleDownload}
+          />
+
+          {/* ── Chat Workspace ── */}
+          <section className="chat-workspace">
             <ChatThread
               messages={state.messages}
               isTyping={state.isTyping}
               onDownload={handleDownload}
               onEmailFirstSource={handleEmailFirstSource}
+              onSend={send}
+              searchQuery={searchQuery}
+              conversationTitle={conversationTitle}
             />
             <SuggestionChips visible={!hasUserMessages} onSelect={(text: string) => send(text)} />
-            <Composer onSend={send} disabled={state.isTyping} />
+            <Composer ref={composerRef} onSend={send} disabled={state.isTyping} />
           </section>
-          <aside style={{ display:'flex', flexDirection:'column', flex:'0 0 25%', minWidth:0, padding:'20px', borderRadius:'16px', background:'var(--assist)', border:'1px solid var(--assistBorder)', boxShadow:'var(--shadow-sm)', gap:'16px' }}>
-            <h3 style={{ margin:'0', fontSize:'17px', fontWeight:'700', color:'var(--ink)' }}>Additional Features</h3>
-            <AITransparencyCard meta={state.lastMeta} hasResponded={hasResponded} />
-            <div style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', color:'var(--muted)', fontSize:'13px', textAlign:'center', padding:'20px 16px', opacity:0.6 }}>
-              More features coming soon...
-            </div>
+
+          {/* ── Right Panel: Context & Sources + Contextual Actions ── */}
+          <aside className="right-panel-aside">
+            <RightPanelContextSources
+              meta={state.lastMeta}
+              hasResponded={hasResponded}
+              lastSources={state.lastSources}
+              onDownload={handleDownload}
+              messages={state.messages}
+              onShowToast={showToast}
+            />
           </aside>
         </div>
       </div>

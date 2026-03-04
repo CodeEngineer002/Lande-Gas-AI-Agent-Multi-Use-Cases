@@ -34,10 +34,29 @@ export interface AgentResponse {
 }
 
 export interface DeliveryData {
+  /** order_id from sheet (e.g. LG-240001) */
+  order_id: string;
+  /** Normalized status: Confirmed|Packed|In Transit|Out for Delivery|Delivered|Delayed|On Hold|Cancelled */
   current_status: string;
-  order_number: string;
-  shipped_via: string;
-  expected_date: string;
+  status_detail?: string | null;
+  /** ISO date YYYY-MM-DD from order_date_utc */
+  order_date?: string | null;
+  /** ISO date YYYY-MM-DD from promised_ship_date_utc */
+  promised_ship_date?: string | null;
+  /** ISO date YYYY-MM-DD from eta_utc */
+  eta?: string | null;
+  /** ISO date YYYY-MM-DD from delivered_utc */
+  delivered_date?: string | null;
+  /** carrier column */
+  carrier?: string | null;
+  /** tracking_no column → normalized as tracking_number */
+  tracking_number?: string | null;
+  customer_name?: string | null;
+  ship_to_city?: string | null;
+  country?: string | null;
+  received_by?: string | null;
+  /** product_name column */
+  product?: string | null;
 }
 
 export interface AppointmentData {

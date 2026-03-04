@@ -99,6 +99,26 @@ export async function POST(req: NextRequest) {
   const confidence =
     typeof rawMeta?.confidence === 'number' ? rawMeta.confidence : null;
 
+  // Pass structured delivery_data if present (from N8N structured JSON output)
+  const rawDelivery = typed?.delivery_data as Record<string, unknown> | undefined;
+  const strOrNull = (v: unknown) => (v && v !== 'null' ? String(v) : null);
+  const delivery_data = rawDelivery && typeof rawDelivery === 'object' ? {
+    order_id:           String(rawDelivery.order_id           ?? ''),
+    current_status:     String(rawDelivery.current_status     ?? ''),
+    status_detail:      strOrNull(rawDelivery.status_detail),
+    order_date:         strOrNull(rawDelivery.order_date),
+    promised_ship_date: strOrNull(rawDelivery.promised_ship_date),
+    eta:                strOrNull(rawDelivery.eta),
+    delivered_date:     strOrNull(rawDelivery.delivered_date),
+    carrier:            strOrNull(rawDelivery.carrier),
+    tracking_number:    strOrNull(rawDelivery.tracking_number),
+    customer_name:      strOrNull(rawDelivery.customer_name),
+    ship_to_city:       strOrNull(rawDelivery.ship_to_city),
+    country:            strOrNull(rawDelivery.country),
+    received_by:        strOrNull(rawDelivery.received_by),
+    product:            strOrNull(rawDelivery.product),
+  } : undefined;
+
   const sanitized = {
     response_message:
       typeof typed?.response_message === 'string'
@@ -109,6 +129,7 @@ export async function POST(req: NextRequest) {
       confidence,
       sources_used: sources.length,
     },
+    ...(delivery_data ? { delivery_data } : {}),
   };
 
   return NextResponse.json(sanitized, { status: 200 });

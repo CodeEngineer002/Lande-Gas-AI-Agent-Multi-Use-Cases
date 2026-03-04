@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useCallback, useState } from 'react';
+import { useRef, useCallback, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useChatInputHistory } from '@/hooks/useChatInputHistory';
 
@@ -8,10 +8,22 @@ interface ComposerProps {
   disabled?: boolean;
 }
 
+export interface ComposerHandle {
+  focus: () => void;
+}
+
 function SendIcon() {
   return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
       <path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/>
+    </svg>
+  );
+}
+
+function PaperclipIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
     </svg>
   );
 }
@@ -26,11 +38,38 @@ function LoadingSpinner() {
   );
 }
 
-export default function Composer({ onSend, disabled }: ComposerProps) {
+const Composer = forwardRef<ComposerHandle, ComposerProps>(function Composer(
+  { onSend, disabled },
+  ref
+) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const chatHistory = useChatInputHistory();
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([]);
   const [charCount, setCharCount] = useState(0);
+
+  // Expose focus() to parent via ref
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      const el = textareaRef.current;
+      if (!el) return;
+      // Only focus if nothing else has user focus (don't steal from links, buttons, etc.)
+      const active = document.activeElement;
+      const isInputFocused = active instanceof HTMLInputElement
+        || active instanceof HTMLTextAreaElement
+        || active instanceof HTMLSelectElement;
+      if (isInputFocused && active !== el) return;
+      el.focus({ preventScroll: true });
+    },
+  }), []);
+
+  // Auto-focus on mount — desktop only (skip mobile to avoid keyboard layout shift)
+  useEffect(() => {
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)
+      || window.innerWidth < 768;
+    if (!isMobile) {
+      textareaRef.current?.focus({ preventScroll: true });
+    }
+  }, []);
 
   const autoSize = () => {
     const el = textareaRef.current;
@@ -93,41 +132,56 @@ export default function Composer({ onSend, disabled }: ComposerProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
       >
-        <div style={{ display: 'flex', gap: 8, alignItems: 'flex-end', padding: '6px 8px 8px 4px' }}>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'flex-end', padding: '8px 10px 8px 8px' }}>
           <textarea
             ref={textareaRef}
             className="composer-textarea"
             rows={1}
-            placeholder="Ask about gas products, pricing, delivery status…"
+            placeholder="Ask Linde Gas AI a question…"
             onKeyDown={handleKeyDown}
             onChange={e => { autoSize(); setCharCount(e.target.value.length); }}
             disabled={disabled}
           />
 
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0 }}>
-            {/* Char count with warning colors */}
+          {/* Right-side controls */}
+          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 6, flexShrink: 0 }}>
+            {/* Char count */}
             <AnimatePresence>
-              {charCount > 0 && (
+              {charCount > 500 && (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
-                  className={charCount > 800 ? 'char-danger' : charCount > 500 ? 'char-warn' : ''}
-                  style={{ fontSize: 10, color: charCount > 800 ? undefined : charCount > 500 ? undefined : 'var(--muted)', fontWeight: 600, lineHeight: 1 }}
+                  className={charCount > 800 ? 'char-danger' : 'char-warn'}
+                  style={{ fontSize: 10, fontWeight: 600, alignSelf: 'center', lineHeight: 1 }}
                 >
-                  {charCount}{charCount > 500 ? '/1000' : ''}
+                  {charCount}/1000
                 </motion.div>
               )}
             </AnimatePresence>
 
+            {/* Paperclip attachment button — right side */}
+            <motion.button
+              className="composer-attach-btn"
+              type="button"
+              title="Attach file (coming soon)"
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => {}}
+            >
+              <PaperclipIcon />
+            </motion.button>
+
+            {/* Circle send button */}
             <motion.button
               className="send-btn"
               onClick={(e) => { addRipple(e); submit(); }}
               disabled={disabled}
               type="button"
-              whileTap={{ scale: 0.93 }}
+              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.08 }}
+              title={disabled ? 'Sending…' : 'Send (Enter)'}
             >
-              {/* Ripples */}
               {ripples.map(r => (
                 <span
                   key={r.id}
@@ -136,7 +190,6 @@ export default function Composer({ onSend, disabled }: ComposerProps) {
                 />
               ))}
               {disabled ? <LoadingSpinner /> : <SendIcon />}
-              <span>{disabled ? 'Thinking…' : 'Send'}</span>
             </motion.button>
           </div>
         </div>
@@ -154,4 +207,6 @@ export default function Composer({ onSend, disabled }: ComposerProps) {
       </motion.div>
     </div>
   );
-}
+});
+
+export default Composer;

@@ -20,6 +20,14 @@ export async function POST(req: NextRequest) {
 
   const isEmail = !!body.email;
 
+  // Guard: can't download without a file URL
+  if (!isEmail && (!body.file_url || body.file_url.trim() === '')) {
+    return NextResponse.json(
+      { error: 'Document URL is not available. Please ask again or contact support.' },
+      { status: 422 }
+    );
+  }
+
   let n8nResponse: Response;
   try {
     n8nResponse = await fetch(`${N8N_WEBHOOK_URL}${DOWNLOAD_PATH}`, {

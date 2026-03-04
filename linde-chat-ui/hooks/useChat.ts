@@ -115,6 +115,7 @@ export function useChat() {
         message?: string;
         sources?: Source[];
         meta?: { confidence?: number | null; sources_used?: number };
+        delivery_data?: import('@/lib/types').DeliveryData;
       };
 
       const answer = data.response_message || data.message || CHAT_ERROR;
@@ -128,28 +129,28 @@ export function useChat() {
       };
       dispatch({ type: 'SET_LAST_META', payload: responseMeta });
 
-      // Frontend safety net: suppress sources when the LLM signals it couldn't
-      // find the requested data (prevents showing an irrelevant RAG document),
-      // or when it's asking the user to clarify / provide more info.
+      // Frontend safety net: suppress sources only when n8n returned none AND
+      // the LLM answer signals it couldn't find the requested data.
+      //
+      // IMPORTANT: Do NOT apply phrase-based suppression when n8n explicitly
+      // returned sources (rawSources.length > 0). Quotation responses often
+      // contain follow-up phrases like "Please confirm your delivery location"
+      // alongside a valid document — stripping sources there hides the download
+      // chip. The n8n workflow already runs its own NOT_FOUND check before
+      // deciding to return sources; trust that decision on the frontend.
       const NOT_FOUND_PHRASES = [
         "couldn't find", "could not find", "not found", "no information",
         "i don't have", "unable to find", "not present in", "not available in",
         "doesn't contain", "does not contain", "cannot find",
         "not in the provided", "not mentioned", "not specified",
       ];
-      const CLARIFICATION_PHRASES = [
-        "please provide", "could you please provide", "could you provide",
-        "please share your", "please share the", "what is your order",
-        "please confirm", "can you provide", "can you share",
-        "please let me know", "kindly provide", "kindly share",
-      ];
       const lowerAnswer = answer.toLowerCase();
-      const sources: Source[] = (
-        NOT_FOUND_PHRASES.some(p => lowerAnswer.includes(p)) ||
-        CLARIFICATION_PHRASES.some(p => lowerAnswer.includes(p))
-      )
-        ? []
-        : rawSources;
+      const sources: Source[] =
+        rawSources.length > 0
+          ? rawSources  // n8n returned sources — trust them regardless of phrasing
+          : NOT_FOUND_PHRASES.some(p => lowerAnswer.includes(p))
+            ? []
+            : rawSources;
 
       // Determine response type
       let responseType: IntentType = '';
@@ -184,12 +185,16 @@ export function useChat() {
       }
 
       const rawDelivery =
-        responseType === 'delivery_status' ? extractDeliveryData(answer) : null;
+        responseType === 'delivery_status'
+          ? (data.delivery_data && (data.delivery_data.current_status || data.delivery_data.order_id)
+              ? data.delivery_data
+              : extractDeliveryData(answer))
+          : null;
       // Only show the DeliveryTracking card when actual order data was found.
       // If the agent is asking for an order number, rawDelivery fields will be
       // empty — in that case we suppress the widget.
       const deliveryData =
-        rawDelivery && (rawDelivery.current_status || rawDelivery.order_number)
+        rawDelivery && (rawDelivery.current_status || rawDelivery.order_id)
           ? rawDelivery
           : null;
       const appointmentData =

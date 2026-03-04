@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import type { DownloadHistoryEntry } from '@/lib/types';
-import { ts } from '@/lib/utils';
 
 const DLHIST_KEY = 'linde_download_history';
 
@@ -17,7 +16,7 @@ export function useDownloadHistory() {
 
   const push = useCallback((entry: Omit<DownloadHistoryEntry, 'time'>) => {
     setHistory(prev => {
-      const next = [{ ...entry, time: ts() }, ...prev].slice(0, 50);
+      const next = [{ ...entry, time: new Date().toISOString() }, ...prev].slice(0, 50);
       localStorage.setItem(DLHIST_KEY, JSON.stringify(next));
       return next;
     });
