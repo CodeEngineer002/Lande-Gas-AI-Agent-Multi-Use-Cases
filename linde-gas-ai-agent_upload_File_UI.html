@@ -1,0 +1,2454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Linde Gas • AI Agent</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --logo-src: "";
+      --bg-src: "";
+      --ink: #0a2540;
+      --muted: #5b728c;
+      --brand: #006fbf;
+      --brand-2: #00b5e2;
+      --bg: #f6f9fc;
+      --assist: #fff;
+      --assistBorder: #e8eef5;
+      --user: #e8f4ff;
+      --userBorder: #cfe7ff;
+      --link: #0b74d1;
+      --radius: 10px;
+    }
+
+    /* Dark theme */
+    :root[data-theme="dark"] {
+      --bg: #0b1220;
+      --assist: #0d1626;
+      --assistBorder: #132339;
+      --user: #0e2237;
+      --userBorder: #1a3a55;
+      --ink: #e6eef8;
+      --muted: #9fb2c7;
+      --link: #66c0ff;
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, "Segoe UI", Roboto, Arial;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      overflow: hidden;
+      background:
+        radial-gradient(1200px 700px at 10% -10%, rgba(0, 181, 226, .10), transparent 60%),
+        radial-gradient(1000px 600px at 110% 0%, rgba(0, 111, 191, .10), transparent 60%),
+        linear-gradient(180deg, #f9fbfe, #eef3fb);
+    }
+
+    .bg-img {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: .22;
+      background: url('./linde_bg.avif') center/cover no-repeat;
+      will-change: transform;
+      filter: contrast(102%) saturate(105%) blur(.8px)
+    }
+
+    .glass {
+      border: 1px solid rgba(10, 70, 120, .10);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 22px rgba(9, 40, 70, .08)
+    }
+
+    .border-grad {
+      position: relative
+    }
+
+    .border-grad:before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      pointer-events: none;
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      padding: 1px;
+    }
+
+    .app {
+      height: 100dvh;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, .72)
+    }
+
+    :root[data-theme="dark"] .header {
+      background: rgba(10, 20, 35, .55)
+    }
+
+    .brand-wrap,
+    .userchip {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: none;
+      border: none
+    }
+
+    .brand-chip {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      color: #023255;
+      background: linear-gradient(135deg, var(--brand-2), var(--brand));
+      border: 1px solid rgba(255, 255, 255, .55);
+      box-shadow: 0 6px 16px rgba(0, 111, 191, .18)
+    }
+
+    .brand-logo {
+      display: none;
+      height: 22px
+    }
+
+    .brand-title {
+      font-weight: 800;
+      font-size: 16px
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px
+    }
+
+    .user-ava {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border: 1px solid rgba(255, 255, 255, .55)
+    }
+
+    .user-name {
+      font-weight: 800;
+      font-size: 13px
+    }
+
+    .user-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted)
+    }
+
+    .user-status .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #10b981;
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, .18)
+    }
+
+    .main {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      gap: 14px;
+      padding: 10px 14px
+    }
+
+    .leftpanel {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 430px
+    }
+
+    .rightpanel {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      width: 1260px
+    }
+
+    .card {
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid #e7eef6;
+      background: #ffffffa6
+    }
+
+    :root[data-theme="dark"] .card {
+      background: #0d1423cc;
+      border-color: #20344e
+    }
+
+    .card h3 {
+      font-weight: 800;
+      font-size: 14px;
+      margin: 0 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .hist {
+      max-height: 220px;
+      overflow: auto;
+      border-top: 1px dashed #e6eef6;
+      margin-top: 10px;
+      padding-top: 8px
+    }
+
+    .hist-item {
+      display: grid;
+      grid-template-columns: 1fr 132px;
+      column-gap: 10px;
+      align-items: center;
+      line-height: 30px
+    }
+
+    .hist-title {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      word-break: break-word
+    }
+
+    .hist-title b {
+      display: block;
+      line-height: 1.25;
+      font-size: 12px
+    }
+
+    .hist-time {
+      width: 132px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: right;
+      min-width: 132px;
+      color: #475569
+    }
+
+    .thread {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 12px 12px 148px
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 0 0 auto
+    }
+
+    .thread::-webkit-scrollbar {
+      width: 12px;
+      height: 12px
+    }
+
+    .thread::-webkit-scrollbar-thumb {
+      background: #d6dee6;
+      border-radius: 8px
+    }
+
+    .msg {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0
+    }
+
+    .bubble {
+      width: 100%;
+      padding: 14px 16px;
+      line-height: 1.72;
+      font-size: 15.5px;
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--assistBorder);
+      background: var(--assist)
+    }
+
+    .msg.user {
+      justify-content: flex-end
+    }
+
+    .msg.user .bubble {
+      background: var(--user);
+      border-color: var(--userBorder)
+    }
+
+    .bubble:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      opacity: .9;
+      background: linear-gradient(180deg, var(--brand), var(--brand-2))
+    }
+
+    .msg.user .bubble:after {
+      background: linear-gradient(180deg, #5cb6ff, #9be0ff)
+    }
+
+    .who {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-weight: 800;
+      color: #0c3d66
+    }
+
+    .msg.user .who {
+      color: #0a3f69
+    }
+
+    .ava-sm {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 900;
+      font-size: 12px;
+      background: var(--brand)
+    }
+
+    .ava-bot {
+      background: #0ea5e9
+    }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px
+    }
+
+    .actions {
+      display: flex;
+      gap: 6px
+    }
+
+    .btn-ico {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #e2e9f2;
+      background: #fff
+    }
+
+    :root[data-theme="dark"] .btn-ico {
+      background: #0f1a2a;
+      border-color: #20344e
+    }
+
+    .btn-ico:hover {
+      background: #f6fbff
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 10px;
+      border-radius: 10px;
+      border: 1px solid #d9e6f5;
+      background: #fff;
+      font-size: 12px;
+      cursor: pointer
+    }
+
+    :root[data-theme="dark"] .chip {
+      background: #0f1a2a;
+      border-color: #20344e
+    }
+
+    .chip:hover {
+      background: #f3f9ff
+    }
+
+    .chip .ico {
+      width: 14px;
+      height: 14px;
+      display: inline-block
+    }
+
+    .typing {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #9fb2c7;
+      animation: b .9s infinite ease-in-out
+    }
+
+    .dot:nth-child(2) {
+      animation-delay: .15s
+    }
+
+    .dot:nth-child(3) {
+      animation-delay: .3s
+    }
+
+    @keyframes b {
+
+      0%,
+      100% {
+        opacity: .35;
+        transform: translateY(0)
+      }
+
+      50% {
+        opacity: 1;
+        transform: translateY(-2px)
+      }
+    }
+
+    .composer {
+      position: sticky;
+      bottom: 0;
+      padding: 10px 0
+    }
+
+    .composer-inner {
+      margin-left: auto;
+      background: #ffffff;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 12px
+    }
+
+    :root[data-theme="dark"] .composer-inner {
+      background: #0d1626;
+      border: 1px solid #20344e
+    }
+
+    .in {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--ink);
+      padding: 12px 14px;
+      font-size: 16px;
+      resize: none;
+      max-height: 160px;
+      min-height: 24px;
+      line-height: 1.45
+    }
+
+    .in::placeholder {
+      color: #8aa1b8
+    }
+
+    .send {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 900;
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand-2), var(--brand));
+      border: 1px solid rgba(0, 111, 191, .35);
+      box-shadow: 0 10px 22px rgba(0, 111, 191, .22);
+      cursor: pointer;
+      transition: transform .06s ease, filter .12s ease
+    }
+
+    .send:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03)
+    }
+
+    .bubble p {
+      margin: .5rem 0
+    }
+
+    .bubble a {
+      color: var(--link);
+      text-decoration: underline
+    }
+
+    .bubble code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12.5px;
+      background: #f3f7fb;
+      border: 1px solid #e0e8f1;
+      border-radius: 6px;
+      padding: 2px 6px;
+      color: #0a3f69
+    }
+
+    .bubble pre {
+      background: #0b1221;
+      color: #e6eefb;
+      border-radius: 10px;
+      border: 1px solid #0f1b30;
+      padding: 12px 14px;
+      overflow: auto
+    }
+
+    #toastHost {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    .toast {
+      min-width: 260px;
+      max-width: 420px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #dfeaf6;
+      background: #fff;
+      box-shadow: 0 10px 20px rgba(15, 40, 80, .12);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px
+    }
+
+    :root[data-theme="dark"] .toast {
+      background: #0f1a2a;
+      border-color: #20344e
+    }
+
+    .toast .badge {
+      width: 22px;
+      height: 22px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-size: 12px
+    }
+
+    .toast.info .badge {
+      background: #e8f4ff;
+      color: #0b74d1
+    }
+
+    .toast.success {
+      background: #e9fbf0;
+      border-color: #bbf7d0
+    }
+
+    .toast.success .badge {
+      background: #bbf7d0;
+      color: #065f46
+    }
+
+    .toast.error {
+      background: #fef2f2;
+      border-color: #fecaca
+    }
+
+    .toast.error .badge {
+      background: #fee2e2;
+      color: #991b1b
+    }
+
+    .toast .msg {
+      flex: 1
+    }
+
+    .fade-enter {
+      opacity: 0;
+      transform: translateY(6px)
+    }
+
+    .fade-enter-active {
+      opacity: 1;
+      transform: translateY(0);
+      transition: .18s ease
+    }
+
+    .fade-leave {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .fade-leave-active {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: .2s ease
+    }
+
+    /* Scroll-to-bottom button */
+    #toBottom {
+      position: fixed;
+      right: 18px;
+      bottom: 88px;
+      z-index: 40;
+      display: none;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid #dbe6f4;
+      background: #fff
+    }
+
+    #toBottom.show {
+      display: flex
+    }
+
+    #toBottom .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e
+    }
+
+    :root[data-theme="dark"] #toBottom {
+      background: #0f1a2a;
+      border-color: #20344e
+    }
+
+    /* Drag & drop veil */
+    #dropVeil {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 74, 124, .12);
+      backdrop-filter: blur(2px);
+      z-index: 50
+    }
+
+    #dropVeil.show {
+      display: flex
+    }
+
+    #dropVeil .box {
+      border: 2px dashed #7ab8ff;
+      background: #ffffffb3;
+      padding: 28px 32px;
+      border-radius: 14px
+    }
+
+    :root[data-theme="dark"] #dropVeil .box {
+      background: #0f1a2acc;
+      border-color: #59a8ff
+    }
+
+    @media (max-width:1024px) {
+      .main {
+        flex-direction: column
+      }
+
+      .container {
+        margin: 0 auto
+      }
+
+      .composer-inner {
+        margin: 0 auto
+      }
+
+      #toastHost {
+        left: 12px;
+        right: 12px
+      }
+    }
+
+    .typewriter {
+      position: relative;
+      white-space: pre-wrap
+    }
+
+    .typewriter.caret::after {
+      content: "";
+      position: absolute;
+      width: 2px;
+      top: 0;
+      right: -2px;
+      bottom: 0;
+      margin: auto 0;
+      background: #0a2540;
+      animation: caret-blink .8s steps(1, end) infinite
+    }
+
+    @keyframes caret-blink {
+      50% {
+        opacity: 0
+      }
+    }
+
+    .ico-16 {
+      width: 16px;
+      height: 16px;
+      display: inline-block
+    }
+
+    .ico-14 {
+      width: 14px;
+      height: 14px;
+      display: inline-block
+    }
+
+    .uplist {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .upitem {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+      font-size: 12.5px
+    }
+
+    .bar {
+      height: 6px;
+      background: #e6eef6;
+      border-radius: 999px;
+      overflow: hidden
+    }
+
+    .bar>span {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--brand), var(--brand-2))
+    }
+
+    /* Delivery Tracking Styles */
+    .delivery-tracking {
+      margin-top: 16px;
+      padding: 16px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .tracking-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .tracking-title {
+      font-weight: 700;
+      font-size: 16px;
+      color: #1e293b;
+    }
+
+    .tracking-order {
+      font-size: 14px;
+      color: #64748b;
+      background: #e2e8f0;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .tracking-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 12px;
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-weight: 600;
+      font-size: 14px;
+      color: #1e293b;
+    }
+
+    .tracking-progress {
+      position: relative;
+      margin: 24px 0;
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #059669);
+      border-radius: 3px;
+      transition: width 0.8s ease;
+    }
+
+    .progress-fill.delayed {
+      background: linear-gradient(90deg, #f59e0b, #d97706);
+    }
+
+    .progress-fill.cancelled {
+      background: linear-gradient(90deg, #ef4444, #dc2626);
+    }
+
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+
+    .progress-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      flex: 1;
+    }
+
+    .step-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e2e8f0;
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .step-icon.active {
+      background: #10b981;
+      color: white;
+    }
+
+    .step-icon.delayed {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .step-icon.cancelled {
+      background: #ef4444;
+      color: white;
+    }
+
+    .step-label {
+      font-size: 12px;
+      color: #64748b;
+      text-align: center;
+    }
+
+    .step-label.active {
+      color: #10b981;
+      font-weight: 600;
+    }
+
+    .step-label.delayed {
+      color: #f59e0b;
+      font-weight: 600;
+    }
+
+    .step-label.cancelled {
+      color: #ef4444;
+      font-weight: 600;
+    }
+
+    .truck-animation {
+      position: absolute;
+      top: -8px;
+      left: 0;
+      transition: left 1.5s ease-in-out;
+    }
+
+    .truck-icon {
+      font-size: 20px;
+      filter: grayscale(0%);
+      animation: truckBounce 2s ease-in-out infinite;
+    }
+
+    .truck-icon.moving {
+      animation: truckMove 3s ease-in-out infinite;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 12px;
+    }
+
+    .status-badge.delivered {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .status-badge.in-transit {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .status-badge.out-for-delivery {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-badge.packed {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+
+    .status-badge.confirmed {
+      background: #f3e8ff;
+      color: #6b21a8;
+    }
+
+    .status-badge.delayed {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-badge.on-hold {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-badge.cancelled {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    @keyframes truckBounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-4px);
+      }
+    }
+
+    @keyframes truckMove {
+
+      0%,
+      100% {
+        transform: translateX(-2px) translateY(0);
+      }
+
+      25% {
+        transform: translateX(2px) translateY(-2px);
+      }
+
+      50% {
+        transform: translateX(4px) translateY(0);
+      }
+
+      75% {
+        transform: translateX(2px) translateY(-2px);
+      }
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.7;
+        transform: scale(1.2);
+      }
+    }
+
+    .dark .delivery-tracking {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    .dark .stat-item {
+      background: #334155;
+      border-color: #475569;
+      color: #e2e8f0;
+    }
+
+    .dark .stat-label {
+      color: #94a3b8;
+    }
+
+    .dark .stat-value {
+      color: #e2e8f0;
+    }
+
+    .dark .step-label {
+      color: #94a3b8;
+    }
+
+    .dark .progress-bar {
+      background: #334155;
+    }
+
+    :root[data-theme="dark"] .delivery-tracking {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    :root[data-theme="dark"] .stat-item {
+      background: #334155;
+      border-color: #475569;
+    }
+
+    :root[data-theme="dark"] .stat-label {
+      color: #94a3b8;
+    }
+
+    :root[data-theme="dark"] .stat-value {
+      color: #e2e8f0;
+    }
+
+    :root[data-theme="dark"] .step-label {
+      color: #94a3b8;
+    }
+
+    :root[data-theme="dark"] .progress-bar {
+      background: #334155;
+    }
+
+    /* Appointment Confirmation Styles - NEW */
+    .appointment-confirmation {
+      margin-top: 16px;
+      padding: 20px;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .appointment-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .appointment-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      font-size: 18px;
+    }
+
+    .appointment-title {
+      font-weight: 700;
+      font-size: 18px;
+      color: #1e293b;
+    }
+
+    .appointment-details {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 20px;
+    }
+
+    .appointment-purpose {
+      font-weight: 600;
+      font-size: 16px;
+      color: #1e293b;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .appointment-date-time {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .date-section,
+    .time-section {
+      text-align: center;
+      padding: 12px;
+      background: #f8fafc;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .date-label,
+    .time-label {
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .date-value,
+    .time-value {
+      font-weight: 600;
+      font-size: 14px;
+      color: #1e293b;
+    }
+
+    .appointment-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .join-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: linear-gradient(135deg, #006fbf, #00b5e2);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .join-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 111, 191, 0.3);
+    }
+
+    .secondary-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .secondary-button {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 12px;
+      background: white;
+      color: #475569;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .secondary-button:hover {
+      background: #f8fafc;
+      border-color: #9ca3af;
+    }
+
+    .appointment-note {
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 12px;
+      font-style: italic;
+    }
+
+    :root[data-theme="dark"] .appointment-confirmation {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-color: #334155;
+    }
+
+    :root[data-theme="dark"] .appointment-details {
+      background: #1e293b;
+      border-color: #334155;
+    }
+
+    :root[data-theme="dark"] .appointment-purpose {
+      color: #f1f5f9;
+    }
+
+    :root[data-theme="dark"] .date-section,
+    :root[data-theme="dark"] .time-section {
+      background: #0f172a;
+      border-color: #334155;
+    }
+
+    :root[data-theme="dark"] .date-value,
+    :root[data-theme="dark"] .time-value {
+      color: #f1f5f9;
+    }
+
+    :root[data-theme="dark"] .secondary-button {
+      background: #1e293b;
+      color: #cbd5e1;
+      border-color: #475569;
+    }
+
+    :root[data-theme="dark"] .secondary-button:hover {
+      background: #334155;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg">
+    <div class="bg-img" id="bgImg"></div>
+    <div class="bg-veil"></div>
+  </div>
+
+  <!-- Drag & drop veil + toasts + scroll-to-bottom -->
+  <div id="dropVeil">
+    <div class="box">Drop PDF to index</div>
+  </div>
+  <div id="toastHost" aria-live="polite" aria-atomic="true"></div>
+  <button id="toBottom" class="glass border-grad" title="Jump to latest"><span
+      class="dot"></span><span>New</span></button>
+
+  <div class="app">
+    <div class="header">
+      <div class="brand-wrap">
+        <img id="brandLogo" class="brand-logo" alt="Linde" />
+        <div id="brandMark" class="brand-chip" style="color: #fff;">LG</div>
+        <div>
+          <div class="brand-title">Linde Gas</div>
+          <div class="brand-sub">AI Agent</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <!-- Theme toggle -->
+        <!-- <button id="themeToggle" class="chip" title="Toggle theme">Theme</button> -->
+
+        <div class="userchip">
+          <div>
+            <div id="hdrName" class="user-name">Mr. Bond</div>
+            <div class="user-status"><span class="dot"></span>Online</div>
+          </div>
+          <div id="hdrAvatar" class="user-ava">OP</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main">
+      <!-- Left panel -->
+      <aside class="leftpanel">
+        <div class="card glass border-grad">
+          <h3>
+            <svg class="ico-16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13 3L4 14h6l-1 7 9-11h-6l1-7z" />
+            </svg>
+            Quick Actions
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            <button id="btnClear" class="chip">
+              <svg class="ico" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z" />
+              </svg>
+              <span>Clear chat</span>
+            </button>
+            <button id="btnDownloadLast" class="chip">
+              <svg class="ico" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 3v10.17l3.59-3.58L17 11l-5 5-5-5 1.41-1.41L11 13.17V3h1zM5 18h14v2H5z" />
+              </svg>
+              <span>Download last PDF</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Upload to KB -->
+        <!-- <div class="card glass border-grad" id="uploadCard">
+          <h3>
+            <svg class="ico-16" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M16.5 6.5l-7.8 7.8a3 3 0 104.24 4.24l8-8a5 5 0 10-7.07-7.07l-9.2 9.2a7 7 0 009.9 9.9l6.36-6.36-1.41-1.41-6.36 6.36a5 5 0 11-7.07-7.07l9.19-9.19a3 3 0 014.24 4.24l-8 8a1 1 0 11-1.41-1.41l7.8-7.8-1.41-1.41z" />
+            </svg>
+            Add Documents to Knowledge Base
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            <button id="btnUpload" class="chip">
+              <svg class="ico" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M5 20h14v-2H5m7-14l5 5h-3v4h-4v-4H7l5-5z" />
+              </svg>
+              <span>Upload PDF(s)</span>
+            </button>
+            <input id="filePicker" type="file" accept=".pdf,application/pdf" multiple class="hidden" />
+          </div>
+          <div id="uploadList" class="uplist"></div>
+        </div> -->
+
+        <div class="card glass border-grad" id="docCard">
+          <h3>
+            <svg class="ico-16" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M3 4h13l5 5v11a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm12 1.5V10h4.5L15 5.5zM4 7h10v5h5v7H4V7z" />
+            </svg>
+            Document Download History
+          </h3>
+          <div class="hist" id="dlHist">
+            <div class="text-[12.5px] text-slate-600">No downloads yet.</div>
+          </div>
+        </div>
+
+        <div class="card glass border-grad">
+          <h3>
+            <svg class="ico-16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+            </svg>
+            Insights (coming soon)
+          </h3>
+          <p class="text-[13px] text-slate-600">This panel can show delivery status, price quotes or API results you
+            plug in later.</p>
+        </div>
+      </aside>
+
+      <!-- Right panel -->
+      <section class="rightpanel">
+        <div id="thread" class="thread glass border-grad" role="log" aria-live="polite">
+          <div class="container" id="threadContainer"></div>
+        </div>
+
+        <!-- Suggestions row -->
+        <div class="container mt-2 mb-1">
+          <div id="suggestChips" class="flex flex-wrap gap-2 text-[12.5px]"></div>
+        </div>
+
+        <div class="composer">
+          <div class="composer-inner glass border-grad">
+            <textarea id="messageInput" class="in" rows="1"
+              placeholder="Ask your query here to Linde smart agent"></textarea>
+            <button id="sendBtn" class="send">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M2 21l21-9L2 3v7l15 2-15 2v7z" />
+              </svg>
+              Send
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    /* Theme toggle */
+    (function () {
+      const key = 'linde_theme';
+      const root = document.documentElement;
+      const saved = localStorage.getItem(key) || 'light';
+      if (saved === 'dark') root.setAttribute('data-theme', 'dark');
+      document.getElementById('themeToggle')?.addEventListener('click', () => {
+        const dark = root.getAttribute('data-theme') === 'dark';
+        root.setAttribute('data-theme', dark ? 'light' : 'dark');
+        localStorage.setItem(key, dark ? 'light' : 'dark');
+      });
+    })();
+
+    /* Branding */
+    (function () {
+      const css = getComputedStyle(document.documentElement);
+      const LOGO = css.getPropertyValue('--logo-src').trim().replace(/^"|'+|"+$/g, '');
+      const BG = css.getPropertyValue('--bg-src').trim().replace(/^"|'+|"+$/g, '');
+      const logo = document.getElementById('brandLogo'), badge = document.getElementById('brandMark');
+      if (LOGO) {
+        const t = new Image();
+        t.onload = () => { logo.src = LOGO; logo.style.display = 'block'; badge.style.display = 'none'; };
+        t.onerror = () => { badge.style.display = 'grid'; };
+        t.src = LOGO;
+      }
+      const bg = document.getElementById('bgImg');
+      if (BG) {
+        const b = new Image();
+        b.onload = () => { document.documentElement.style.setProperty('--bg-img', 'url(\"' + BG + '\")'); bg.dataset.loaded = 'true'; };
+        b.src = BG;
+        addEventListener('mousemove', e => {
+          const dx = (e.clientX / innerWidth - .5) * 4, dy = (e.clientY / innerHeight - .5) * 4;
+          bg.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(1.01)';
+        });
+      }
+    })();
+
+    /* Config */
+    const APP_NAME = 'Linde Gas Agent';
+    const USER_NAME = 'Mr. Bond';
+    const CHAT_WEBHOOK_URL = 'https://n8n.acngva.com/webhook/chat-with-pdf-api';
+    const DOWNLOAD_URL = 'https://n8n.acngva.com/webhook/download-pdf-api';
+    const UPLOAD_URL = 'https://n8n.acngva.com/form/44364e76-8140-4c53-b4d8-04ede91fd93c';
+    const USERNAME = 'accenture', PASSWORD = 'demo';
+
+    document.getElementById('hdrName').textContent = USER_NAME;
+    document.getElementById('hdrAvatar').textContent = (USER_NAME || 'U').split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+
+    const threadEl = document.getElementById('thread');
+    const threadContainerEl = document.getElementById('threadContainer');
+    const input = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const toBottomBtn = document.getElementById('toBottom');
+    const dropVeil = document.getElementById('dropVeil');
+
+    const sessionId = crypto.randomUUID();
+    const chatError = 'Something went wrong. Please retry or rephrase your query.';
+    const WELCOME_COPY = "Hi Mr. Bond! Welcome. Ask about any Product from Linde Product Data Sheets—properties, safety, handling, specs, and more. I can answer about any gas or a specific sheet name to get started.";
+
+    const dlHist = document.getElementById('dlHist');
+    const uploadList = document.getElementById('uploadList');
+
+    /* Helpers */
+    const ts = () => new Date().toLocaleString();
+    const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    function mdLite(raw) {
+      let t = String(raw ?? '').trim();
+      t = esc(t)
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/```([\s\S]*?)```/g, (m, c) => '<pre><code>' + c.replace(/</g, '&lt;') + '</code></pre>')
+        .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>')
+        .replace(/(?:^|\n)\s*-\s+(.+?)(?=\n(?!\s*-)|$)/gms, (m, i) => '\n• ' + i);
+      const lines = t.split(/\n+/); const out = []; let ul = [], ol = [];
+      const flush = () => { if (ul.length) { out.push('<ul>' + ul.map(x => '<li>' + x + '</li>').join('') + '</ul>'); ul = []; } if (ol.length) { out.push('<ol>' + ol.map(x => '<li>' + x + '</li>').join('') + '</ol>'); ol = []; } };
+      for (let line of lines) {
+        line = line.trim(); if (!line) continue; let m;
+        if ((m = line.match(/^(\d+)\.\s+(.+)$/))) { ol.push(m[2]); continue; }
+        if ((m = line.match(/^•\s+(.+)$/))) { ul.push(m[1]); continue; }
+        if ((m = line.match(/^([A-Za-z][A-Za-z0-9 _/%°.\-()]{1,60})\s*:\s*(.+)$/))) { flush(); out.push('<div><strong>' + m[1] + ':</strong> ' + m[2] + '</div>'); continue; }
+        flush(); out.push('<p>' + line + '</p>');
+      }
+      flush(); return out.join('');
+    }
+
+    const ico = {
+      edit: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0L14.7 5.54l3.75 3.75 2.26-2.25z"/></svg>',
+      retry: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6V3L8 7l4 4V8a4 4 0 1 1-4 4H6a6 6 0 1 0 6-6z"/></svg>',
+      copy: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4a2 2 0 0 0-2 2v12h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14h13a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"/></svg>',
+      dl: '<svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.17l3.59-3.58L17 11l-5 5-5-5 1.41-1.41L11 13.17V3h1zM5 18h14v2H5z"/></svg>',
+      check: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2l-3.5-3.5L4 14.2l5 5 12-12-1.5-1.5z"/></svg>',
+      warn: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v2h2v-2zm0-8h-2v6h2v-6z"/></svg>',
+      doc: '<svg class="ico-14" viewBox="0 0 24 24" fill="currentColor"><path d="M6 2h7l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm7 1.5V8h4.5L13 3.5z"/></svg>',
+      mail: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>',
+      star: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>'
+    };
+
+    function bubbleHTML(text, isUser, id, extrasHTML = '', sourcesForMsg = []) {
+      const who = isUser
+        ? `<div class="who"><div class="ava-sm">${(USER_NAME || 'U').slice(0, 2).toUpperCase()}</div> ${esc(USER_NAME)}</div>`
+        : `<div class="who"><div class="ava-sm ava-bot">AI</div> ${esc(APP_NAME)}</div>`;
+
+      const actions = isUser
+        ? `<div class="actions">
+         <button class="btn-ico" data-act="edit">${ico.edit}</button>
+         <button class="btn-ico" data-act="retry">${ico.retry}</button>
+       </div>`
+        : `<div class="actions">
+         <button class="btn-ico" data-act="copy" title="Copy">${ico.copy}</button>
+         <button class="btn-ico" data-act="email" title="Email this PDF">${ico.mail}</button>
+         <button class="btn-ico" data-act="star" title="Star (coming soon)">${ico.star}</button>
+       </div>`;
+
+      const dataAttr = sourcesForMsg && sourcesForMsg.length
+        ? ` data-sources-b64="${safeB64(sourcesForMsg)}"`
+        : '';
+
+      return `<div class="msg ${isUser ? 'user' : ''}" data-id="${id}"${dataAttr}>
+    <div class="bubble">
+      ${who}
+      <div class="content">${mdLite(text)}${extrasHTML}</div>
+      <div class="meta"><span>${ts()}</span><span>${actions}</span></div>
+    </div>
+  </div>`;
+    }
+
+    function chipRowHTML(sources, responseType = '') {
+      // Types for which we don't show download chips
+      const NO_CHIP_TYPES = ['greeting', 'delivery_status', 'appointment'];
+
+      if (NO_CHIP_TYPES.includes(responseType)) {
+        return '';
+      }
+
+      if (!Array.isArray(sources) || sources.length === 0) return '';
+
+      const chips = sources.map((s, i) => {
+        const title = s.title || `Document ${i + 1}`;
+        const docId = s.doc_id || '';
+        const fileUrl = s.file_url || '';
+        return `<button class="chip dl-btn" data-doc-id="${esc(docId)}" data-filename="${esc(title)}" data-file-url="${esc(fileUrl)}" data-idx="${i}">
+          ${ico.dl}<span>Download • ${esc(title)}</span>
+        </button>`;
+      }).join('');
+
+      return `<div class="chip-row">${chips}</div>`;
+    }
+
+    /* Delivery Tracking Function - UPDATED */
+    function generateDeliveryTrackingHTML(deliveryData) {
+      const status = deliveryData.current_status || '';
+      const orderNumber = deliveryData.order_number || '';
+      const shippedVia = deliveryData.shipped_via || '';
+      const expectedDate = deliveryData.expected_date || '';
+
+      // Status mapping to progress - IMPROVED
+      const statusProgress = {
+        'Confirmed': { progress: 25, step: 1, icon: '📋', badgeClass: 'confirmed' },
+        'Packed': { progress: 50, step: 2, icon: '📦', badgeClass: 'packed' },
+        'In Transit': { progress: 75, step: 3, icon: '🚚', badgeClass: 'in-transit' },
+        'Out for Delivery': { progress: 90, step: 4, icon: '🚛', badgeClass: 'out-for-delivery' },
+        'Delivered': { progress: 100, step: 5, icon: '✅', badgeClass: 'delivered' },
+        'Delayed': { progress: 75, step: 3, icon: '⛈️', badgeClass: 'delayed' },
+        'On Hold': { progress: 50, step: 2, icon: '📄', badgeClass: 'on-hold' },
+        'Cancelled': { progress: 0, step: 0, icon: '❌', badgeClass: 'cancelled' }
+      };
+
+      // Find the best matching status
+      let currentStatus = statusProgress['In Transit']; // default
+      for (const [key, value] of Object.entries(statusProgress)) {
+        if (status.toLowerCase().includes(key.toLowerCase())) {
+          currentStatus = value;
+          break;
+        }
+      }
+
+      // Special cases for partial matches
+      if (status.toLowerCase().includes('delay')) {
+        currentStatus = statusProgress['Delayed'];
+      } else if (status.toLowerCase().includes('hold')) {
+        currentStatus = statusProgress['On Hold'];
+      } else if (status.toLowerCase().includes('pack')) {
+        currentStatus = statusProgress['Packed'];
+      } else if (status.toLowerCase().includes('deliver')) {
+        currentStatus = statusProgress['Delivered'];
+      } else if (status.toLowerCase().includes('confirm')) {
+        currentStatus = statusProgress['Confirmed'];
+      } else if (status.toLowerCase().includes('transit')) {
+        currentStatus = statusProgress['In Transit'];
+      }
+
+      const isMoving = ['In Transit', 'Out for Delivery'].includes(currentStatus === statusProgress['In Transit'] ? 'In Transit' :
+        currentStatus === statusProgress['Out for Delivery'] ? 'Out for Delivery' : '');
+      const isProblem = ['Delayed', 'On Hold', 'Cancelled'].includes(currentStatus.badgeClass);
+
+      return `
+        <div class="delivery-tracking">
+          <div class="tracking-header">
+            <div class="tracking-title">Order Tracking</div>
+            <div class="tracking-order">${orderNumber || 'Loading...'}</div>
+          </div>
+          
+          <div class="tracking-stats">
+            <div class="stat-item">
+              <div class="stat-label">SHIPPED VIA</div>
+              <div class="stat-value">${shippedVia || 'Loading...'}</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">STATUS</div>
+              <div class="stat-value">${status || 'Loading...'}</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">EXPECTED</div>
+              <div class="stat-value">${expectedDate || 'Loading...'}</div>
+            </div>
+          </div>
+
+          <div class="tracking-progress">
+            <div class="progress-bar">
+              <div class="progress-fill ${isProblem ? (status.toLowerCase().includes('cancel') ? 'cancelled' : 'delayed') : ''}" 
+                   style="width: ${currentStatus.progress}%"></div>
+              ${isMoving ? `
+                <div class="truck-animation" style="left: ${currentStatus.progress}%">
+                  <div class="truck-icon ${isMoving ? 'moving' : ''}">🚚</div>
+                </div>
+              ` : ''}
+            </div>
+            
+            <div class="progress-steps">
+              <div class="progress-step">
+                <div class="step-icon ${currentStatus.step >= 1 ? (isProblem ? 'delayed' : 'active') : ''}">📋</div>
+                <div class="step-label ${currentStatus.step >= 1 ? (isProblem ? 'delayed' : 'active') : ''}">Confirmed</div>
+              </div>
+              <div class="progress-step">
+                <div class="step-icon ${currentStatus.step >= 2 ? (isProblem ? 'delayed' : 'active') : ''}">📦</div>
+                <div class="step-label ${currentStatus.step >= 2 ? (isProblem ? 'delayed' : 'active') : ''}">Packed</div>
+              </div>
+              <div class="progress-step">
+                <div class="step-icon ${currentStatus.step >= 3 ? (isProblem ? 'delayed' : 'active') : ''}">🚚</div>
+                <div class="step-label ${currentStatus.step >= 3 ? (isProblem ? 'delayed' : 'active') : ''}">In Transit</div>
+              </div>
+              <div class="progress-step">
+                <div class="step-icon ${currentStatus.step >= 4 ? (isProblem ? 'delayed' : 'active') : ''}">🚛</div>
+                <div class="step-label ${currentStatus.step >= 4 ? (isProblem ? 'delayed' : 'active') : ''}">Out for Delivery</div>
+              </div>
+              <div class="progress-step">
+                <div class="step-icon ${currentStatus.step >= 5 ? (isProblem ? 'delayed' : 'active') : ''}">✅</div>
+                <div class="step-label ${currentStatus.step >= 5 ? (isProblem ? 'delayed' : 'active') : ''}">Delivered</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="status-badge ${currentStatus.badgeClass}">
+            ${isMoving ? '<div class="pulse-dot"></div>' : ''}
+            <span>Current Status: ${status || 'Loading...'}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    /* Appointment Confirmation Function - NEW */
+    function generateAppointmentHTML(appointmentData) {
+      const startDateTime = appointmentData.startDateTime || '';
+      const endDateTime = appointmentData.endDateTime || '';
+      const meetLink = appointmentData.meetLink || '';
+      const title = appointmentData.title || 'Meeting with Linde representative';
+
+      // Parse dates and format them
+      let formattedDate = '';
+      let formattedTime = '';
+      let meetingTitle = 'Sales consultation with Linde representative';
+
+      try {
+        if (startDateTime && endDateTime) {
+          const startDate = new Date(startDateTime);
+          const endDate = new Date(endDateTime);
+
+          // Format date: "Friday, November 11, 2025"
+          formattedDate = startDate.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+
+          // Format time: "12:00 PM - 1:00 PM CET"
+          formattedTime = `${startDate.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
+          })} - ${endDate.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
+          })} CET`;
+        }
+      } catch (e) {
+        console.error('Error parsing appointment dates:', e);
+      }
+
+      return `
+        <div class="appointment-confirmation">
+          <div class="appointment-header">
+            <div class="appointment-badge">✓</div>
+            <div class="appointment-title">Meeting Confirmed</div>
+          </div>
+          
+          <div class="appointment-details">
+            <div class="appointment-purpose">${meetingTitle}</div>
+            
+            <div class="appointment-date-time">
+              <div class="date-section">
+                <div class="date-label">DATE</div>
+                <div class="date-value">${formattedDate || 'Friday, November 11, 2025'}</div>
+              </div>
+              
+              <div class="time-section">
+                <div class="time-label">TIME</div>
+                <div class="time-value">${formattedTime || '12:00 PM - 1:00 PM CET'}</div>
+              </div>
+            </div>
+            
+            <div class="appointment-actions">
+              <a style= "color: #fff; text-decoration: none"  href="${meetLink}" target="_blank" class="join-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                </svg>
+                Join Google Meet
+              </a>
+              
+              <div class="secondary-actions">
+                <button class="secondary-button">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                  </svg>
+                  Add to Calendar
+                </button>
+                
+                <button class="secondary-button">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                  </svg>
+                  Email Reminder
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="appointment-note">
+            A calendar invitation has been sent to your email
+          </div>
+        </div>
+      `;
+    }
+
+    function safeB64(obj) {
+      try { return btoa(unescape(encodeURIComponent(JSON.stringify(obj || [])))); }
+      catch { return ''; }
+    }
+
+    function appendHTML(html) {
+      threadContainerEl.insertAdjacentHTML('beforeend', html);
+      if (!nearBottom()) toBottomBtn.classList.add('show');
+      threadEl.scrollTop = threadEl.scrollHeight;
+    }
+
+    function isGreeting(q) {
+      const s = String(q || '').trim().toLowerCase();
+      const simple = ['hi', 'hello', 'hey', 'yo', 'hii', 'hiii', 'good morning', 'good afternoon', 'good evening', 'how are you', 'how r u', 'how’re you', 'what do you do', 'who are you', 'help', 'menu'];
+      if (simple.includes(s)) return true;
+      if (/^(hi|hello|hey)[!. ]*$/i.test(q)) return true;
+      if (/^how (are|r) (you|u)\b/i.test(s)) return true;
+      if (/^(what do you do|who (are|r) you)\b/i.test(s)) return true;
+      return false;
+    }
+
+    /* Thread animations */
+    let typingId = null, downloadingId = null;
+    function showTyping() {
+      if (typingId) return;
+      typingId = crypto.randomUUID();
+      appendHTML(`<div class="msg" data-id="${typingId}">
+        <div class="bubble">
+          <div class="who"><div class="ava-sm ava-bot">AI</div> ${esc(APP_NAME)}</div>
+          <div class="typing"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>thinking…</span></div>
+          <div class="meta"><span>${ts()}</span><span></span></div>
+        </div>
+      </div>`);
+    }
+    function hideTyping() {
+      if (!typingId) return;
+      const el = threadContainerEl.querySelector('.msg[data-id="' + typingId + '"]');
+      if (el) el.remove();
+      typingId = null;
+    }
+    function showDownloading() {
+      if (downloadingId) return;
+      downloadingId = crypto.randomUUID();
+      appendHTML(`<div class="msg" data-id="${downloadingId}">
+        <div class="bubble">
+          <div class="who"><div class="ava-sm ava-bot">AI</div> ${esc(APP_NAME)}</div>
+          <div class="typing"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>downloading…</span></div>
+          <div class="meta"><span>${ts()}</span><span></span></div>
+        </div>
+      </div>`);
+    }
+    function hideDownloading() {
+      if (!downloadingId) return;
+      const el = threadContainerEl.querySelector('.msg[data-id="' + downloadingId + '"]');
+      if (el) el.remove();
+      downloadingId = null;
+    }
+
+    /* Toasts */
+    const toastHost = document.getElementById('toastHost');
+    function makeToastEl(type, text) {
+      const wrap = document.createElement('div');
+      wrap.className = 'toast ' + type + ' fade-enter';
+      wrap.innerHTML = `<div class="badge">${type === 'success' ? ico.check : (type === 'error' ? ico.warn : ico.dl)}</div><div class="msg">${esc(text)}</div>`;
+      requestAnimationFrame(() => wrap.classList.add('fade-enter-active'));
+      return wrap;
+    }
+    function showToast(type, text, autocloseMs) {
+      const el = makeToastEl(type, text);
+      toastHost.appendChild(el);
+      let closed = false;
+      function close() {
+        if (closed) return; closed = true;
+        el.classList.remove('fade-enter', 'fade-enter-active');
+        el.classList.add('fade-leave');
+        requestAnimationFrame(() => el.classList.add('fade-leave-active'));
+        setTimeout(() => el.remove(), 220);
+      }
+      if (autocloseMs) setTimeout(() => close(), autocloseMs);
+      return { update: (t, msg) => { el.className = 'toast ' + t; el.querySelector('.badge').innerHTML = (t === 'success' ? ico.check : (t === 'error' ? ico.warn : ico.dl)); el.querySelector('.msg').textContent = msg; }, close };
+    }
+
+    /* Click actions */
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.btn-ico');
+      if (btn) {
+        const act = btn.getAttribute('data-act');
+        const msg = e.target.closest('.msg'); if (!msg) return;
+        const id = msg.getAttribute('data-id');
+
+        if (act === 'edit') { const text = msg.querySelector('.content').innerText; input.value = text; input.focus(); autoSize(); editingId = id; pushHistory(tempCommit(text)); return; }
+        if (act === 'retry') { retrySend(id); return; }
+        if (act === 'copy') { const text = msg.querySelector('.content').innerText.trim(); navigator.clipboard.writeText(text); return; }
+
+        // NEW: email this message's first source
+        if (act === 'email') {
+          // 1) Extract sources for this message (or fallback to lastSources)
+          let srcs = [];
+          try {
+            const b64 = msg.getAttribute('data-sources-b64') || '';
+            if (b64) srcs = JSON.parse(decodeURIComponent(escape(atob(b64))));
+          } catch { }
+          if (!Array.isArray(srcs) || !srcs.length) srcs = lastSources || [];
+          if (!srcs.length) { showToast('error', 'No document to email.', 1600); return; }
+
+          const s = srcs[0]; // email first source
+          const lastEmail = localStorage.getItem('linde_last_email') || '';
+          const addr = prompt('Enter recipient email:', lastEmail);
+          if (!addr) return;
+          const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(addr);
+          if (!ok) { showToast('error', 'Invalid email address.', 1600); return; }
+          localStorage.setItem('linde_last_email', addr);
+
+          // 2) Call download API with extra "email"
+          startDownload({
+            doc_id: s.doc_id || '',
+            filename: s.title || 'document.pdf',
+            file_url: s.file_url || '',
+            email: addr,
+          });
+          return;
+        }
+
+        // NEW: star (placeholder)
+        if (act === 'star') {
+          showToast('info', 'Saved for later (coming soon).', 1200);
+          return;
+        }
+      }
+
+      // existing chip download
+      const dl = e.target.closest('.dl-btn');
+      if (dl) {
+        startDownload({
+          doc_id: dl.getAttribute('data-doc-id') || '',
+          filename: dl.getAttribute('data-filename') || 'document.pdf',
+          file_url: dl.getAttribute('data-file-url') || ''
+        });
+      }
+    });
+
+    /* Network */
+    const auth = () => 'Basic ' + btoa(`${USERNAME}:${PASSWORD}`);
+    async function fetchWithTimeout(url, options = {}, timeout = 90000) {
+      const c = new AbortController(); const id = setTimeout(() => c.abort(), timeout);
+      try { return await fetch(url, { ...options, signal: c.signal }); } finally { clearTimeout(id); }
+    }
+    async function callChat(message) {
+      const res = await fetchWithTimeout(CHAT_WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': auth() }, body: JSON.stringify({ message, sessionId }) });
+      const text = await res.text(); if (!res.ok) return { ok: false, text };
+      let j = null; try { j = JSON.parse(text); } catch (_) { }
+      return { ok: true, data: j, text };
+    }
+    function filenameFromCD(cd) {
+      if (!cd) return null;
+      const m1 = cd.match(/filename\*=(?:UTF-8'')?([^;]+)/i);
+      const m2 = cd.match(/filename="?([^"]+)"?/i);
+      const val = (m1 && m1[1]) || (m2 && m2[1]) || null;
+      return val ? decodeURIComponent(val.trim()) : null;
+    }
+
+    /* Download history */
+    const DLHIST_KEY = 'linde_download_history';
+    let dlHistory = []; try { dlHistory = JSON.parse(localStorage.getItem(DLHIST_KEY)) || []; } catch (_) { }
+    function pushDownloadHist(entry) {
+      dlHistory.unshift(entry);
+      if (dlHistory.length > 50) dlHistory = dlHistory.slice(0, 50);
+      localStorage.setItem(DLHIST_KEY, JSON.stringify(dlHistory));
+      renderDownloadHistory();
+    }
+    function renderDownloadHistory() {
+      if (!dlHistory.length) { dlHist.innerHTML = '<div class="text-[12.5px] text-slate-600">No downloads yet.</div>'; return; }
+      dlHist.innerHTML = dlHistory.map(h => (
+        `<div class="hist-item">
+          <div class="hist-title">
+            ${ico.doc}
+            <div>
+              <b>${esc(h.title || 'Document')}</b>
+              <div class="text-slate-500 text-[12px]">${esc(h.doc_id || '')}</div>
+            </div>
+          </div>
+          <div class="text-[12px] hist-time" title="${esc(h.time)}"><span>${esc(h.time)}</span></div>
+        </div>`
+      )).join('');
+    }
+    renderDownloadHistory();
+
+    /* Upload to Vector DB */
+    const btnUpload = document.getElementById('btnUpload');
+    const filePicker = document.getElementById('filePicker');
+    if (btnUpload) btnUpload.addEventListener('click', () => filePicker.click());
+    if (filePicker) filePicker.addEventListener('change', async (e) => {
+      const files = Array.from(e.target.files || []);
+      if (!files.length) return;
+      for (const f of files) { await uploadSingleFile(f); }
+      filePicker.value = '';
+    });
+
+    function mkUpRow(name) {
+      const row = document.createElement('div');
+      row.className = 'upitem';
+      row.innerHTML =
+        '<div class="min-w-0">' +
+        '<div class="truncate"><strong>' + esc(name) + '</strong></div>' +
+        '<div class="bar mt-1"><span></span></div>' +
+        '</div>' +
+        '<div class="text-slate-500">0%</div>';
+      uploadList.prepend(row);
+      return row;
+    }
+
+    async function uploadSingleFile(file) {
+      const row = mkUpRow(file.name);
+      const bar = row.querySelector('.bar > span');
+      const pctLabel = row.lastElementChild;
+      const toast = showToast('info', 'Uploading "' + file.name + '"…');
+      try {
+        const form = new FormData();
+        form.append('file', file, file.name);
+        form.append('sessionId', sessionId);
+        form.append('source', 'frontend');
+
+        await new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open('POST', UPLOAD_URL, true);
+          xhr.setRequestHeader('Authorization', auth());
+          xhr.upload.onprogress = (ev) => {
+            if (ev.lengthComputable) {
+              const p = Math.round((ev.loaded / ev.total) * 100);
+              bar.style.width = p + '%';
+              pctLabel.textContent = p + '%';
+            }
+          };
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+              if (xhr.status >= 200 && xhr.status < 300) {
+                bar.style.width = '100%'; pctLabel.textContent = 'Done';
+                toast.update('success', 'Indexed "' + file.name + '"');
+                setTimeout(() => toast.close(), 1400);
+                resolve();
+              } else {
+                toast.update('error', 'Upload failed for "' + file.name + '"');
+                setTimeout(() => toast.close(), 1800);
+                reject(new Error(xhr.responseText || 'upload failed'));
+              }
+            }
+          };
+          xhr.onerror = function () {
+            toast.update('error', 'Network error for "' + file.name + '"');
+            setTimeout(() => toast.close(), 1800);
+            reject(new Error('network'));
+          };
+          xhr.send(form);
+        });
+      } catch (err) {
+        console.error('Upload error:', err);
+      }
+    }
+
+    /* Drag & drop upload */
+    ; (function () {
+      let dragCt = 0;
+      ['dragenter', 'dragover'].forEach(ev => {
+        window.addEventListener(ev, e => { e.preventDefault(); dragCt++; dropVeil.classList.add('show'); });
+      });
+      ['dragleave', 'drop'].forEach(ev => {
+        window.addEventListener(ev, e => { e.preventDefault(); dragCt = Math.max(0, dragCt - 1); if (!dragCt) dropVeil.classList.remove('show'); });
+      });
+      window.addEventListener('drop', async (e) => {
+        const files = [...(e.dataTransfer?.files || [])].filter(f => /\.pdf$/i.test(f.name));
+        for (const f of files) await uploadSingleFile(f);
+      });
+    })();
+
+    /* Typewriter */
+    function typeWriter(el, text, totalMs = 2200) {
+      if (!el) return;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) { el.textContent = text; return; }
+      el.textContent = ''; el.classList.add('caret', 'typewriter');
+      const steps = Math.max(1, text.length);
+      const tick = Math.max(8, Math.floor(totalMs / steps));
+      let i = 0;
+      const id = setInterval(() => {
+        el.textContent += text.charAt(i++);
+        if (i >= text.length) { clearInterval(id); el.classList.remove('caret'); }
+      }, tick);
+    }
+
+    /* Scroll-to-bottom behaviour */
+    function nearBottom() {
+      return (threadEl.scrollHeight - threadEl.scrollTop - threadEl.clientHeight) < 120;
+    }
+    threadEl.addEventListener('scroll', () => {
+      toBottomBtn.classList.toggle('show', !nearBottom());
+    });
+    toBottomBtn.addEventListener('click', () => {
+      threadEl.scrollTo({ top: threadEl.scrollHeight, behavior: 'smooth' });
+      toBottomBtn.classList.remove('show');
+    });
+
+    /* Download flow */
+    async function startDownload(payload) {
+      const isEmail = !!payload.email;
+      showDownloading();
+
+      const toast = showToast('info', isEmail ? 'Sending email…' : 'Downloading the PDF now…');
+
+      try {
+        const res = await fetchWithTimeout(DOWNLOAD_URL, {
+          method: 'POST',
+          headers: { 'Authorization': auth(), 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...payload, sessionId })
+        });
+
+        // EMAIL MODE: just check status / optional message
+        if (isEmail) {
+          const txt = await res.text().catch(() => '');
+          if (!res.ok) {
+            console.error('Email error:', txt);
+            toast.update('error', 'Email failed. Please try again.');
+            setTimeout(() => toast.close(), 1600);
+            addAssistant('Email failed. Please try again.', [], { suppressChips: true });
+          } else {
+            toast.update('success', 'Email sent successfully');
+            setTimeout(() => toast.close(), 1400);
+            addAssistant(`Email has been Sent successfully`, [], { suppressChips: true });
+          }
+          return;
+        }
+
+        // DOWNLOAD MODE: expect PDF
+        if (!res.ok) {
+          toast.update('error', 'Download failed. Please try again.');
+          setTimeout(() => toast.close(), 1600);
+          hideDownloading();
+          addAssistant('Download failed. Please try again.');
+          return;
+        }
+        const ct = res.headers.get('Content-Type') || '';
+        if (!/pdf|octet-stream|binary/i.test(ct)) {
+          await res.text();
+          toast.update('error', 'Download not available.');
+          setTimeout(() => toast.close(), 1600);
+          hideDownloading();
+          addAssistant('Download not available.');
+          return;
+        }
+        const fname = filenameFromCD(res.headers.get('Content-Disposition')) || payload.filename || 'document.pdf';
+        const blob = await res.blob();
+        const href = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = href; a.download = fname; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(href);
+        toast.update('success', 'Successfully downloaded'); setTimeout(() => toast.close(), 1400);
+        pushDownloadHist({ title: payload.filename || 'document.pdf', doc_id: payload.doc_id || '', time: ts() });
+      } catch (e) {
+        console.error(e);
+        const msg = isEmail ? 'Email failed. Please try again.' : 'Download failed. Please try again.';
+        toast.update('error', msg);
+        setTimeout(() => toast.close(), 1600);
+        addAssistant(msg, [], { suppressChips: true });
+      } finally {
+        hideDownloading();
+      }
+    }
+
+    /* Chat flow */
+    let editingId = null; let lastSources = [];
+
+    function addUser(q) { const id = crypto.randomUUID(); appendHTML(bubbleHTML(q, true, id)); return id; }
+
+    function addAssistant(text, sources, opts = {}) {
+      lastSources = Array.isArray(sources) ? sources : [];
+
+      // Extract response type from sources or use provided type
+      let responseType = opts.type || '';
+      if (!responseType && lastSources.length > 0 && lastSources[0].type) {
+        responseType = lastSources[0].type;
+      }
+
+      const showChips = !(opts.suppressChips === true);
+      const chips = showChips ? chipRowHTML(lastSources, responseType) : '';
+
+      // Add delivery tracking for delivery_status type
+      let deliveryTrackingHTML = '';
+      if (responseType === 'delivery_status' && opts.deliveryData) {
+        deliveryTrackingHTML = generateDeliveryTrackingHTML(opts.deliveryData);
+      }
+
+      // Add appointment confirmation for appointment type
+      let appointmentHTML = '';
+      if (responseType === 'appointment' && opts.appointmentData) {
+        appointmentHTML = generateAppointmentHTML(opts.appointmentData);
+      }
+
+      const id = crypto.randomUUID();
+
+      appendHTML(bubbleHTML(text, false, id, chips + deliveryTrackingHTML + appointmentHTML, lastSources));
+      return id;
+    }
+
+    async function retrySend(id) {
+      const msg = threadContainerEl.querySelector('.msg[data-id="' + id + '"]');
+      if (!msg) return;
+      const q = msg.querySelector('.content').innerText.trim();
+      await handleQuery(q);
+    }
+
+    /* Extract delivery data from response text - COMPLETELY REWRITTEN */
+    function extractDeliveryData(text) {
+      const deliveryData = {
+        current_status: '',
+        order_number: '',
+        shipped_via: '',
+        expected_date: ''
+      };
+
+      console.log("Extracting data from:", text);
+
+      // Extract Order Number
+      const orderMatch = text.match(/Order\s*ID[:\s]*([A-Z0-9\-]+)/i) ||
+        text.match(/LG[-_][A-Z0-9]+/i) ||
+        text.match(/([A-Z]{2}-\d+)/);
+      if (orderMatch) {
+        deliveryData.order_number = orderMatch[1] || orderMatch[0];
+      }
+
+      // Extract Current Status - IMPROVED
+      const statusMatch = text.match(/Current\s*Status[:\s]*([^\n\.]+)/i) ||
+        text.match(/Status[:\s]*([^\n\.]+)/i) ||
+        text.match(/-?\s*\*\*Current Status\*\*[:\s]*([^\n]+)/i);
+      if (statusMatch) {
+        deliveryData.current_status = statusMatch[1].trim().replace(/\*\*/g, '');
+      }
+
+      // Extract Shipping Carrier - IMPROVED
+      const carrierMatch = text.match(/Carrier[:\s]*([^\n\.]+)/i) ||
+        text.match(/Shipped Via[:\s]*([^\n\.]+)/i) ||
+        text.match(/(UPS|DHL|FedEx|USPS|Fedex)/i);
+      if (carrierMatch) {
+        deliveryData.shipped_via = carrierMatch[1] ? carrierMatch[1].trim() : carrierMatch[0];
+      }
+
+      // Extract Expected Date - IMPROVED
+      const dateMatch = text.match(/Expected[:\s]*([^\n\.]+)/i) ||
+        text.match(/Promised[:\s]*([^\n\.]+)/i) ||
+        text.match(/(November|December|January|February|March|April|May|June|July|August|September|October)\s+\d{1,2},?\s+\d{4}/i);
+      if (dateMatch) {
+        deliveryData.expected_date = dateMatch[1] ? dateMatch[1].trim() : dateMatch[0];
+      }
+
+      // Fallback: Try to extract from bullet points or structured data
+      if (!deliveryData.current_status) {
+        const lines = text.split('\n');
+        for (const line of lines) {
+          const cleanLine = line.replace(/\*\*/g, '').trim();
+
+          // Status
+          if (cleanLine.toLowerCase().includes('current status') && !deliveryData.current_status) {
+            deliveryData.current_status = cleanLine.split(':')[1]?.trim() || '';
+          }
+          // Order ID
+          if (cleanLine.toLowerCase().includes('order id') && !deliveryData.order_number) {
+            deliveryData.order_number = cleanLine.split(':')[1]?.trim() || '';
+          }
+          // Carrier
+          if ((cleanLine.toLowerCase().includes('carrier') || cleanLine.toLowerCase().includes('shipped via')) && !deliveryData.shipped_via) {
+            deliveryData.shipped_via = cleanLine.split(':')[1]?.trim() || '';
+          }
+          // ETA
+          if ((cleanLine.toLowerCase().includes('eta') || cleanLine.toLowerCase().includes('expected')) && !deliveryData.expected_date) {
+            deliveryData.expected_date = cleanLine.split(':')[1]?.trim() || '';
+          }
+        }
+      }
+
+      console.log("Extracted delivery data:", deliveryData);
+      return deliveryData;
+    }
+
+    /* Extract appointment data from response text - NEW */
+    function extractAppointmentData(text, sources) {
+      const appointmentData = {
+        startDateTime: '',
+        endDateTime: '',
+        meetLink: '',
+        title: 'Meeting with Linde representative'
+      };
+
+      console.log("Extracting appointment data from:", text);
+
+      // Extract meeting link from sources first
+      if (sources && sources.length > 0 && sources[0].file_url) {
+        appointmentData.meetLink = sources[0].file_url;
+      }
+
+      // Extract title from sources
+      if (sources && sources.length > 0 && sources[0].title) {
+        appointmentData.title = sources[0].title;
+      }
+
+      // Try to extract date and time from response message
+      const dateTimeMatch = text.match(/Your meeting is booked on (.+) → (.+)\. Meet link: (.+)/);
+      if (dateTimeMatch) {
+        appointmentData.startDateTime = dateTimeMatch[1];
+        appointmentData.endDateTime = dateTimeMatch[2];
+        if (!appointmentData.meetLink) {
+          appointmentData.meetLink = dateTimeMatch[3];
+        }
+      }
+
+      // Alternative pattern matching
+      if (!appointmentData.startDateTime) {
+        const altMatch = text.match(/(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[\+\-]\d{2}:\d{2})/g);
+        if (altMatch && altMatch.length >= 2) {
+          appointmentData.startDateTime = altMatch[0];
+          appointmentData.endDateTime = altMatch[1];
+        }
+      }
+
+      console.log("Extracted appointment data:", appointmentData);
+      return appointmentData;
+    }
+
+    /* Chat flow - UPDATED to handle delivery status and appointment better */
+    async function handleQuery(q) {
+      showTyping();
+      try {
+        const m = q.match(/^download(?:\s+(\d+))?$/i);
+        if (m && lastSources.length) {
+          const idx = Math.max(1, Math.min(lastSources.length, parseInt(m[1] || '1', 10))) - 1;
+          const src = lastSources[idx];
+          await startDownload({ doc_id: src && src.doc_id || '', filename: src && src.title || 'document.pdf', file_url: src && src.file_url || '' });
+          return;
+        }
+        const r = await callChat(q);
+        if (!r.ok) { addAssistant(chatError, []); return; }
+        const answer = r.data && (r.data.response_message || r.data.message) || r.text;
+        const sources = r.data && r.data.sources || [];
+
+        // Determine response type
+        let responseType = '';
+        let deliveryData = null;
+        let appointmentData = null;
+
+        if (sources.length > 0 && sources[0].type) {
+          responseType = sources[0].type;
+        } else if (isGreeting(q)) {
+          responseType = 'greeting';
+        }
+
+        // Extract delivery data for delivery_status type or tracking queries
+        if (responseType === 'delivery_status' ||
+          q.toLowerCase().includes('delivery') ||
+          q.toLowerCase().includes('track') ||
+          q.toLowerCase().includes('order status') ||
+          q.toLowerCase().includes('shipment')) {
+          responseType = 'delivery_status';
+          deliveryData = extractDeliveryData(answer);
+
+          // If we couldn't extract properly, set some sensible defaults based on the response
+          if (!deliveryData.current_status && answer.toLowerCase().includes('delivered')) {
+            deliveryData.current_status = 'Delivered';
+          }
+          if (!deliveryData.current_status && answer.toLowerCase().includes('packed')) {
+            deliveryData.current_status = 'Packed';
+          }
+          if (!deliveryData.current_status && answer.toLowerCase().includes('transit')) {
+            deliveryData.current_status = 'In Transit';
+          }
+        }
+
+        // Extract appointment data for appointment type
+        if (responseType === 'appointment' ||
+          q.toLowerCase().includes('call') ||
+          q.toLowerCase().includes('meeting') ||
+          q.toLowerCase().includes('appointment') ||
+          q.toLowerCase().includes('schedule')) {
+          responseType = 'appointment';
+          appointmentData = extractAppointmentData(answer, sources);
+        }
+
+        addAssistant(answer, sources, {
+          type: responseType,
+          deliveryData: deliveryData,
+          appointmentData: appointmentData
+        });
+      } catch (e) {
+        console.error(e);
+        addAssistant(chatError, []);
+      } finally {
+        hideTyping();
+      }
+    }
+
+    /* Suggestions */
+    const SUGGESTIONS = [
+      'Provide product data sheet for Oxygen',
+      'What is the delivery status of my order LG-240001?',
+      'Can you setup a call with a Linde sales rep?',
+      'Provide Melting point of Nitrogen',
+      'Display full detailed summary for CO2 line by line'
+    ];
+    (function () {
+      const host = document.getElementById('suggestChips');
+      host.innerHTML = SUGGESTIONS.map(t => `<button class="chip" data-q="${t}">${t}</button>`).join('');
+      host.addEventListener('click', e => {
+        const b = e.target.closest('button[data-q]'); if (!b) return;
+        input.value = b.dataset.q; send();
+      });
+    })();
+
+    /* Welcome + Send */
+    function renderWelcome() {
+      threadContainerEl.innerHTML =
+        '<div class="msg"><div class="bubble">' +
+        '<div class="who"><div class="ava-sm ava-bot">AI</div> Linde Gas Agent</div>' +
+        '<p id="welcomeText" class="typewriter"></p>' +
+        '<div class="meta"><span></span><span></span></div>' +
+        '</div></div>';
+      const w = document.getElementById('welcomeText');
+      typeWriter(w, WELCOME_COPY, 2300);
+    }
+    renderWelcome();
+
+    async function send() {
+      const q = input.value.trim(); if (!q) return;
+      if (editingId) {
+        const msg = threadContainerEl.querySelector('.msg[data-id="' + editingId + '"]');
+        if (msg) { msg.querySelector('.content').innerText = q; msg.querySelector('.meta span').textContent = ts(); }
+        editingId = null;
+      }
+      addUser(q); pushHistory(q); input.value = ''; autoSize();
+      await handleQuery(q);
+    }
+
+    /* Keyboard shortcuts */
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); input.focus(); }
+    });
+
+    /* History */
+    const HISTORY_KEY = 'linde_chat_history';
+    let history = []; try { history = JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; } catch (_) { }
+    let histIdx = history.length; let lastTyped = "";
+    function pushHistory(v) { if (!v) return; if (history[history.length - 1] === v) return; history.push(v); if (history.length > 200) history = history.slice(-200); localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); histIdx = history.length; }
+    function tempCommit(v) { lastTyped = v; return v; }
+    input.addEventListener('keydown', (e) => {
+      const atStart = input.selectionStart === 0 && input.selectionEnd === 0;
+      const atEnd = input.selectionStart === input.value.length && input.selectionEnd === input.value.length;
+      if (e.key === 'ArrowUp' && atStart) { e.preventDefault(); if (histIdx > 0) { if (histIdx === history.length) lastTyped = input.value; histIdx--; input.value = history[histIdx] || ''; autoSize(); placeCursorEnd(); } }
+      if (e.key === 'ArrowDown' && atEnd) { e.preventDefault(); if (histIdx < history.length - 1) { histIdx++; input.value = history[histIdx] || ''; } else { histIdx = history.length; input.value = lastTyped || ''; } autoSize(); placeCursorEnd(); }
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } else requestAnimationFrame(autoSize);
+    });
+    function placeCursorEnd() { const l = input.value.length; input.setSelectionRange(l, l); }
+    sendBtn.onclick = send;
+
+    document.getElementById('btnClear').onclick = () => { lastSources = []; renderWelcome(); };
+    document.getElementById('btnDownloadLast').onclick = () => { if (!lastSources.length) return; const s = lastSources[0]; startDownload({ doc_id: s.doc_id || '', filename: s.title || 'document.pdf', file_url: s.file_url || '' }); };
+
+    function autoSize() { input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 160) + 'px'; }
+    autoSize();
+    new ResizeObserver(() => { threadEl.scrollTop = threadEl.scrollHeight; }).observe(document.body);
+  </script>
+</body>
+
+</html>

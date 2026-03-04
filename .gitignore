@@ -1,0 +1,61 @@
+# ── Node / Next.js ──────────────────────────────────────────────────────────
+node_modules/
+.next/
+out/
+dist/
+build/
+.turbo/
+
+# ── Environment variables (NEVER commit secrets) ────────────────────────────
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+
+# ── Logs ────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ── OS / Editor ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ── Package manager caches ──────────────────────────────────────────────────
+.npm
+.yarn/cache
+.pnp
+.pnp.js
+
+# ── TypeScript build info ────────────────────────────────────────────────────
+*.tsbuildinfo
+next-env.d.ts
+
+# ── Testing ─────────────────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ── n8n / workflow artifacts ─────────────────────────────────────────────────
+# Keep the workflow JSON (it is source-controlled intentionally)
+# but exclude any local n8n data folders if cloned alongside
+.n8n/
+
+# ── Miscellaneous ─────────────────────────────────────────────────────────────
+*.pem
+*.key
+*.cert
+tmp/
+temp/
