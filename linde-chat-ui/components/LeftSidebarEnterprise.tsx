@@ -1,6 +1,7 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { DownloadHistoryEntry, Source, DownloadPayload } from '@/lib/types';
+import LindeLogo from './LindeLogo';
 
 const USER_NAME = 'John Doe';
 const USER_INITIALS = 'JG';
@@ -343,6 +344,17 @@ export default function LeftSidebarEnterprise({
                   ))
                 )}
               </div>
+            </motion.div>
+
+            {/* ── Powered by Linde footer — always rendered, CSS hides when branding OFF ── */}
+            <motion.div
+              className="sidebar-powered-footer"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.25, duration: 0.4 }}
+            >
+              <LindeLogo width={65} color="var(--muted)" showTriangle={false} />
+              <span className="powered-label">Powered by <strong>Linde Gas AI</strong></span>
             </motion.div>
           </motion.aside>
         )}

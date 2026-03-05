@@ -1881,7 +1881,7 @@ button:focus:not(:focus-visible) { outline: none; }
   justify-content: space-between;
   gap: 12px;
   padding: 0 16px;
-  height: 56px;
+  height: 80px;
   background: var(--glass-bg);
   border-bottom: 1px solid var(--glass-border);
   backdrop-filter: blur(22px) saturate(210%);
@@ -2555,6 +2555,7 @@ button:focus:not(:focus-visible) { outline: none; }
   min-width: 0;
   overflow: hidden;
   padding: 10px 10px 10px 10px;
+  position: relative;
 }
 
 /* Flex container for ChatThread — title bar + scrollable messages */
@@ -3945,4 +3946,725 @@ button:focus:not(:focus-visible) { outline: none; }
 }
 .qp-item:hover .qp-arrow {
   color: var(--brand);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LINDE ENTERPRISE BRANDING — active when data-linde-branding="true"
+   Layout: Dark Header + Dark Sidebars + WHITE Content Area
+   Matching linde.com corporate structure exactly
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1. GLOBAL CSS-VARIABLE OVERRIDE ── */
+[data-linde-branding="true"] {
+  --brand:       #002d54;
+  --brand-2:     #003d6e;
+  --brand-3:     #002245;
+  --ink:         #002d54;                      /* dark text on white areas */
+  --muted:       #5a6f82;                      /* muted text */
+  --bg:          #f5f7fa;                      /* light page bg behind panels */
+  --assist:      #ffffff;
+  --assistBorder: #e2e8f0;
+  --user:        #002d54;
+  --userBorder:  rgba(0,45,84,0.15);
+  --link:        #0070b8;
+  --glass-bg:    #ffffff;
+  --glass-border: #e2e8f0;
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg:   0 12px 40px rgba(0,0,0,0.1);
+  --shadow-brand: 0 4px 12px rgba(0,45,84,0.1);
+  --glow-brand:  none;
+}
+
+/* ── 2. BACKGROUND: light gray like enterprise dashboard ── */
+[data-linde-branding="true"] .bg-root {
+  background: #eef1f5 !important;
+}
+[data-linde-branding="true"] .bg-root::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: #eef1f5;
+}
+/* Hide world-map and orbs for clean corporate look */
+[data-linde-branding="true"] .bg-img-layer {
+  display: none !important;
+}
+[data-linde-branding="true"] .bg-orb-1,
+[data-linde-branding="true"] .bg-orb-2,
+[data-linde-branding="true"] .bg-orb-3 {
+  display: none !important;
+}
+
+/* ── 3. TOPBAR — solid #002d54 + vivid blue accent bar ── */
+[data-linde-branding="true"] .topbar-root {
+  background: #002d54 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: none !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+  position: relative;
+  z-index: 10;
+}
+[data-linde-branding="true"] .topbar-root::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #0091dc;
+  z-index: 2;
+}
+
+/* TopBar logo area */
+.topbar-brand-logo { display: none; }
+[data-linde-branding="true"] .topbar-brand-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  flex-shrink: 0;
+}
+[data-linde-branding="true"] .topbar-brand-icon { display: none; }
+[data-linde-branding="true"] .topbar-brand-name {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  background-clip: unset !important;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+}
+
+/* TopBar search */
+[data-linde-branding="true"] .topbar-search-input {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.15);
+  color: #ffffff;
+}
+[data-linde-branding="true"] .topbar-search-input::placeholder {
+  color: rgba(255,255,255,0.45);
+}
+[data-linde-branding="true"] .topbar-search-input:focus {
+  border-color: rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.12);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
+}
+
+/* TopBar buttons / icons — white on dark */
+[data-linde-branding="true"] .topbar-icon-btn {
+  color: rgba(255,255,255,0.7);
+}
+[data-linde-branding="true"] .topbar-icon-btn:hover {
+  color: #ffffff;
+  background: rgba(255,255,255,0.1);
+}
+[data-linde-branding="true"] .topbar-avatar {
+  background: rgba(255,255,255,0.15) !important;
+  border-color: rgba(255,255,255,0.2) !important;
+}
+[data-linde-branding="true"] .topbar-username { color: #ffffff; }
+[data-linde-branding="true"] .topbar-userstatus { color: rgba(255,255,255,0.55); }
+
+/* n8n badge */
+[data-linde-branding="true"] .n8n-badge-btn {
+  border-color: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.06);
+}
+[data-linde-branding="true"] .n8n-badge-btn:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.25);
+}
+[data-linde-branding="true"] .topbar-divider {
+  background: rgba(255,255,255,0.15) !important;
+}
+
+/* Dropdowns — white panels */
+[data-linde-branding="true"] .notif-dropdown,
+[data-linde-branding="true"] .user-dropdown {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12) !important;
+}
+[data-linde-branding="true"] .user-dropdown-item {
+  color: #002d54 !important;
+}
+[data-linde-branding="true"] .user-dropdown-item:hover {
+  background: #f0f4f8 !important;
+  color: #002d54 !important;
+}
+[data-linde-branding="true"] .user-dropdown-divider {
+  background: #e2e8f0 !important;
+}
+
+/* ── 4. ICON RAIL — dark blue ── */
+[data-linde-branding="true"] .icon-rail {
+  background: #002245;
+  border-color: rgba(255,255,255,0.06);
+}
+[data-linde-branding="true"] .rail-btn {
+  color: rgba(255,255,255,0.5);
+}
+[data-linde-branding="true"] .rail-btn:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.12);
+  color: #ffffff;
+}
+[data-linde-branding="true"] .rail-btn.active {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.18);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+/* ── 5. LEFT SIDEBAR PANEL — dark blue #002d54 ── */
+[data-linde-branding="true"] .sidebar-panel {
+  background: #002d54 !important;
+  border-color: rgba(255,255,255,0.06) !important;
+}
+[data-linde-branding="true"] .sidebar-user-chip {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.1);
+}
+[data-linde-branding="true"] .sidebar-avatar {
+  background: rgba(255,255,255,0.15) !important;
+  border-color: rgba(255,255,255,0.2) !important;
+}
+[data-linde-branding="true"] .sidebar-section {
+  background: rgba(255,255,255,0.04) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+[data-linde-branding="true"] .sidebar-user-name,
+[data-linde-branding="true"] .sidebar-user-role {
+  color: #ffffff;
+}
+
+/* Sidebar section titles — white text */
+[data-linde-branding="true"] .sidebar-section-title {
+  color: rgba(255,255,255,0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+[data-linde-branding="true"] .sidebar-section-title svg {
+  color: rgba(255,255,255,0.7) !important;
+}
+
+/* Agent Insights metrics — slightly lighter blue cards */
+[data-linde-branding="true"] .insight-metric {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.1);
+}
+[data-linde-branding="true"] .insight-value {
+  color: #ffffff !important;
+}
+[data-linde-branding="true"] .insight-label {
+  color: rgba(255,255,255,0.65);
+}
+
+/* Quick Action buttons — in dark sidebar */
+[data-linde-branding="true"] .qa-btn {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.1);
+  color: #ffffff;
+}
+[data-linde-branding="true"] .qa-btn:hover:not(.qa-btn-disabled) {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.18);
+  box-shadow: none;
+}
+[data-linde-branding="true"] .qa-title {
+  color: rgba(255,255,255,0.9);
+}
+[data-linde-branding="true"] .qa-icon-blue {
+  background: rgba(255,255,255,0.1);
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.15);
+}
+[data-linde-branding="true"] .qa-icon-purple {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.9);
+  border-color: rgba(255,255,255,0.12);
+}
+[data-linde-branding="true"] .qa-icon-green {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.9);
+  border-color: rgba(255,255,255,0.12);
+}
+
+/* Document History — in dark sidebar */
+[data-linde-branding="true"] .doc-history-item {
+  border-color: rgba(255,255,255,0.06);
+  color: #ffffff;
+}
+[data-linde-branding="true"] .doc-history-item:hover {
+  background: rgba(255,255,255,0.06);
+}
+[data-linde-branding="true"] .doc-history-icon {
+  color: rgba(255,255,255,0.65);
+}
+[data-linde-branding="true"] .doc-history-title {
+  color: #ffffff !important;
+  font-size: 12.5px;
+}
+[data-linde-branding="true"] .doc-history-meta {
+  color: rgba(255,255,255,0.55) !important;
+}
+[data-linde-branding="true"] .doc-history-name {
+  color: #ffffff;
+}
+[data-linde-branding="true"] .doc-history-date {
+  color: rgba(255,255,255,0.5);
+}
+[data-linde-branding="true"] .sidebar-badge {
+  background: #0091dc;
+  color: #ffffff;
+}
+
+/* Sidebar user info — white on dark */
+[data-linde-branding="true"] .sidebar-username {
+  color: #ffffff !important;
+}
+[data-linde-branding="true"] .sidebar-userrole {
+  color: rgba(255,255,255,0.65) !important;
+}
+
+/* Quick Action labels — white on dark sidebar */
+[data-linde-branding="true"] .qa-label {
+  color: rgba(255,255,255,0.85);
+}
+
+/* ── 6. CHAT AREA — WHITE CONTENT like linde.com ── */
+[data-linde-branding="true"] .chat-workspace {
+  background: #ffffff !important;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 0 0 1px #e2e8f0;
+}
+[data-linde-branding="true"] .chat-workspace::before {
+  display: none !important;
+}
+
+/* Chat title bar — white with subtle bottom border */
+[data-linde-branding="true"] .chat-title-bar {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+[data-linde-branding="true"] .chat-title-text {
+  color: #002d54;
+}
+[data-linde-branding="true"] .chat-title-btn {
+  color: #5a6f82;
+}
+[data-linde-branding="true"] .chat-title-btn:hover {
+  background: #f0f4f8;
+  border-color: #dce3eb;
+  color: #002d54;
+}
+
+/* Chat bubbles — AI: white card with subtle border */
+[data-linde-branding="true"] .chat-bubble.ai {
+  background: #f7f9fb;
+  border-color: #e2e8f0;
+  color: #1a2c3d;
+}
+[data-linde-branding="true"] .chat-bubble.ai:hover {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+/* Chat bubbles — User: Linde blue */
+[data-linde-branding="true"] .chat-bubble.user {
+  background: #002d54 !important;
+  border-color: #002d54 !important;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,45,84,0.2);
+}
+[data-linde-branding="true"] .chat-bubble.user:hover {
+  box-shadow: 0 4px 16px rgba(0,45,84,0.25);
+}
+
+/* Chat agent info — dark text on white */
+[data-linde-branding="true"] .chat-ai-name { color: #002d54; }
+[data-linde-branding="true"] .chat-ai-time { color: #8d9baa; }
+[data-linde-branding="true"] .chat-ai-icon {
+  background: #002d54 !important;
+  color: #ffffff !important;
+}
+
+/* Composer — white with gray border */
+[data-linde-branding="true"] .composer-root {
+  background: #ffffff !important;
+  border-color: #d0d9e2 !important;
+  box-shadow: 0 -1px 4px rgba(0,0,0,0.04) !important;
+}
+[data-linde-branding="true"] .composer-root::before {
+  display: none !important;
+}
+[data-linde-branding="true"] .composer-root textarea {
+  color: #1a2c3d;
+}
+[data-linde-branding="true"] .composer-root textarea::placeholder {
+  color: #94a3b5;
+}
+
+/* Send button — Linde Blue primary */
+[data-linde-branding="true"] .send-btn {
+  background: #002d54 !important;
+  border-color: #002d54 !important;
+  box-shadow: 0 2px 8px rgba(0,45,84,0.3) !important;
+  color: #ffffff !important;
+}
+[data-linde-branding="true"] .send-btn:hover {
+  background: #003d6e !important;
+  box-shadow: 0 4px 12px rgba(0,45,84,0.35) !important;
+}
+
+/* Attach button — dark on white */
+[data-linde-branding="true"] .attach-btn {
+  color: #8d9baa;
+}
+[data-linde-branding="true"] .attach-btn:hover {
+  color: #002d54;
+  background: #f0f4f8;
+}
+
+/* ── 7. RIGHT SIDEBAR — dark blue #002d54 ── */
+[data-linde-branding="true"] .right-panel-aside {
+  background: #002d54 !important;
+  color: #ffffff !important;
+}
+
+/* Cards inside — slightly lighter blue */
+[data-linde-branding="true"] .right-panel-card {
+  background: rgba(255,255,255,0.07) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  color: #ffffff !important;
+}
+[data-linde-branding="true"] .right-panel-card-title {
+  color: #ffffff !important;
+  font-weight: 700;
+}
+[data-linde-branding="true"] .right-panel-card-title svg {
+  color: rgba(255,255,255,0.85) !important;
+}
+[data-linde-branding="true"] .right-panel-card-desc {
+  color: rgba(255,255,255,0.75) !important;
+}
+[data-linde-branding="true"] .right-panel-sublabel {
+  color: rgba(255,255,255,0.7) !important;
+}
+[data-linde-branding="true"] .right-panel-idle {
+  color: rgba(255,255,255,0.6) !important;
+}
+[data-linde-branding="true"] .right-panel-unavail {
+  color: rgba(255,255,255,0.7) !important;
+  background: rgba(239,68,68,0.12) !important;
+  border-color: rgba(239,68,68,0.25) !important;
+}
+
+/* Quick Prompt hint text */
+[data-linde-branding="true"] .qp-hint {
+  color: rgba(255,255,255,0.6) !important;
+}
+
+/* Quick Prompt items — cards on dark panel */
+[data-linde-branding="true"] .qp-item {
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  color: #ffffff !important;
+}
+[data-linde-branding="true"] .qp-item:hover {
+  background: rgba(255,255,255,0.12) !important;
+  border-color: rgba(255,255,255,0.22) !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15) !important;
+}
+[data-linde-branding="true"] .qp-title {
+  color: #ffffff !important;
+}
+[data-linde-branding="true"] .qp-desc {
+  color: rgba(255,255,255,0.65) !important;
+}
+[data-linde-branding="true"] .qp-badge {
+  color: rgba(255,255,255,0.7) !important;
+}
+[data-linde-branding="true"] .qp-arrow {
+  color: rgba(255,255,255,0.4) !important;
+}
+[data-linde-branding="true"] .qp-item:hover .qp-arrow {
+  color: #ffffff !important;
+}
+
+/* Sources section — dark background */
+[data-linde-branding="true"] .sources-count-badge {
+  color: #0091dc !important;
+}
+[data-linde-branding="true"] .source-row-title {
+  color: #ffffff !important;
+}
+[data-linde-branding="true"] .source-row-id {
+  color: rgba(255,255,255,0.55) !important;
+}
+[data-linde-branding="true"] .source-row-num {
+  color: rgba(255,255,255,0.55) !important;
+}
+[data-linde-branding="true"] .source-row-action {
+  color: rgba(255,255,255,0.65) !important;
+  border-color: rgba(255,255,255,0.15) !important;
+  background: rgba(255,255,255,0.05) !important;
+}
+[data-linde-branding="true"] .source-row-action:hover {
+  color: #ffffff !important;
+  background: rgba(255,255,255,0.12) !important;
+  border-color: rgba(255,255,255,0.25) !important;
+}
+[data-linde-branding="true"] .source-row:hover {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.12) !important;
+}
+[data-linde-branding="true"] .confidence-track {
+  background: rgba(255,255,255,0.12) !important;
+}
+
+/* Debug panel — in dark right panel */
+[data-linde-branding="true"] .debug-panel {
+  background: rgba(239,68,68,0.10) !important;
+  border-color: rgba(239,68,68,0.22) !important;
+}
+[data-linde-branding="true"] .debug-json {
+  color: rgba(255,255,255,0.65) !important;
+  background: rgba(0,0,0,0.25) !important;
+}
+[data-linde-branding="true"] .debug-key {
+  color: rgba(255,255,255,0.6) !important;
+}
+[data-linde-branding="true"] .debug-row {
+  border-color: rgba(239,68,68,0.15) !important;
+}
+
+/* Contextual Action buttons — white text on dark */
+[data-linde-branding="true"] .contextual-btn {
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,0.15) !important;
+  background: rgba(255,255,255,0.06) !important;
+}
+[data-linde-branding="true"] .contextual-btn:hover {
+  background: rgba(255,255,255,0.12) !important;
+  border-color: rgba(255,255,255,0.25) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+}
+[data-linde-branding="true"] .contextual-btn svg {
+  color: rgba(255,255,255,0.75) !important;
+}
+
+/* Contextual Action rows (legacy) */
+[data-linde-branding="true"] .ctxaction-row {
+  border-color: rgba(255,255,255,0.10) !important;
+  color: rgba(255,255,255,0.8) !important;
+}
+[data-linde-branding="true"] .ctxaction-row:hover {
+  background: rgba(255,255,255,0.08) !important;
+  color: #ffffff !important;
+}
+
+/* Right-panel scrollbar on dark bg */
+[data-linde-branding="true"] .right-panel-aside::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+}
+[data-linde-branding="true"] .right-panel-aside::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+/* ── 8. TODAY DIVIDER — on white background ── */
+[data-linde-branding="true"] .today-divider span {
+  background: #ffffff !important;
+  color: #8d9baa;
+}
+[data-linde-branding="true"] .today-divider::before {
+  background: #e2e8f0 !important;
+}
+
+/* ── 9. SCROLLBARS — light for white areas, subtle for dark ── */
+[data-linde-branding="true"] .chat-workspace ::-webkit-scrollbar-thumb {
+  background: #c8d1da;
+}
+[data-linde-branding="true"] .chat-workspace ::-webkit-scrollbar-thumb:hover {
+  background: #a0adb8;
+}
+[data-linde-branding="true"] ::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.12);
+}
+[data-linde-branding="true"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* ── 10. SIDEBAR POWERED-BY FOOTER ── */
+.sidebar-powered-footer {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 12px 16px;
+  margin-top: auto;
+  border-top: 1px solid var(--glass-border);
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+[data-linde-branding="true"] .sidebar-powered-footer {
+  display: flex;
+  border-color: rgba(255,255,255,0.1);
+}
+.sidebar-powered-footer:hover { opacity: 1; }
+.powered-label {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.powered-label strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* ── 11. FOCUS RINGS / INPUTS ── */
+[data-linde-branding="true"] .chat-workspace input:focus,
+[data-linde-branding="true"] .chat-workspace textarea:focus,
+[data-linde-branding="true"] .chat-workspace select:focus {
+  outline-color: #0091dc;
+  border-color: #0091dc !important;
+  box-shadow: 0 0 0 3px rgba(0,145,220,0.12) !important;
+}
+[data-linde-branding="true"] input:focus,
+[data-linde-branding="true"] textarea:focus,
+[data-linde-branding="true"] select:focus {
+  outline-color: #0091dc;
+  border-color: rgba(255,255,255,0.3) !important;
+  box-shadow: 0 0 0 3px rgba(0,145,220,0.15) !important;
+}
+
+/* ── 12. STATUS DOT ── */
+[data-linde-branding="true"] .status-dot {
+  background: #0091dc !important;
+  box-shadow: 0 0 6px rgba(0,145,220,0.4);
+}
+
+/* ── 13. SELECTION HIGHLIGHT ── */
+[data-linde-branding="true"] ::selection {
+  background: rgba(0,45,84,0.2);
+  color: #002d54;
+}
+
+/* ── 14. APPOINTMENT / SPECIAL CARDS — white on chat area ── */
+[data-linde-branding="true"] .appt-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #002d54;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+/* ── 15. TOOLTIP / POPOVER ── */
+[data-linde-branding="true"] .tooltip {
+  background: #002d54;
+  border-color: rgba(255,255,255,0.1);
+  color: #ffffff;
+}
+
+/* ── 15b. MODAL — white popup ── */
+[data-linde-branding="true"] .modal-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+}
+[data-linde-branding="true"] .modal-header {
+  color: #002d54;
+}
+[data-linde-branding="true"] .modal-body {
+  color: #5a6f82;
+}
+[data-linde-branding="true"] .modal-close {
+  color: #5a6f82;
+  border-color: #dce3eb;
+}
+[data-linde-branding="true"] .modal-ok-btn {
+  background: #002d54;
+  color: #ffffff;
+}
+
+/* ── 16. SETTINGS PAGE — white content area ── */
+[data-linde-branding="true"] .settings-section-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #002d54;
+}
+[data-linde-branding="true"] .sp-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+[data-linde-branding="true"] .sp-card-header {
+  border-color: #e2e8f0 !important;
+  background: #f7f9fb !important;
+}
+[data-linde-branding="true"] .sp-card-icon {
+  background: rgba(0,45,84,0.08);
+  border-color: rgba(0,45,84,0.15);
+  color: #002d54;
+}
+[data-linde-branding="true"] .sp-card-title {
+  color: #002d54;
+}
+[data-linde-branding="true"] .sp-card-subtitle {
+  color: #5a6f82;
+}
+[data-linde-branding="true"] .sp-row {
+  border-color: #f0f3f6;
+}
+[data-linde-branding="true"] .sp-row-label {
+  color: #002d54;
+}
+[data-linde-branding="true"] .sp-row-desc {
+  color: #5a6f82;
+}
+[data-linde-branding="true"] .settings-page {
+  background: transparent;
+}
+[data-linde-branding="true"] .settings-toggle-track {
+  background: #c8d1da;
+}
+[data-linde-branding="true"] .settings-toggle-track[data-checked="true"] {
+  background: #002d54;
+}
+
+/* ── 17. CHAT BUBBLE ACTION BUTTONS — on white bg ── */
+[data-linde-branding="true"] .bubble-action {
+  background: #f0f4f8;
+  border-color: #e2e8f0;
+  color: #5a6f82;
+}
+[data-linde-branding="true"] .bubble-action:hover {
+  background: #e4eaf0;
+  color: #002d54;
+}
+
+/* ── 18. TYPING INDICATOR ── */
+[data-linde-branding="true"] .typing-dot {
+  background: #002d54 !important;
+}
+
+/* ── 19. CHAT HELPERS TEXT — dark text on white ── */
+[data-linde-branding="true"] .chat-helpers {
+  color: #5a6f82;
+}
+[data-linde-branding="true"] .chat-helpers kbd {
+  background: #f0f4f8;
+  border-color: #d0d9e2;
+  color: #002d54;
+}
+
+/* ── 20. BORDER-GRAD — no border in branding mode ── */
+[data-linde-branding="true"] .border-grad {
+  border: none !important;
+  box-shadow: none !important;
 }

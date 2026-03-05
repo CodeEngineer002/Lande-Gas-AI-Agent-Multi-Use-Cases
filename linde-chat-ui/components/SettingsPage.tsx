@@ -407,7 +407,26 @@ export default function SettingsPage() {
           </SettingRow>
         </SectionCard>
 
-        {/* ── Section 5: System Information ── */}
+        {/* ── Section 5: Branding ── */}
+        <SectionCard
+          title="Enterprise Branding"
+          subtitle="Activate official Linde visual identity across the UI"
+          icon={
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+            </svg>
+          }
+        >
+          <SettingRow
+            label="Enable Linde Branding"
+            description="Applies Linde logo, accent colours, branded background, and signature. Dark theme is preserved."
+            last
+          >
+            <Toggle checked={settings.lindeBranding} onChange={set('lindeBranding')} />
+          </SettingRow>
+        </SectionCard>
+
+        {/* ── Section 6: System Information ── */}
         <SectionCard
           title="System Information"
           subtitle="Read-only runtime values and environment details"

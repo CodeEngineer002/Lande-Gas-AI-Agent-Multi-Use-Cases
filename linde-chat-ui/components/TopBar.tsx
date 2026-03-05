@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from './ThemeProvider';
+import LindeLogo from './LindeLogo';
 
 const USER_NAME = 'John Doe';
 const USER_INITIALS = 'JG';
@@ -55,7 +56,11 @@ export default function TopBar({
       {/* ── LEFT: brand ── */}
       <div className="topbar-left">
         <div className="topbar-brand">
+          {/* Both variants always rendered; CSS toggles visibility via [data-linde-branding] */}
           <div className="topbar-brand-icon">LG</div>
+          <div className="topbar-brand-logo">
+            <LindeLogo width={95} color="#fff" showTriangle={true} />
+          </div>
           <span className="topbar-brand-name">Linde Gas AI</span>
         </div>
       </div>

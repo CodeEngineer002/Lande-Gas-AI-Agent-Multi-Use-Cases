@@ -53,6 +53,9 @@ export interface AppSettings {
   enableToasts        : boolean;
   enableSound         : boolean;
   confirmBeforeClear  : boolean;
+
+  // ── Branding
+  lindeBranding       : boolean;
 }
 
 const DEFAULTS: AppSettings = {
@@ -75,6 +78,8 @@ const DEFAULTS: AppSettings = {
   enableToasts        : true,
   enableSound         : false,
   confirmBeforeClear  : false,
+
+  lindeBranding       : false,
 };
 
 const STORAGE_KEY = 'linde_settings_v1';
@@ -139,6 +144,10 @@ function applyToDom(s: AppSettings) {
     lg: '16px',
   };
   root.style.setProperty('--font-size-base', sizeMap[s.fontSize]);
+
+  // Linde branding
+  if (s.lindeBranding) root.setAttribute('data-linde-branding', 'true');
+  else root.removeAttribute('data-linde-branding');
 }
 
 // ── Provider ───────────────────────────────────────────────────────
