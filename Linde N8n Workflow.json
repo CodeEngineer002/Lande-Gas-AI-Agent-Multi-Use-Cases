@@ -1712,6 +1712,90 @@
       ],
       "id": "avail001-aaaa-bbbb-cccc-000000000004",
       "name": "Respond to Webhook Availability"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('On GET request1').item.json.body.sessionId }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [-936, 1200],
+      "id": "mem001-intent-aaaa-bbbb-ccccdddd0001",
+      "name": "Memory - Intent Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('On GET request1').item.json.body.sessionId }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [568, 3432],
+      "id": "mem002-greeting-aaaa-bbbb-ccccdddd0002",
+      "name": "Memory - Greeting Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('On GET request1').item.json.body.sessionId }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [552, 1624],
+      "id": "mem003-quotation-aaaa-bbbb-ccccdddd0003",
+      "name": "Memory - Quotation Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('On GET request1').item.json.body.sessionId }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [552, 2232],
+      "id": "mem004-calendar-aaaa-bbbb-ccccdddd0004",
+      "name": "Memory - Calendar Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('On GET request1').item.json.body.sessionId }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [520, 2744],
+      "id": "mem005-delivery-aaaa-bbbb-ccccdddd0005",
+      "name": "Memory - Delivery Status Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('On GET request1').item.json.body.sessionId }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [552, 3912],
+      "id": "mem006-general-aaaa-bbbb-ccccdddd0006",
+      "name": "Memory - General Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('On GET request1').item.json.body.sessionId }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [520, 4300],
+      "id": "mem007-availability-aaaa-bbbb-ccccdddd0007",
+      "name": "Memory - Availability Agent"
     }
   ],
   "connections": {
@@ -2385,6 +2469,83 @@
           {
             "node": "Availability Agent",
             "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory - Intent Agent": {
+      "ai_memory": [
+        [
+          {
+            "node": "Intent Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory - Greeting Agent": {
+      "ai_memory": [
+        [
+          {
+            "node": "Greeting Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory - Quotation Agent": {
+      "ai_memory": [
+        [
+          {
+            "node": "Quotation Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory - Calendar Agent": {
+      "ai_memory": [
+        [
+          {
+            "node": "Calendar Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory - Delivery Status Agent": {
+      "ai_memory": [
+        [
+          {
+            "node": "Delivery Status Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory - General Agent": {
+      "ai_memory": [
+        [
+          {
+            "node": "General Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory - Availability Agent": {
+      "ai_memory": [
+        [
+          {
+            "node": "Availability Agent",
+            "type": "ai_memory",
             "index": 0
           }
         ]
