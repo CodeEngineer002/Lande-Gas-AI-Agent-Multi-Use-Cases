@@ -1858,6 +1858,8 @@ button:focus:not(:focus-visible) { outline: none; }
   height: 100dvh;
   overflow: hidden;
   color: var(--ink);
+  position: relative;
+  z-index: 2;
 }
 
 .enterprise-body {
@@ -3976,17 +3978,22 @@ button:focus:not(:focus-visible) { outline: none; }
   --glow-brand:  none;
 }
 
-/* ── 2. BACKGROUND: light gray like enterprise dashboard ── */
+/* ── 2. BACKGROUND: Linde branded bokeh photo ── */
 [data-linde-branding="true"] .bg-root {
-  background: #eef1f5 !important;
+  background:
+    url('/branding/linde/chat-bg.jpg') center center / cover no-repeat fixed !important;
+  position: relative;
 }
+/* Frosted white overlay so UI stays readable */
 [data-linde-branding="true"] .bg-root::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  background: #eef1f5;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 /* Hide world-map and orbs for clean corporate look */
 [data-linde-branding="true"] .bg-img-layer {
@@ -4237,14 +4244,36 @@ button:focus:not(:focus-visible) { outline: none; }
   color: rgba(255,255,255,0.85);
 }
 
-/* ── 6. CHAT AREA — WHITE CONTENT like linde.com ── */
+/* ── 6. CHAT AREA — Linde branded background ── */
 [data-linde-branding="true"] .chat-workspace {
-  background: #f5f6fa !important;
+  background:
+    radial-gradient(ellipse 70% 50% at 8% 10%,  rgba(0, 111, 191, 0.055) 0%, transparent 70%),
+    radial-gradient(ellipse 55% 45% at 95% 85%,  rgba(0, 181, 226, 0.05)  0%, transparent 65%),
+    radial-gradient(ellipse 40% 35% at 50% 50%,  rgba(255, 255, 255, 0.9)  0%, transparent 100%),
+    #f0f6fc !important;
   border-radius: 12px 12px 0 0;
-  box-shadow: 0 0 0 1px #e2e8f0;
+  box-shadow: 0 0 0 1px rgba(0, 111, 191, 0.12);
 }
+
+/* Dot-grid pattern overlay */
 [data-linde-branding="true"] .chat-workspace::before {
-  display: none !important;
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(0, 111, 191, 0.09) 1px, transparent 1px);
+  background-size: 26px 26px;
+  background-position: 13px 13px;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.12) 40%, rgba(0,0,0,0.06) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.12) 40%, rgba(0,0,0,0.06) 100%);
+}
+
+/* Ensure content sits above the dot pattern */
+[data-linde-branding="true"] .chat-workspace > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* Chat title bar — white with subtle bottom border */
