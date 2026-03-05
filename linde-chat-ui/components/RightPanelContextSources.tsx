@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ResponseMeta, Source, DownloadPayload, ChatMessage } from '@/lib/types';
+import { useSettings } from '@/lib/settingsContext';
 
 interface RightPanelContextSourcesProps {
   meta: ResponseMeta | null;
@@ -10,6 +11,132 @@ interface RightPanelContextSourcesProps {
   onDownload: (payload: DownloadPayload) => void;
   messages: ChatMessage[];
   onShowToast?: (type: 'info' | 'success' | 'error', text: string, duration?: number) => void;
+  onFillPrompt?: (text: string) => void;
+}
+
+/* ─── Quick Prompts ─────────────────────────────────────────── */
+const QUICK_PROMPTS = [
+  {
+    color: '#006fbf',
+    category: 'Product Data',
+    title: 'Oxygen Datasheet',
+    description: 'Retrieve the full product data sheet for Oxygen gas.',
+    text: 'Provide product data sheet for Oxygen',
+    icon: (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14,2 14,8 20,8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+    ),
+  },
+  {
+    color: '#10b981',
+    category: 'Logistics',
+    title: 'Track Delivery',
+    description: 'Check the live delivery status of order LG-240001.',
+    text: 'What is the delivery status of my order LG-240001?',
+    icon: (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="1" y="3" width="15" height="13" rx="1"/>
+        <path d="M16 8h4l3 3v5h-7V8z"/>
+        <circle cx="5.5" cy="18.5" r="2.5"/>
+        <circle cx="18.5" cy="18.5" r="2.5"/>
+      </svg>
+    ),
+  },
+  {
+    color: '#8b5cf6',
+    category: 'Scheduling',
+    title: 'Book a Sales Call',
+    description: 'Schedule a meeting with a Linde sales representative.',
+    text: 'Can you setup a call with a Linde sales rep?',
+    icon: (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+    ),
+  },
+  {
+    color: '#00b5e2',
+    category: 'Science',
+    title: 'Nitrogen Properties',
+    description: 'Look up the melting point and physical properties of N₂.',
+    text: 'Provide Melting point of Nitrogen',
+    icon: (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/>
+      </svg>
+    ),
+  },
+  {
+    color: '#f59e0b',
+    category: 'Summary',
+    title: 'CO₂ Full Summary',
+    description: 'Display a detailed line-by-line breakdown of CO₂ data.',
+    text: 'Display full detailed summary for CO2 line by line',
+    icon: (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+      </svg>
+    ),
+  },
+];
+
+function QuickPromptsPanel({ onFillPrompt }: { onFillPrompt: (text: string) => void }) {
+  return (
+    <motion.div
+      className="right-panel-card qp-card"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div className="right-panel-card-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="13,2 3,14 12,14 11,22 21,10 12,10 13,2"/>
+        </svg>
+        Quick Prompts
+      </div>
+      <p className="qp-hint">Click a prompt to fill the chat input — edit before sending.</p>
+      <div className="qp-list">
+        {QUICK_PROMPTS.map((p, i) => (
+          <motion.button
+            key={p.text}
+            className="qp-item"
+            onClick={() => onFillPrompt(p.text)}
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: i * 0.055, duration: 0.28, ease: 'easeOut' }}
+            whileHover="hover"
+          >
+            <div className="qp-icon-badge" style={{ background: p.color + '1a', border: `1px solid ${p.color}33`, color: p.color }}>
+              {p.icon}
+            </div>
+            <div className="qp-text">
+              <span className="qp-title">{p.title}</span>
+              <span className="qp-category" style={{ color: p.color }}>{p.category}</span>
+              <span className="qp-desc">{p.description}</span>
+            </div>
+            <motion.div
+              className="qp-arrow"
+              variants={{ hover: { x: 3, opacity: 1 } }}
+              initial={{ opacity: 0.35 }}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12,5 19,12 12,19"/>
+              </svg>
+            </motion.div>
+          </motion.button>
+        ))}
+      </div>
+    </motion.div>
+  );
 }
 
 /* ─── Confidence Bar ─────────────────────────────────────────── */
@@ -262,12 +389,15 @@ export default function RightPanelContextSources({
   onDownload,
   messages,
   onShowToast,
+  onFillPrompt,
 }: RightPanelContextSourcesProps) {
+  const { settings } = useSettings();
   const totalSources = lastSources.length ?? meta?.sources_used ?? 0;
 
   return (
     <div className="right-panel">
-      {/* ── Context & Sources Card ── */}
+      {/* ── Quick Prompts — always visible when smartSuggestions is on ── */}
+      {settings.smartSuggestions && onFillPrompt && <QuickPromptsPanel onFillPrompt={onFillPrompt} />}
       <motion.div
         className="right-panel-card"
         initial={{ opacity: 0, y: 12 }}
@@ -299,7 +429,29 @@ export default function RightPanelContextSources({
           )}
           {meta && (
             <motion.div key="meta" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-              <ConfidenceBar value={meta.confidence ?? 0} />
+              {settings.confidenceDisplay && <ConfidenceBar value={meta.confidence ?? 0} />}
+
+              {/* Debug panel — visible only when Debug Mode is ON */}
+              {settings.debugMode && (
+                <div className="debug-panel">
+                  <div className="debug-panel-header">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                      <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                      <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                    Debug · Raw Meta
+                  </div>
+                  <pre className="debug-json">{JSON.stringify(meta, null, 2)}</pre>
+                  <div className="debug-row">
+                    <span className="debug-key">Confidence</span>
+                    <span className="debug-val">{meta.confidence !== null ? `${Math.round((meta.confidence ?? 0) * 100)}%` : 'N/A'}</span>
+                  </div>
+                  <div className="debug-row">
+                    <span className="debug-key">Sources Used</span>
+                    <span className="debug-val">{meta.sources_used}</span>
+                  </div>
+                </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>

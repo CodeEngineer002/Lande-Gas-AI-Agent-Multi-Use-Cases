@@ -6,10 +6,12 @@ import LeftSidebarEnterprise from "@/components/LeftSidebarEnterprise";
 import ChatThread from "@/components/ChatThread";
 import Composer from "@/components/Composer";
 import type { ComposerHandle } from "@/components/Composer";
-import SuggestionChips from "@/components/SuggestionChips";
 import ToastHost from "@/components/ToastHost";
 import DropVeil from "@/components/DropVeil";
 import RightPanelContextSources from "@/components/RightPanelContextSources";
+import HomeDashboard from "@/components/HomeDashboard";
+import SettingsPage from "@/components/SettingsPage";
+import { useSettings, playResponseChime } from "@/lib/settingsContext";
 import { useChat } from "@/hooks/useChat";
 import { useDownload } from "@/hooks/useDownload";
 import { useDownloadHistory } from "@/hooks/useDownloadHistory";
@@ -18,11 +20,24 @@ import type { ChatMessage, DownloadPayload } from "@/lib/types";
 
 export default function Page() {
   const { state, send, clear, initWelcome } = useChat();
-  const { toasts, showToast, dismissToast } = useToast();
+  const { settings } = useSettings();
+  const { toasts, showToast: _showToast, dismissToast } = useToast();
+  // Gate toast calls through enableToasts setting
+  const showToast = useCallback<typeof _showToast>(
+    (type, text, duration) => {
+      if (!settings.enableToasts) return () => {};
+      return _showToast(type, text, duration);
+    },
+    [_showToast, settings.enableToasts]
+  );
   const { history: dlHistory, push: pushDlHistory } = useDownloadHistory();
   const [dragOver, setDragOver] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  // Always start with 'chat' for SSR/hydration stability;
+  // switch to the saved landing page after mount to avoid hydration mismatch.
+  const [currentPage, setCurrentPage] = useState<'home' | 'chat' | 'settings'>('chat');
+  const didApplyLandingPage = useRef(false);
   const dragCountRef = useRef(0);
   const hasWelcome = useRef(false);
   const composerRef = useRef<ComposerHandle>(null);
@@ -39,20 +54,33 @@ export default function Page() {
   useEffect(() => {
     if (!hasWelcome.current) {
       hasWelcome.current = true;
+      // Clear chat on refresh if configured
+      if (settings.clearOnRefresh) clear();
       initWelcome();
     }
-  }, [initWelcome]);
+    // Apply saved landing page once after first mount (avoids SSR hydration mismatch)
+    if (!didApplyLandingPage.current) {
+      didApplyLandingPage.current = true;
+      if (settings.defaultLandingPage !== 'chat') {
+        setCurrentPage(settings.defaultLandingPage);
+      }
+    }
+  }, [initWelcome, clear, settings.clearOnRefresh, settings.defaultLandingPage]);
 
   // Re-focus the composer whenever the AI finishes responding (isTyping goes false)
   const prevIsTyping = useRef(false);
   useEffect(() => {
     if (prevIsTyping.current && !state.isTyping) {
-      // Small tick so the DOM fully settles before focusing
-      const id = setTimeout(() => composerRef.current?.focus(), 80);
-      return () => clearTimeout(id);
+      // Play chime if enabled
+      if (settings.enableSound) playResponseChime();
+      // Auto-focus if enabled
+      if (settings.autoFocusInput) {
+        const id = setTimeout(() => composerRef.current?.focus(), 80);
+        return () => clearTimeout(id);
+      }
     }
     prevIsTyping.current = state.isTyping;
-  }, [state.isTyping]);
+  }, [state.isTyping, settings.autoFocusInput, settings.enableSound]);
 
   useEffect(() => {
     const enter = (e: DragEvent) => { e.preventDefault(); dragCountRef.current++; setDragOver(true); };
@@ -115,7 +143,13 @@ export default function Page() {
     handleDownload({ doc_id: s.doc_id, filename: s.title, file_url: s.file_url });
   }, [state.lastSources, handleDownload]);
 
-  const handleClear = useCallback(() => { clear(); setTimeout(() => initWelcome(), 0); }, [clear, initWelcome]);
+  const handleClear = useCallback(() => {
+    if (settings.confirmBeforeClear) {
+      if (!window.confirm('Clear the conversation? This cannot be undone.')) return;
+    }
+    clear();
+    setTimeout(() => initWelcome(), 0);
+  }, [clear, initWelcome, settings.confirmBeforeClear]);
 
   const hasUserMessages = state.messages.some(m => m.role === 'user');
   const hasResponded = state.messages.filter(m => m.role === 'assistant').length > 1;
@@ -146,9 +180,23 @@ export default function Page() {
             onDownloadLast={handleDownloadLast}
             lastSources={state.lastSources}
             onDownload={handleDownload}
+            activePage={currentPage}
+            onNavigate={(page) => {
+              if (page === 'home' || page === 'chat' || page === 'settings')
+                setCurrentPage(page as 'home' | 'chat' | 'settings');
+            }}
+            onToggleSidebar={() => setSidebarOpen(o => !o)}
+            sidebarOpen={sidebarOpen}
           />
 
+          {/* ── Home Dashboard ── */}
+          {currentPage === 'home' && <HomeDashboard />}
+
+          {/* ── Settings Page ── */}
+          {currentPage === 'settings' && <SettingsPage />}
+
           {/* ── Chat Workspace ── */}
+          {currentPage === 'chat' && (
           <section className="chat-workspace">
             <ChatThread
               messages={state.messages}
@@ -159,11 +207,12 @@ export default function Page() {
               searchQuery={searchQuery}
               conversationTitle={conversationTitle}
             />
-            <SuggestionChips visible={!hasUserMessages} onSelect={(text: string) => send(text)} />
             <Composer ref={composerRef} onSend={send} disabled={state.isTyping} />
           </section>
+          )}
 
           {/* ── Right Panel: Context & Sources + Contextual Actions ── */}
+          {currentPage === 'chat' && (
           <aside className="right-panel-aside">
             <RightPanelContextSources
               meta={state.lastMeta}
@@ -172,8 +221,10 @@ export default function Page() {
               onDownload={handleDownload}
               messages={state.messages}
               onShowToast={showToast}
+              onFillPrompt={(text) => composerRef.current?.setValue(text)}
             />
           </aside>
+          )}
         </div>
       </div>
     </>

@@ -6,6 +6,7 @@ import { mdLite } from '@/lib/utils';
 import SourceChips from '@/components/SourceChips';
 import DeliveryTracking from '@/components/DeliveryTracking';
 import AppointmentCard from '@/components/AppointmentCard';
+import { useSettings } from '@/lib/settingsContext';
 
 const APP_NAME = 'Linde Gas AI';
 const USER_NAME = 'John Doe';
@@ -51,7 +52,17 @@ export default function MessageBubble({ message, onDownload, onEmailFirstSource,
   const isUser = message.role === 'user';
   const bodyHtml = useMemo(() => mdLite(message.text), [message.text]);
   const [copied, setCopied] = useState(false);
+  const { settings } = useSettings();
   const delay = Math.min(index * 0.03, 0.18);
+
+  // Response format gating
+  const hasStructured = !isUser && (
+    (message.responseType === 'delivery_status' && !!message.deliveryData) ||
+    (message.responseType === 'appointment' && !!message.appointmentData)
+  );
+  const showNatural    = settings.responseFormat !== 'structured' || !hasStructured;
+  const showStructured = settings.responseFormat !== 'natural';
+
   // User initials from USER_NAME
   const initials = USER_NAME.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
 
@@ -98,10 +109,12 @@ export default function MessageBubble({ message, onDownload, onEmailFirstSource,
           {message.isError && (
             <span className="chat-error-badge">Error</span>
           )}
-          <div
-            className="chat-bubble-body"
-            dangerouslySetInnerHTML={{ __html: bodyHtml }}
-          />
+          {showNatural && (
+            <div
+              className="chat-bubble-body"
+              dangerouslySetInnerHTML={{ __html: bodyHtml }}
+            />
+          )}
           {!isUser && (
             <SourceChips
               sources={message.sources}
@@ -109,10 +122,10 @@ export default function MessageBubble({ message, onDownload, onEmailFirstSource,
               onDownload={onDownload}
             />
           )}
-          {!isUser && message.responseType === 'delivery_status' && message.deliveryData && (
+          {showStructured && !isUser && message.responseType === 'delivery_status' && message.deliveryData && (
             <DeliveryTracking data={message.deliveryData} />
           )}
-          {!isUser && message.responseType === 'appointment' && message.appointmentData && (
+          {showStructured && !isUser && message.responseType === 'appointment' && message.appointmentData && (
             <AppointmentCard data={message.appointmentData} />
           )}
 

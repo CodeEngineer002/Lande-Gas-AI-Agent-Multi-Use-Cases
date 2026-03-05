@@ -1,18 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
 import type { DeliveryData } from '@/lib/types';
-
-/* ── ISO date formatter ──────────────────────────────────────────────
- * Converts "2026-11-03" or "2026-11-03T00:00:00Z" → "03 Nov 2026"
- * Returns the raw string unchanged if it's not a recognised ISO date.
- */
-function formatDate(iso?: string | null): string {
-  if (!iso) return '';
-  // Already a plain text date or unparseable — return as-is
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-}
+import { useDateFormatter } from '@/lib/settingsContext';
 
 /* ── Status resolution ────────────────────────────────────────────── */
 const STATUS_MAP: Record<string, { progress: number; step: number; color: string; glow: string; label: string }> = {
@@ -124,6 +113,7 @@ interface DeliveryTrackingProps {
 }
 
 export default function DeliveryTracking({ data }: DeliveryTrackingProps) {
+  const formatDate = useDateFormatter();
   const cfg      = resolveStatus(data.current_status);
   const isMoving = cfg.step === 3 || cfg.step === 4;
   const isProb   = cfg.step === 0

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { ThemeProvider } from '@/components/ThemeProvider';
+import { SettingsProvider } from '@/lib/settingsContext';
 
 export const metadata: Metadata = {
   title: 'Linde Gas AI Agent',
@@ -19,8 +19,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body style={{ margin: 0, padding: 0, fontFamily: 'Inter, sans-serif' }}>
-        <ThemeProvider>{children}</ThemeProvider>
+      <body style={{ margin: 0, padding: 0, fontFamily: 'var(--font-family, Inter, sans-serif)' }}>
+        <SettingsProvider>{children}</SettingsProvider>
       </body>
     </html>
   );

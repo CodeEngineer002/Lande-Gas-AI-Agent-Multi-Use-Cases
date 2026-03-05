@@ -2,6 +2,7 @@
 import { useRef, useCallback, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useChatInputHistory } from '@/hooks/useChatInputHistory';
+import { useSettings } from '@/lib/settingsContext';
 
 interface ComposerProps {
   onSend: (text: string) => void;
@@ -10,6 +11,7 @@ interface ComposerProps {
 
 export interface ComposerHandle {
   focus: () => void;
+  setValue: (text: string) => void;
 }
 
 function SendIcon() {
@@ -44,10 +46,11 @@ const Composer = forwardRef<ComposerHandle, ComposerProps>(function Composer(
 ) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const chatHistory = useChatInputHistory();
+  const { settings } = useSettings();
   const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([]);
   const [charCount, setCharCount] = useState(0);
 
-  // Expose focus() to parent via ref
+  // Expose focus() and setValue() to parent via ref
   useImperativeHandle(ref, () => ({
     focus: () => {
       const el = textareaRef.current;
@@ -60,16 +63,29 @@ const Composer = forwardRef<ComposerHandle, ComposerProps>(function Composer(
       if (isInputFocused && active !== el) return;
       el.focus({ preventScroll: true });
     },
+    setValue: (text: string) => {
+      const el = textareaRef.current;
+      if (!el) return;
+      el.value = text;
+      setCharCount(text.length);
+      // Inline auto-resize (autoSize const defined below)
+      el.style.height = 'auto';
+      el.style.height = Math.min(el.scrollHeight, 160) + 'px';
+      el.focus({ preventScroll: true });
+      // Place cursor at end
+      requestAnimationFrame(() => el.setSelectionRange(text.length, text.length));
+    },
   }), []);
 
-  // Auto-focus on mount — desktop only (skip mobile to avoid keyboard layout shift)
+  // Auto-focus on mount — desktop only, gated by autoFocusInput setting
   useEffect(() => {
+    if (!settings.autoFocusInput) return;
     const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)
       || window.innerWidth < 768;
     if (!isMobile) {
       textareaRef.current?.focus({ preventScroll: true });
     }
-  }, []);
+  }, [settings.autoFocusInput]);
 
   const autoSize = () => {
     const el = textareaRef.current;

@@ -13,6 +13,11 @@ interface LeftSidebarEnterpriseProps {
   onDownloadLast: () => void;
   lastSources: Source[];
   onDownload: (payload: DownloadPayload) => void;
+  /** e.g. 'home' | 'chat' */
+  activePage?: string;
+  onNavigate?: (page: string) => void;
+  onToggleSidebar?: () => void;
+  sidebarOpen?: boolean;
 }
 
 /* ─── Icon Helpers ─────────────────────────────────────────── */
@@ -127,11 +132,25 @@ function formatDateTime(timeStr: string) {
 }
 
 const NAV_ITEMS = [
-  { icon: <HomeIcon />, label: 'Home', active: false },
-  { icon: <ChatIcon />, label: 'Chat', active: true },
-  { icon: <DocsIcon />, label: 'Documents', active: false },
-  { icon: <SettingsIcon />, label: 'Settings', active: false },
-] as const;
+  { icon: <HomeIcon />,     label: 'Home',      page: 'home'      },
+  { icon: <ChatIcon />,     label: 'Chat',      page: 'chat'      },
+  { icon: <DocsIcon />,     label: 'Documents', page: 'documents' },
+  { icon: <SettingsIcon />, label: 'Settings',  page: 'settings'  },
+];
+
+function CollapseIcon({ open }: { open: boolean }) {
+  return open ? (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+      <rect x="3" y="3" width="18" height="18" rx="2"/>
+      <line x1="9" y1="3" x2="9" y2="21"/>
+    </svg>
+  ) : (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+      <rect x="3" y="3" width="18" height="18" rx="2"/>
+      <line x1="15" y1="3" x2="15" y2="21"/>
+    </svg>
+  );
+}
 
 export default function LeftSidebarEnterprise({
   open = true,
@@ -139,6 +158,10 @@ export default function LeftSidebarEnterprise({
   onClearChat,
   onDownloadLast,
   lastSources,
+  activePage = 'chat',
+  onNavigate,
+  onToggleSidebar,
+  sidebarOpen = true,
 }: LeftSidebarEnterpriseProps) {
   const canDownload = lastSources.length > 0;
 
@@ -146,17 +169,33 @@ export default function LeftSidebarEnterprise({
     <div className="sidebar-enterprise-wrap">
       {/* ── Icon Rail (thin left strip) ── */}
       <nav className="icon-rail">
-        {NAV_ITEMS.map(({ icon, label, active }) => (
+        {NAV_ITEMS.map(({ icon, label, page }) => (
           <motion.button
             key={label}
-            className={`rail-btn${active ? ' active' : ''}`}
+            className={`rail-btn${activePage === page ? ' active' : ''}`}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             title={label}
+            onClick={() => onNavigate?.(page)}
+            aria-label={label}
+            aria-pressed={activePage === page}
           >
             {icon}
           </motion.button>
         ))}
+
+        {/* ── Sidebar toggle pinned to bottom ── */}
+        <motion.button
+          className="rail-btn rail-btn-toggle"
+          style={{ marginTop: 'auto' }}
+          onClick={onToggleSidebar}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          title={sidebarOpen ? 'Collapse panel' : 'Expand panel'}
+          aria-label={sidebarOpen ? 'Collapse sidebar panel' : 'Expand sidebar panel'}
+        >
+          <CollapseIcon open={sidebarOpen} />
+        </motion.button>
       </nav>
 
       {/* ── Main Sidebar Panel ── */}
