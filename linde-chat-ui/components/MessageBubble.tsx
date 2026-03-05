@@ -6,6 +6,7 @@ import { mdLite } from '@/lib/utils';
 import SourceChips from '@/components/SourceChips';
 import DeliveryTracking from '@/components/DeliveryTracking';
 import AppointmentCard from '@/components/AppointmentCard';
+import AppointmentClarificationCard from '@/components/AppointmentClarificationCard';
 import { useSettings } from '@/lib/settingsContext';
 
 const APP_NAME = 'Linde Gas AI';
@@ -58,7 +59,7 @@ export default function MessageBubble({ message, onDownload, onEmailFirstSource,
   // Response format gating
   const hasStructured = !isUser && (
     (message.responseType === 'delivery_status' && !!message.deliveryData) ||
-    (message.responseType === 'appointment' && !!message.appointmentData)
+    (message.responseType === 'appointment' && (!!message.appointmentData || !!message.appointmentClarificationData))
   );
   const showNatural    = settings.responseFormat !== 'structured' || !hasStructured;
   const showStructured = settings.responseFormat !== 'natural';
@@ -125,7 +126,13 @@ export default function MessageBubble({ message, onDownload, onEmailFirstSource,
           {showStructured && !isUser && message.responseType === 'delivery_status' && message.deliveryData && (
             <DeliveryTracking data={message.deliveryData} />
           )}
-          {showStructured && !isUser && message.responseType === 'appointment' && message.appointmentData && (
+          {showStructured && !isUser && message.responseType === 'appointment' && message.appointmentClarificationData && (
+            <AppointmentClarificationCard
+              data={message.appointmentClarificationData}
+              onSend={onSend ?? (() => {})}
+            />
+          )}
+          {showStructured && !isUser && message.responseType === 'appointment' && message.appointmentData && message.appointmentData.startDateTime && (
             <AppointmentCard data={message.appointmentData} />
           )}
 

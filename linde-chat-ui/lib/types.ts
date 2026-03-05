@@ -24,6 +24,7 @@ export interface Source {
 export interface ResponseMeta {
   confidence: number | null;   // 0.0‒1.0 float, null if unavailable
   sources_used: number;
+  intents?: string[];          // populated for multi-intent responses
 }
 
 /** Strict JSON response contract */
@@ -31,6 +32,8 @@ export interface AgentResponse {
   response_message: string;
   sources: Source[];
   meta?: ResponseMeta;
+  /** Optional UI hints (e.g. clarification mode) — safely ignored if not present */
+  ui?: UiHint;
 }
 
 export interface DeliveryData {
@@ -66,6 +69,24 @@ export interface AppointmentData {
   title: string;
 }
 
+/** Returned by n8n when appointment fields are missing — triggers form card */
+export interface AppointmentClarificationData {
+  missing_fields: string[]; // e.g. ['email','date','time']
+  prefill: {
+    subject?: string;
+    duration_min?: number;
+    platform?: string;
+    [key: string]: unknown;
+  };
+}
+
+/** Optional UI hint returned alongside clarification responses */
+export interface UiHint {
+  mode: 'clarification' | string;
+  missing_fields?: string[];
+  prefill?: Record<string, unknown>;
+}
+
 export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant';
@@ -76,6 +97,8 @@ export interface ChatMessage {
   responseType?: IntentType;
   deliveryData?: DeliveryData | null;
   appointmentData?: AppointmentData | null;
+  /** Populated when n8n returns clarification mode (missing fields) */
+  appointmentClarificationData?: AppointmentClarificationData | null;
 }
 
 export interface DownloadHistoryEntry {

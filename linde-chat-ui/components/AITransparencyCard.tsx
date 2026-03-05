@@ -152,6 +152,32 @@ export default function AITransparencyCard({ meta, hasResponded }: Props) {
             <div style={{ display: 'flex', gap: 8 }}>
               <StatPill label="Sources Used" value={meta.sources_used} />
             </div>
+
+            {/* Intents (multi-intent responses only) */}
+            {meta.intents && meta.intents.length > 1 && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <span style={{ fontSize: 11, color: 'var(--muted)', fontWeight: 500 }}>Detected Intents</span>
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  {meta.intents.map(intent => (
+                    <span
+                      key={intent}
+                      style={{
+                        fontSize: 11,
+                        padding: '2px 9px',
+                        borderRadius: 99,
+                        background: 'rgba(0,111,191,0.1)',
+                        color: 'var(--brand-2)',
+                        border: '1px solid rgba(0,111,191,0.2)',
+                        fontWeight: 600,
+                        textTransform: 'capitalize',
+                      }}
+                    >
+                      {intent}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

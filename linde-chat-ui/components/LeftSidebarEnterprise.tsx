@@ -205,7 +205,7 @@ export default function LeftSidebarEnterprise({
             key="sidebar-panel"
             className="sidebar-panel"
             initial={{ width: 0, opacity: 0 }}
-            animate={{ width: 307, opacity: 1 }}
+            animate={{ width: 400, opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
             transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
           >

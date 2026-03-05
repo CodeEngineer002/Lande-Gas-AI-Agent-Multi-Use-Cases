@@ -1,7 +1,7 @@
 'use client';
 import { useCallback, useReducer, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import type { ChatMessage, Source, IntentType, ResponseMeta } from '@/lib/types';
+import type { ChatMessage, Source, IntentType, ResponseMeta, AppointmentClarificationData } from '@/lib/types';
 import {
   isGreeting,
   extractDeliveryData,
@@ -114,8 +114,9 @@ export function useChat() {
         response_message?: string;
         message?: string;
         sources?: Source[];
-        meta?: { confidence?: number | null; sources_used?: number };
+        meta?: { confidence?: number | null; sources_used?: number; intents?: string[] };
         delivery_data?: import('@/lib/types').DeliveryData;
+        ui?: { mode?: string; missing_fields?: string[]; prefill?: Record<string, unknown> };
       };
 
       const answer = data.response_message || data.message || CHAT_ERROR;
@@ -126,6 +127,7 @@ export function useChat() {
       const responseMeta: ResponseMeta = {
         confidence: typeof metaRaw?.confidence === 'number' ? metaRaw.confidence : null,
         sources_used: typeof metaRaw?.sources_used === 'number' ? metaRaw.sources_used : rawSources.length,
+        ...(Array.isArray(metaRaw?.intents) ? { intents: metaRaw.intents.map(String) } : {}),
       };
       dispatch({ type: 'SET_LAST_META', payload: responseMeta });
 
@@ -197,8 +199,39 @@ export function useChat() {
         rawDelivery && (rawDelivery.current_status || rawDelivery.order_id)
           ? rawDelivery
           : null;
+      // Appointment: clarification mode vs real booking confirmation
+      const isClarification =
+        responseType === 'appointment' &&
+        (data.ui?.mode === 'clarification' ||
+          // fallback: if no startDateTime extractable, treat as clarification
+          (data.ui == null && (() => {
+            const extracted = extractAppointmentData(answer, sources);
+            return !extracted.startDateTime;
+          })()));
+
+      const appointmentClarificationData: AppointmentClarificationData | null =
+        isClarification
+          ? {
+              missing_fields: Array.isArray(data.ui?.missing_fields)
+                ? data.ui!.missing_fields!
+                : ['email', 'date', 'time'],
+              prefill: {
+                subject: '',
+                duration_min: 30,
+                platform: 'Google Meet',
+                ...(data.ui?.prefill ?? {}),
+              },
+            }
+          : null;
+
       const appointmentData =
-        responseType === 'appointment' ? extractAppointmentData(answer, sources) : null;
+        responseType === 'appointment' && !isClarification
+          ? extractAppointmentData(answer, sources)
+          : null;
+
+      // Suppress the confirmed-booking card if there's no real start datetime
+      const confirmedAppointment =
+        appointmentData?.startDateTime ? appointmentData : null;
 
       dispatch({
         type: 'ADD_ASSISTANT',
@@ -210,7 +243,8 @@ export function useChat() {
           timestamp: new Date(),
           responseType,
           deliveryData,
-          appointmentData,
+          appointmentData: confirmedAppointment,
+          appointmentClarificationData,
         },
       });
     } catch (err) {
