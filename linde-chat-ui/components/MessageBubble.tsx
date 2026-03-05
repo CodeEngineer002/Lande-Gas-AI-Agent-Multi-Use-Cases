@@ -9,7 +9,7 @@ import AppointmentCard from '@/components/AppointmentCard';
 import AppointmentClarificationCard from '@/components/AppointmentClarificationCard';
 import { useSettings } from '@/lib/settingsContext';
 
-const APP_NAME = 'Linde Gas AI';
+const APP_NAME = 'Linde Gas AI Assistant';
 const USER_NAME = 'John Doe';
 
 export interface MessageBubbleProps {
@@ -83,16 +83,16 @@ export default function MessageBubble({ message, onDownload, onEmailFirstSource,
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1], delay }}
       >
         {/* Role label */}
-        <div className="chat-role-label">
+        {/* <div className="chat-role-label">
           {isUser ? 'User' : 'Bot'}
-        </div>
+        </div> */}
 
         {/* AI meta row: avatar + name + time */}
         {!isUser && (
           <div className="chat-ai-meta">
             <div className="chat-linde-av">L</div>
             <span className="chat-ai-name">{APP_NAME}</span>
-            <span className="chat-ai-time">{ts(message.timestamp)}</span>
+            {/* <span className="chat-ai-time">{ts(message.timestamp)}</span> */}
           </div>
         )}
 
@@ -100,7 +100,7 @@ export default function MessageBubble({ message, onDownload, onEmailFirstSource,
         {isUser && (
           <div className="chat-user-meta">
             <span className="chat-user-name">{USER_NAME}</span>
-            <span className="chat-ai-time">{ts(message.timestamp)}</span>
+            {/* <span className="chat-ai-time">{ts(message.timestamp)}</span> */}
             <div className="chat-user-av">{initials}</div>
           </div>
         )}

@@ -211,7 +211,7 @@ const Composer = forwardRef<ComposerHandle, ComposerProps>(function Composer(
         </div>
 
         {/* Keyboard hint */}
-        <div style={{ paddingLeft: 14, paddingBottom: 7, paddingRight: 14, fontSize: 11, color: 'var(--muted)', opacity: 0.6, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 4 }}>
+        <div style={{ paddingLeft: 14, paddingBottom: 7, paddingRight: 14, fontSize: 11, opacity: 0.8, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 4 }}>
           <span>
             <kbd style={{ fontFamily: 'inherit', background: 'rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 4, padding: '1px 5px', fontSize: 10 }}>Enter</kbd>{' '}send
             {' · '}

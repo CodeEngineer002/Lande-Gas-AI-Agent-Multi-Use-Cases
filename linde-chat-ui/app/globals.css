@@ -2514,8 +2514,8 @@ button:focus:not(:focus-visible) { outline: none; }
 }
 
 .doc-history-icon {
-  width: 26px; height: 26px;
-  border-radius: 7px;
+  width: 32px; height: 32px;
+  border-radius: 8px;
   display: grid;
   place-items: center;
   background: rgba(0,111,191,0.08);
@@ -4239,7 +4239,7 @@ button:focus:not(:focus-visible) { outline: none; }
 
 /* ── 6. CHAT AREA — WHITE CONTENT like linde.com ── */
 [data-linde-branding="true"] .chat-workspace {
-  background: #ffffff !important;
+  background: #f5f6fa !important;
   border-radius: 12px 12px 0 0;
   box-shadow: 0 0 0 1px #e2e8f0;
 }
@@ -4563,6 +4563,181 @@ button:focus:not(:focus-visible) { outline: none; }
   border-color: #e2e8f0 !important;
   color: #002d54;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+/* ── 14a. APPOINTMENT CONFIRMATION CARD (Meeting Confirmed) ── */
+[data-linde-branding="true"] .ac-root {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.07) !important;
+}
+[data-linde-branding="true"] .ac-accent-bar {
+  background: linear-gradient(90deg, #002d54, #0091dc, #002d54) !important;
+}
+[data-linde-branding="true"] .ac-title {
+  color: #002d54 !important;
+}
+[data-linde-branding="true"] .ac-subtitle {
+  color: #5a6f82 !important;
+}
+[data-linde-branding="true"] .ac-separator {
+  background: linear-gradient(90deg, transparent, #e2e8f0, transparent) !important;
+}
+[data-linde-branding="true"] .ac-meeting-title {
+  color: #002d54 !important;
+}
+[data-linde-branding="true"] .ac-info-row {
+  background: #f5f6fa !important;
+  border-color: #e2e8f0 !important;
+}
+[data-linde-branding="true"] .ac-info-icon {
+  background: rgba(0,145,220,0.1) !important;
+  color: #0091dc !important;
+}
+[data-linde-branding="true"] .ac-info-label {
+  color: #8d9baa !important;
+}
+[data-linde-branding="true"] .ac-info-value {
+  color: #002d54 !important;
+}
+[data-linde-branding="true"] .ac-day-header {
+  background: linear-gradient(135deg, #002d54, #003865) !important;
+  color: #ffffff !important;
+}
+[data-linde-branding="true"] .ac-day-body {
+  background: #f5f6fa !important;
+}
+[data-linde-branding="true"] .ac-day-num {
+  color: #002d54 !important;
+}
+[data-linde-branding="true"] .ac-day-month {
+  color: #5a6f82 !important;
+}
+[data-linde-branding="true"] .ac-action-btn {
+  background: rgba(0,45,84,0.04) !important;
+  color: #5a6f82 !important;
+  border-color: #e2e8f0 !important;
+}
+[data-linde-branding="true"] .ac-action-btn:hover {
+  background: rgba(0,145,220,0.08) !important;
+  color: #0091dc !important;
+  border-color: #0091dc !important;
+}
+[data-linde-branding="true"] .ac-footer {
+  border-top-color: #e2e8f0 !important;
+  color: #8d9baa !important;
+}
+
+/* ── 14a-ii. APPOINTMENT CLARIFICATION CARD (Book a Sales Call form) ── */
+[data-linde-branding="true"] .acc-root {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.07) !important;
+}
+[data-linde-branding="true"] .acc-accent-bar {
+  background: linear-gradient(90deg, #002d54, #0091dc, #002d54) !important;
+}
+[data-linde-branding="true"] .acc-header {
+  border-bottom-color: #e2e8f0 !important;
+}
+[data-linde-branding="true"] .acc-header-icon {
+  background: rgba(0,145,220,0.1) !important;
+  border-color: rgba(0,145,220,0.25) !important;
+  color: #0091dc !important;
+}
+[data-linde-branding="true"] .acc-title {
+  color: #002d54 !important;
+}
+[data-linde-branding="true"] .acc-subtitle {
+  color: #5a6f82 !important;
+}
+[data-linde-branding="true"] .acc-required-badge {
+  background: rgba(220,38,38,0.08) !important;
+  border-color: rgba(220,38,38,0.2) !important;
+  color: #dc2626 !important;
+}
+[data-linde-branding="true"] .acc-field-label {
+  color: #5a6f82 !important;
+}
+[data-linde-branding="true"] .acc-root input[type="email"],
+[data-linde-branding="true"] .acc-root input[type="date"],
+[data-linde-branding="true"] .acc-root input[type="time"],
+[data-linde-branding="true"] .acc-root input[type="text"] {
+  background: #f5f6fa !important;
+  border-color: #e2e8f0 !important;
+  color: #002d54 !important;
+  color-scheme: light !important;
+}
+[data-linde-branding="true"] .acc-root input:focus {
+  border-color: #0091dc !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(0,145,220,0.12) !important;
+}
+[data-linde-branding="true"] .acc-root input::placeholder {
+  color: #8d9baa !important;
+}
+[data-linde-branding="true"] .acc-duration-pill {
+  background: #f5f6fa !important;
+  border-color: #e2e8f0 !important;
+  color: #5a6f82 !important;
+}
+[data-linde-branding="true"] .acc-duration-active {
+  background: rgba(0,145,220,0.1) !important;
+  border-color: #0091dc !important;
+  color: #0091dc !important;
+  box-shadow: none !important;
+}
+[data-linde-branding="true"] .acc-submit-btn {
+  background: linear-gradient(135deg, #002d54 0%, #003865 100%) !important;
+  color: #ffffff !important;
+}
+[data-linde-branding="true"] .acc-submit-btn:disabled {
+  background: #f0f2f5 !important;
+  color: #8d9baa !important;
+}
+[data-linde-branding="true"] .acc-footer {
+  color: #8d9baa !important;
+}
+
+/* ── 14b. DELIVERY CARD — white on off-white chat area ── */
+[data-linde-branding="true"] .delivery-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
+  backdrop-filter: none !important;
+}
+[data-linde-branding="true"] .dc-header-left {
+  color: #002d54 !important;
+}
+[data-linde-branding="true"] .dc-order-chip {
+  color: #002d54 !important;
+  background: rgba(0,45,84,0.08) !important;
+  border-color: rgba(0,45,84,0.18) !important;
+}
+[data-linde-branding="true"] .dc-detail-banner {
+  background: #f5f6fa !important;
+  border-color: #e2e8f0 !important;
+  color: #5a6f82 !important;
+}
+[data-linde-branding="true"] .dc-track {
+  background: #e2e8f0 !important;
+}
+[data-linde-branding="true"] .dc-step-label {
+  color: #5a6f82 !important;
+}
+[data-linde-branding="true"] .dc-info-tile {
+  background: #f5f6fa !important;
+  border-color: #e2e8f0 !important;
+}
+[data-linde-branding="true"] .dc-info-icon {
+  color: #5a6f82 !important;
+  opacity: 1 !important;
+}
+[data-linde-branding="true"] .dc-info-label {
+  color: #8d9baa !important;
+}
+[data-linde-branding="true"] .dc-info-value {
+  color: #002d54 !important;
 }
 
 /* ── 15. TOOLTIP / POPOVER ── */

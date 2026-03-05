@@ -185,9 +185,9 @@ export default function TopBar({
           >
             <div className="topbar-user-info">
               <span className="topbar-username">{USER_NAME}</span>
-              <span className="topbar-userstatus">
+              {/* <span className="topbar-userstatus">
                 <span className="status-dot" /> Online
-              </span>
+              </span> */}
             </div>
             <div className="topbar-avatar">{USER_INITIALS}</div>
           </button>

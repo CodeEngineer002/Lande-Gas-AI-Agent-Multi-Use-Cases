@@ -190,7 +190,7 @@ export default function ChatThread({
       <div className="chat-title-bar">
         <div className="chat-title-left">
           <span className="chat-title-text">
-            {conversationTitle || 'New Conversation'}
+            {'Chat with Linde Gas AI Agent' /*conversationTitle || 'New Conversation'*/}
           </span>
           {searchQuery && (
             <span className="chat-title-search-badge">

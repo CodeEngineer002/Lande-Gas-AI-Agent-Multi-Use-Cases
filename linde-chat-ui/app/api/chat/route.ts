@@ -33,6 +33,10 @@ export async function POST(req: NextRequest) {
     requestBody.email = email.trim();
   }
 
+  if (IS_DEV) {
+    console.log('[Linde Chat API] Outbound →', JSON.stringify(requestBody));
+  }
+
   let n8nResponse: Response;
   try {
       n8nResponse = await fetch(`${N8N_WEBHOOK_URL}${WEBHOOK_PATH}`, {
@@ -163,6 +167,14 @@ export async function POST(req: NextRequest) {
     },
     ...(delivery_data ? { delivery_data } : {}),
   };
+
+  if (IS_DEV) {
+    console.log('[Linde Chat API] Inbound ←', JSON.stringify({
+      response_message: sanitized.response_message,
+      has_delivery_data: !!delivery_data,
+      delivery_order_id: delivery_data?.order_id ?? null,
+    }));
+  }
 
   return NextResponse.json(sanitized, { status: 200 });
 }

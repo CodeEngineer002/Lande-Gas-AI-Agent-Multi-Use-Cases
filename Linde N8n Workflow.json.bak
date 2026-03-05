@@ -7,12 +7,12 @@
         "width": 1086.039382705461,
         "color": 7
       },
-      "id": "7a1abb96-ba73-41b1-8fff-9a6f1417dc02",
+      "id": "89173d09-84f5-4393-90c5-d6dcd70831f0",
       "name": "Sticky Note",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -944,
-        -4880
+        -2048,
+        -464
       ],
       "typeVersion": 1
     },
@@ -23,12 +23,12 @@
         "width": 1690,
         "color": 7
       },
-      "id": "f53439c7-1355-48b5-9bd5-6505b9394bd4",
+      "id": "0f417e8f-d461-4475-912a-7bd537659278",
       "name": "Sticky Note1",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -448,
-        -3104
+        -1552,
+        1312
       ],
       "typeVersion": 1
     },
@@ -39,12 +39,12 @@
         "width": 179.58883583572606,
         "color": 7
       },
-      "id": "b193d615-417b-403e-8046-602df533b169",
+      "id": "4b2d9683-f345-4d51-a939-3451395d00db",
       "name": "Sticky Note4",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -912,
-        -4784
+        -2016,
+        -368
       ],
       "typeVersion": 1
     },
@@ -59,12 +59,12 @@
         },
         "options": {}
       },
-      "id": "930e3c81-676c-4662-839a-86d1411f4101",
+      "id": "ed9ea282-b844-4156-85ae-a2b802baac10",
       "name": "Pinecone Vector Store",
       "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
       "position": [
-        -208,
-        -4704
+        -1312,
+        -288
       ],
       "typeVersion": 1,
       "credentials": {
@@ -88,12 +88,12 @@
         },
         "options": {}
       },
-      "id": "1d8e3f1c-0473-490c-8325-60a630a6e787",
+      "id": "064f9626-bc9a-48ee-9006-c6dd6f7e0eb7",
       "name": "Set file URL in Google Drive",
       "type": "n8n-nodes-base.set",
       "position": [
-        -880,
-        -4384
+        -1984,
+        32
       ],
       "typeVersion": 3.4
     },
@@ -107,12 +107,12 @@
         },
         "options": {}
       },
-      "id": "5278938f-b16e-4db7-b063-87a5856b7e62",
+      "id": "d0be3509-43d8-4d47-9508-ad71cb2cb747",
       "name": "Download file",
       "type": "n8n-nodes-base.googleDrive",
       "position": [
-        -416,
-        -4704
+        -1520,
+        -288
       ],
       "typeVersion": 3,
       "credentials": {
@@ -141,12 +141,12 @@
           }
         }
       },
-      "id": "feda4f8c-3687-4333-8a7b-7cb021396622",
+      "id": "fd62c889-0aae-49cf-9164-a4537e480beb",
       "name": "Default Data Loader",
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "position": [
-        -112,
-        -4464
+        -1216,
+        -48
       ],
       "typeVersion": 1
     },
@@ -156,12 +156,12 @@
         "chunkOverlap": 200,
         "options": {}
       },
-      "id": "1ef9c1c1-4f41-4bcc-bba4-cc13887e9457",
+      "id": "3fbfde83-5ddd-42a7-9627-e83b2ed7cb0f",
       "name": "Recursive Character Text Splitter",
       "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
       "position": [
-        -32,
-        -4304
+        -1136,
+        112
       ],
       "typeVersion": 1
     },
@@ -180,12 +180,12 @@
         "includeOtherFields": true,
         "options": {}
       },
-      "id": "503f83b2-e11e-437c-a168-750134ca2c61",
+      "id": "ccd19bb8-74c0-4f19-8498-a5280ee226fc",
       "name": "Set max chunks to send to model",
       "type": "n8n-nodes-base.set",
       "position": [
-        -304,
-        -2976
+        -1408,
+        1440
       ],
       "typeVersion": 3.4
     },
@@ -202,12 +202,12 @@
         "topK": "={{ $json.chunks }}",
         "options": {}
       },
-      "id": "98c5c06f-ee6b-4331-99ef-33dedec6c7d8",
+      "id": "bf4978c0-deaf-4c5f-91c6-5975f077fa30",
       "name": "Get top chunks matching query",
       "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
       "position": [
-        -80,
-        -2976
+        -1184,
+        1440
       ],
       "typeVersion": 1,
       "credentials": {
@@ -221,12 +221,12 @@
       "parameters": {
         "jsCode": "let out = \"\"\nfor (const i in $input.all()) {\n  let itemText = \"--- CHUNK \" + i + \" ---\\n\"\n  itemText += $input.all()[i].json.document.pageContent + \"\\n\"\n  itemText += \"\\n\"\n  out += itemText\n}\n\nreturn {\n  'context': out\n};"
       },
-      "id": "80cfd3a3-bfbd-41b3-bfda-5ac9cde2e961",
+      "id": "f732ee86-2994-45cc-bca9-6a7dab620340",
       "name": "Prepare chunks",
       "type": "n8n-nodes-base.code",
       "position": [
-        224,
-        -2976
+        -880,
+        1440
       ],
       "typeVersion": 2
     },
@@ -236,15 +236,15 @@
         "schemaType": "manual",
         "inputSchema": "{\n  \"type\": \"object\",\n  \"required\": [\"answer\", \"citations\"],\n  \"properties\": {\n    \"answer\": {\n      \"type\": \"string\"\n    },\n    \"citations\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"number\"\n      }\n    }\n  }\n}",
         "options": {
-          "systemPromptTemplate": "=Role & Purpose\nYou are the Linde Gas AI Assistant. Your primary function is to help users find, understand, and extract information strictly from the provided Product Data Sheets (PDS) and Safety Data Sheets (SDS). Treat the provided passages as your entire knowledge base. Never use outside knowledge.\n\nCore Behavior & Tone\n\nPrimary Tone: Helpful, professional, and conversational. Be a friendly and knowledgeable expert.\n\nInteraction Style: Respond in an interactive and natural way. Mirror the user's language (English or neutral Hinglish) while maintaining technical clarity.\n\nGrounding Rule: Answer only from the provided context. Do not guess, hallucinate, or use pre-trained knowledge. Preserve all data (numbers, units, names) exactly as written.\n\nInteraction Guidelines\n1. Greeting & Initial Interaction\nWhen a conversation starts, greet the user in a warm, interactive way to build a natural rapport. Your opening should be brief and set clear expectations.\n\nExample Greeting:\n\"Hello! I'm your Linde Gas Assistant, here to help you get instant answers from our Product and Safety Data Sheets. Just let me know what you're looking for – like a product name, UN number, or a specific property – and I'll find the verified details for you.\"\n\n2. Responding to \"Can you help me?\" or Similar Queries\nIf a user asks about your capabilities, respond interactively to explain what you can do, encouraging them to proceed.\n\nExample Response:\n\"Absolutely, I'm here to help! I can search through Linde's Data Sheets to provide you with precise information on things like safety hazards, transport details, physical properties, and more. What specific product or information do you need help with today?\"\n\n3. Providing Data & Answering Specific Queries\nFor all factual queries, provide the answer in a clear, humanly interactive way. Start with a direct, conversational answer before listing the precise data.\n\nStructure your answers as:\n\nAcknowledge & Conclude: Start with a brief, conversational sentence that answers the question.\n\nPresent Data: Follow with the key data in crisp bullets or a short table.\n\nEmphasize Safety: If the data includes critical warnings, surface them clearly.\n\nCite Source: Always end with the source.\n\nExample for a specific query (UN Number):\n\nUser: \"What's the UN number for Oxygen?\"\n\nYour Response:\n\"Of course. For Oxygen, compressed, the UN number is 1072.\"\n\nUN Number: 1072\n\nProper Shipping Name: Oxygen, compressed\nSource: Product_Data_Sheet_O2_10021701EN.pdf\n\n4. Handling Missing Information or Refusals\nIf the requested information is not in the provided context, be transparent and helpful.\n\nExample Response:\n\"I've looked through the data sheets, but I couldn't find the specific details you're asking for. To help me search again, could you provide the product name, grade, or point me to a specific section (e.g., 'Transport Section')?\"\n\n5. Final Guardrails\n\nDo NOT state or imply anything not present in the provided passages.\n\nDo NOT provide medical advice or emergency procedures beyond what is written. Politely decline and redirect to the PDS/SDS content.\n\nDo NOT merge data from different products unless the document explicitly does so.\n\nAlways cite your source at the end of every answer: Source: <filename>"
+          "systemPromptTemplate": "=Role & Purpose\nYou are the Linde Gas AI Assistant. Your primary function is to help users find, understand, and extract information strictly from the provided Product Data Sheets (PDS) and Safety Data Sheets (SDS). Treat the provided passages as your entire knowledge base. Never use outside knowledge.\n\nCore Behavior & Tone\n\nPrimary Tone: Helpful, professional, and conversational. Be a friendly and knowledgeable expert.\n\nInteraction Style: Respond in an interactive and natural way. Mirror the user's language (English or neutral Hinglish) while maintaining technical clarity.\n\nGrounding Rule: Answer only from the provided context. Do not guess, hallucinate, or use pre-trained knowledge. Preserve all data (numbers, units, names) exactly as written.\n\nInteraction Guidelines\n1. Greeting & Initial Interaction\nWhen a conversation starts, greet the user in a warm, interactive way to build a natural rapport. Your opening should be brief and set clear expectations.\n\nExample Greeting:\n\"Hello! I'm your Linde Gas Assistant, here to help you get instant answers from our Product and Safety Data Sheets. Just let me know what you're looking for \u2013 like a product name, UN number, or a specific property \u2013 and I'll find the verified details for you.\"\n\n2. Responding to \"Can you help me?\" or Similar Queries\nIf a user asks about your capabilities, respond interactively to explain what you can do, encouraging them to proceed.\n\nExample Response:\n\"Absolutely, I'm here to help! I can search through Linde's Data Sheets to provide you with precise information on things like safety hazards, transport details, physical properties, and more. What specific product or information do you need help with today?\"\n\n3. Providing Data & Answering Specific Queries\nFor all factual queries, provide the answer in a clear, humanly interactive way. Start with a direct, conversational answer before listing the precise data.\n\nStructure your answers as:\n\nAcknowledge & Conclude: Start with a brief, conversational sentence that answers the question.\n\nPresent Data: Follow with the key data in crisp bullets or a short table.\n\nEmphasize Safety: If the data includes critical warnings, surface them clearly.\n\nCite Source: Always end with the source.\n\nExample for a specific query (UN Number):\n\nUser: \"What's the UN number for Oxygen?\"\n\nYour Response:\n\"Of course. For Oxygen, compressed, the UN number is 1072.\"\n\nUN Number: 1072\n\nProper Shipping Name: Oxygen, compressed\nSource: Product_Data_Sheet_O2_10021701EN.pdf\n\n4. Handling Missing Information or Refusals\nIf the requested information is not in the provided context, be transparent and helpful.\n\nExample Response:\n\"I've looked through the data sheets, but I couldn't find the specific details you're asking for. To help me search again, could you provide the product name, grade, or point me to a specific section (e.g., 'Transport Section')?\"\n\n5. Final Guardrails\n\nDo NOT state or imply anything not present in the provided passages.\n\nDo NOT provide medical advice or emergency procedures beyond what is written. Politely decline and redirect to the PDS/SDS content.\n\nDo NOT merge data from different products unless the document explicitly does so.\n\nAlways cite your source at the end of every answer: Source: <filename>"
         }
       },
-      "id": "9ad6dce2-e9e0-4866-ad04-d4dd8ae9623d",
+      "id": "c5f75393-13f7-4bd0-a540-f42a45dbcab8",
       "name": "Answer the query based on chunks",
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "position": [
-        448,
-        -2976
+        -656,
+        1440
       ],
       "typeVersion": 1
     },
@@ -262,12 +262,12 @@
         },
         "options": {}
       },
-      "id": "47c8bbd0-91ab-4e72-bff2-65e62f3156fc",
+      "id": "3968e208-b617-49f8-b5fa-f3b566bd3c44",
       "name": "Compose citations",
       "type": "n8n-nodes-base.set",
       "position": [
-        832,
-        -2976
+        -272,
+        1440
       ],
       "typeVersion": 3.4
     },
@@ -285,12 +285,12 @@
         },
         "options": {}
       },
-      "id": "913b6df8-cca6-4f24-ac02-7c5b2fe05a61",
+      "id": "87fa3ec5-9ea0-45a2-8032-37440b858916",
       "name": "Generate response",
       "type": "n8n-nodes-base.set",
       "position": [
-        1040,
-        -2976
+        -64,
+        1440
       ],
       "typeVersion": 3.4
     },
@@ -302,10 +302,10 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -224,
-        -4464
+        -1328,
+        -48
       ],
-      "id": "932becda-99b6-401c-8998-6fc314cba006",
+      "id": "034256d0-28d2-426e-9a9c-e06307394722",
       "name": "Embeddings Azure OpenAI",
       "credentials": {
         "azureOpenAiApi": {
@@ -322,10 +322,10 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -64,
-        -2800
+        -1168,
+        1616
       ],
-      "id": "e3854870-360d-44f5-8eff-8bfed331de11",
+      "id": "28ce3377-9e3a-45f4-b3a5-3d45ab04061d",
       "name": "Embeddings Azure OpenAI1",
       "credentials": {
         "azureOpenAiApi": {
@@ -342,10 +342,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        464,
-        -2800
+        -640,
+        1616
       ],
-      "id": "e1ff4add-380a-47f8-9a50-4ee0db298a18",
+      "id": "ecbe9be4-7e36-4cb8-a17f-dbacadf34f09",
       "name": "Azure OpenAI Chat Model",
       "credentials": {
         "azureOpenAiApi": {
@@ -361,12 +361,12 @@
         "responseMode": "responseNode",
         "options": {}
       },
-      "id": "43d9d21c-63df-4ecc-bf5e-21ba074e317e",
+      "id": "564cf3f4-27cc-442d-9717-b28a8384b168",
       "name": "On GET request1",
       "type": "n8n-nodes-base.webhook",
       "position": [
-        -2560,
-        -3056
+        -3664,
+        1360
       ],
       "webhookId": "454eb4ea-e460-4196-b31c-284abf234fc3",
       "typeVersion": 1
@@ -374,17 +374,17 @@
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "={{\n  JSON.stringify(\n    (() => {\n      // 1) Answer text from your LLM step\n      const answer = $('Generate response').first().json.text;\n\n      const intentType = $('downstream node').first().json?.intent || 'datasheet';\n\n      // 2) Take the *first* matched chunk (it already has the correct metadata)\n      const meta = $('Get top chunks matching query')\n        .first()\n        .json?.document?.metadata ?? {};\n\n      // 3) Build doc_id and fallback-safe fields\n      const fileName = meta.file_name || '';\n      const docId = fileName.replace(/\\.(pdf|txt|docx?)$/i, '') || meta.doc_id || '';\n\n      // Resolve download URL — try every metadata field Google Drive may store\n      const fileUrl =\n        meta.file_url ||\n        meta.source?.file_url ||\n        meta.webContentLink ||\n        meta.webViewLink ||\n        (meta.file_id ? `https://drive.google.com/uc?id=${meta.file_id}&export=download` : '') ||\n        (meta.id      ? `https://drive.google.com/uc?id=${meta.id}&export=download`      : '') ||\n        '';\n\n      // Do not return a source chip if LLM said it couldn't find the data\n      const NOT_FOUND_PHRASES = [\"couldn't find\",\"could not find\",\"not found\",\"no information\",\"i don't have\",\"unable to find\",\"not present in\",\"not available in\",\"doesn't contain\",\"does not contain\",\"cannot find\",\"not in the provided\",\"not mentioned\",\"not specified\"];\n      const lowerAns = answer.toLowerCase();\n      const dataNotFound = NOT_FOUND_PHRASES.some(p => lowerAns.includes(p));\n\n      return {\n        response_message: answer,\n        sources: dataNotFound ? [] : [{\n          doc_id: docId,\n          title: fileName || meta.title || docId,\n          file_url: fileUrl,\n          type: intentType\n        }],\n        meta: {\n          confidence: $('downstream node').first().json?.confidence ?? null\n        }\n      };\n    })()\n  )\n}}\n",
+        "responseBody": "={{\n  JSON.stringify(\n    (() => {\n      // 1) Answer text from your LLM step\n      const answer = $('Generate response').first().json.text;\n\n      const intentType = $('downstream node').first().json?.intent || 'datasheet';\n\n      // 2) Take the *first* matched chunk (it already has the correct metadata)\n      const meta = $('Get top chunks matching query')\n        .first()\n        .json?.document?.metadata ?? {};\n\n      // 3) Build doc_id and fallback-safe fields\n      const fileName = meta.file_name || '';\n      const docId = fileName.replace(/\\.(pdf|txt|docx?)$/i, '') || meta.doc_id || '';\n\n      // Resolve download URL \u2014 try every metadata field Google Drive may store\n      const fileUrl =\n        meta.file_url ||\n        meta.source?.file_url ||\n        meta.webContentLink ||\n        meta.webViewLink ||\n        (meta.file_id ? `https://drive.google.com/uc?id=${meta.file_id}&export=download` : '') ||\n        (meta.id      ? `https://drive.google.com/uc?id=${meta.id}&export=download`      : '') ||\n        '';\n\n      // Do not return a source chip if LLM said it couldn't find the data\n      const NOT_FOUND_PHRASES = [\"couldn't find\",\"could not find\",\"not found\",\"no information\",\"i don't have\",\"unable to find\",\"not present in\",\"not available in\",\"doesn't contain\",\"does not contain\",\"cannot find\",\"not in the provided\",\"not mentioned\",\"not specified\"];\n      const lowerAns = answer.toLowerCase();\n      const dataNotFound = NOT_FOUND_PHRASES.some(p => lowerAns.includes(p));\n\n      return {\n        response_message: answer,\n        sources: dataNotFound ? [] : [{\n          doc_id: docId,\n          title: fileName || meta.title || docId,\n          file_url: fileUrl,\n          type: intentType\n        }],\n        meta: {\n          confidence: $('downstream node').first().json?.confidence ?? null\n        }\n      };\n    })()\n  )\n}}\n",
         "options": {
           "responseCode": 200
         }
       },
-      "id": "7bb323be-6fee-4963-95b7-6378b7e1df7e",
+      "id": "9e0609de-5d99-4c89-91a3-1ff57006e9d1",
       "name": "Respond with attachment1",
       "type": "n8n-nodes-base.respondToWebhook",
       "position": [
-        1296,
-        -2976
+        192,
+        1440
       ],
       "typeVersion": 1
     },
@@ -395,12 +395,12 @@
         "responseMode": "responseNode",
         "options": {}
       },
-      "id": "baa4c1f3-137f-47ba-8b2e-e8b561c7b908",
+      "id": "47a879df-f7d3-4157-be5c-5e6e38bbfe79",
       "name": "Download Document API",
       "type": "n8n-nodes-base.webhook",
       "position": [
-        -2112,
-        -4704
+        -3216,
+        -288
       ],
       "webhookId": "454eb4ea-e460-4196-b31c-284abf234fc3",
       "typeVersion": 1
@@ -419,11 +419,11 @@
       "name": "Google Drive For Stored PDF",
       "type": "n8n-nodes-base.googleDrive",
       "position": [
-        -1872,
-        -4704
+        -2976,
+        -288
       ],
       "typeVersion": 1,
-      "id": "d671cbdb-8fc5-4685-8606-4ae8855f0ad3",
+      "id": "59b6e2f8-e811-4fef-9609-72a0edf6d61a",
       "credentials": {
         "googleDriveOAuth2Api": {
           "id": "W43GDm2segtxgxAV",
@@ -458,12 +458,12 @@
           }
         }
       },
-      "id": "c5e46f5f-c2be-41e8-99df-c20fc6a957e1",
+      "id": "16db00f9-58d6-4d09-b6b0-1c96948573a4",
       "name": "Respond with attachment PDF",
       "type": "n8n-nodes-base.respondToWebhook",
       "position": [
-        -1552,
-        -4704
+        -2656,
+        -288
       ],
       "typeVersion": 1
     },
@@ -485,10 +485,10 @@
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.2,
       "position": [
-        -1072,
-        -4704
+        -2176,
+        -288
       ],
-      "id": "3d1abeaa-bb18-4841-9dae-b54c1f473d71",
+      "id": "e8138f06-cbe9-464c-ac33-64eeb6010bd7",
       "name": "Upload Product Data Sheet",
       "webhookId": "44364e76-8140-4c53-b4d8-04ede91fd93c",
       "disabled": true
@@ -511,12 +511,12 @@
         },
         "options": {}
       },
-      "id": "3c6f6bcf-541c-4b35-8b36-3f21562b2e14",
+      "id": "76e34268-1d46-4044-b52f-f6e92e03733e",
       "name": "Upload File",
       "type": "n8n-nodes-base.googleDrive",
       "position": [
-        -608,
-        -4704
+        -1712,
+        -288
       ],
       "typeVersion": 3,
       "credentials": {
@@ -537,10 +537,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -2432,
-        -2848
+        -3536,
+        1568
       ],
-      "id": "167920ca-2cd7-4b2f-95a9-ebf4b001b9ef",
+      "id": "27806552-5122-4c24-89a5-d9574ca6fd71",
       "name": "Azure OpenAI Chat Model2",
       "credentials": {
         "azureOpenAiApi": {
@@ -556,10 +556,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -2064,
-        -3056
+        -3168,
+        1360
       ],
-      "id": "761327cb-a94f-494b-91a6-7ae126cd8456",
+      "id": "8e2048cf-a7ac-434e-9abe-98c4622d900a",
       "name": "downstream node"
     },
     {
@@ -747,10 +747,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -880,
-        -2960
+        -1984,
+        1456
       ],
-      "id": "d61aa130-631d-4d99-9062-9ad8118e1f52",
+      "id": "065516e3-c5ac-4257-9eb7-9059b90a66ae",
       "name": "Switch"
     },
     {
@@ -778,12 +778,12 @@
         },
         "options": {}
       },
-      "id": "5f68d776-9fe8-41b1-8d38-901384af9d0e",
+      "id": "50b3b78b-c56b-4a88-a997-112a9c346b77",
       "name": "Confidence Gate",
       "type": "n8n-nodes-base.if",
       "position": [
-        -1872,
-        -3056
+        -2976,
+        1360
       ],
       "typeVersion": 2.2
     },
@@ -795,12 +795,12 @@
           "responseCode": 200
         }
       },
-      "id": "d1c42c5f-ef36-4a06-bdf7-66a5032a3106",
+      "id": "bf5b7af7-2270-4112-ad7a-b8e039842f12",
       "name": "Respond Clarification",
       "type": "n8n-nodes-base.respondToWebhook",
       "position": [
-        -1280,
-        -2704
+        -2384,
+        1712
       ],
       "typeVersion": 1.2
     },
@@ -809,16 +809,16 @@
         "promptType": "define",
         "text": "={{ $json.body.message }}",
         "options": {
-          "systemMessage": "You are an INTENT ROUTER for an industrial gases assistant (Linde Gas).\nALWAYS return STRICT JSON that matches the schema below. No prose.\n\nIntents and when to use them:\n\n- datasheet:  \n  User asks for a product/technical data sheet OR info about a gas (e.g., H2, N2, O2, CO2, Argon…), purity, composition, hazards, handling, storage, MSDS/TDS, “send/download sheet”, etc.  \n  Map “msds”, “tds”, “spec sheet”, “product sheet”, “safety sheet”, “data sheet” ⇒ datasheet.  \n  Detect gas names/symbols: hydrogen/H2, nitrogen/N2, oxygen/O2, argon/Ar, CO2, helium/He, etc.\n\n- quotation:  \n  User asks for a price/quote for a gas/cylinder/mixture, or to place an order.  \n  Extract quantity, purity, location, email/phone if present.\n\n- appointment:  \n  User wants to schedule or send an invite for a meeting, call, demo, training, or site visit.  \n  Trigger this intent if the message includes any phrase about **scheduling, booking, arranging, fixing, or inviting** for a meeting/call/demo/visit.  \n  Common trigger patterns include:  \n  “schedule a meeting”, “set up a call”, “book an appointment”, “fix a demo”, “arrange a site visit”, “send an invite”, “send meeting invite”, “add to calendar”, “block my calendar”, “organize a meeting”, “invite for discussion”, etc.  \n  Hinglish equivalents: “meeting schedule karo”, “call fix kar do”, “appointment book karo”, “invite bhej do”, “calendar me daal do”, “site visit plan karo”, “demo schedule karo”, “meeting ka invite bhejo”.  \n  Always prefer `appointment` when user asks to **create**, **schedule**, or **send an invite** (not when asking to cancel or move).  \n\n  Extract entities if present:  \n  - `preferred_date`: any date text (e.g. “10 Dec 2025”, “tomorrow”, “next Monday”).  \n  - `preferred_time`: any time text (e.g. “2 pm”, “14:00”, “morning”, “after lunch”).  \n  - `duration_min`: numeric duration in minutes (parse phrases like “30 mins”, “1 hour” → 60).  \n  - `email`: attendee email(s) if user provides any.  \n  - `location`: meeting venue or platform (“Google Meet”, “Zoom”, “Teams”, “on site”).  \n  - `notes`: any agenda or contextual message (e.g. “discussion about CO2 supply”).  \n  If nothing found, leave fields empty.\n\n- delivery_update:  \n  User asks delivery/shipment/status/ETA/tracking for an existing order.  \n  Extract order_no or account_no if present.\n\n- greeting:  \n  Simple greetings or pleasantries (e.g., “hi”, “hello”, “hey”, “good morning/afternoon/evening”, “how are you”, “who are you”).  \n  If message only greets → choose `greeting` (NOT unknown).\n\n- smalltalk:  \n  Casual talk not task-related (e.g., “what’s up”, “thank you”, “ok”, emoji-only responses).\n\nExtraction rules:\n- Be conservative: if it’s *only* a greeting → `greeting`.  \n- Numbers like \"99.999%\", \"5.0\" or \"UHP\" ⇒ purity.  \n- **MULTI-INTENT DETECTION**: If the user CLEARLY asks for TWO or more distinct things in a single message, populate `intents` with ALL detected intents (max 3). Example: \"Provide the data sheet for O2 and also a quotation\" → intents: [\"datasheet\",\"quotation\"]. The `intent` field must still contain the PRIMARY intent for backward compatibility.  \n- If only ONE intent is requested → `intents` contains just that one intent.  \n- For appointment intent, detect variants of \"schedule\", \"meeting\", \"invite\", \"call\", \"demo\", \"visit\", \"training\".  \n- Multi-intent combos to detect: datasheet+quotation, datasheet+availability, quotation+availability, datasheet+delivery_update.\n\nOutput JSON schema (MUST MATCH KEYS exactly):\n\n{\n  \"intent\": \"datasheet\" | \"quotation\" | \"appointment\" | \"delivery_update\" | \"greeting\" | \"smalltalk\" | \"availability\",\n  \"intents\": [\"datasheet\", \"quotation\"],  // ALL detected intents — array of 1-3 strings\n  \"entities\": {\n    \"gas\": string,           // e.g. \"N2\", \"Oxygen\", empty \"\" if not found\n    \"sheet_id\": string,      // e.g. \"Sheet_N2\" or file name if obvious\n    \"purity\": string,        // e.g. \"99.999%\", \"5.0\", \"UHP\"\n    \"quantity\": string,      // e.g. \"2 cylinders\", \"50 m3/month\"\n    \"location\": string,      // e.g. \"Berlin\", \"Google Meet\", or \"\"\n    \"email\": string,         // e.g. \"abc@domain.com\"\n    \"phone\": string,\n    \"account_no\": string,\n    \"order_no\": string,\n    \"preferred_date\": string,// \"2025-12-10\" or free text if unstructured\n    \"preferred_time\": string,// \"14:00\", \"2 pm\", etc.\n    \"duration_min\": number,  // integer minutes or 0\n    \"notes\": string          // agenda or extra info\n  },\n  \"confidence\": number       // 0..1 (>=0.6 when reasonably sure)\n}\n"
+          "systemMessage": "You are an INTENT ROUTER for an industrial gases assistant (Linde Gas).\nALWAYS return STRICT JSON that matches the schema below. No prose.\n\nIntents and when to use them:\n\n- datasheet:  \n  User asks for a product/technical data sheet OR info about a gas (e.g., H2, N2, O2, CO2, Argon\u2026), purity, composition, hazards, handling, storage, MSDS/TDS, \u201csend/download sheet\u201d, etc.  \n  Map \u201cmsds\u201d, \u201ctds\u201d, \u201cspec sheet\u201d, \u201cproduct sheet\u201d, \u201csafety sheet\u201d, \u201cdata sheet\u201d \u21d2 datasheet.  \n  Detect gas names/symbols: hydrogen/H2, nitrogen/N2, oxygen/O2, argon/Ar, CO2, helium/He, etc.\n\n- quotation:  \n  User asks for a price/quote for a gas/cylinder/mixture, or to place an order.  \n  Extract quantity, purity, location, email/phone if present.\n\n- appointment:  \n  User wants to schedule or send an invite for a meeting, call, demo, training, or site visit.  \n  Trigger this intent if the message includes any phrase about **scheduling, booking, arranging, fixing, or inviting** for a meeting/call/demo/visit.  \n  Common trigger patterns include:  \n  \u201cschedule a meeting\u201d, \u201cset up a call\u201d, \u201cbook an appointment\u201d, \u201cfix a demo\u201d, \u201carrange a site visit\u201d, \u201csend an invite\u201d, \u201csend meeting invite\u201d, \u201cadd to calendar\u201d, \u201cblock my calendar\u201d, \u201corganize a meeting\u201d, \u201cinvite for discussion\u201d, etc.  \n  Hinglish equivalents: \u201cmeeting schedule karo\u201d, \u201ccall fix kar do\u201d, \u201cappointment book karo\u201d, \u201cinvite bhej do\u201d, \u201ccalendar me daal do\u201d, \u201csite visit plan karo\u201d, \u201cdemo schedule karo\u201d, \u201cmeeting ka invite bhejo\u201d.  \n  Always prefer `appointment` when user asks to **create**, **schedule**, or **send an invite** (not when asking to cancel or move).  \n\n  Extract entities if present:  \n  - `preferred_date`: any date text (e.g. \u201c10 Dec 2025\u201d, \u201ctomorrow\u201d, \u201cnext Monday\u201d).  \n  - `preferred_time`: any time text (e.g. \u201c2 pm\u201d, \u201c14:00\u201d, \u201cmorning\u201d, \u201cafter lunch\u201d).  \n  - `duration_min`: numeric duration in minutes (parse phrases like \u201c30 mins\u201d, \u201c1 hour\u201d \u2192 60).  \n  - `email`: attendee email(s) if user provides any.  \n  - `location`: meeting venue or platform (\u201cGoogle Meet\u201d, \u201cZoom\u201d, \u201cTeams\u201d, \u201con site\u201d).  \n  - `notes`: any agenda or contextual message (e.g. \u201cdiscussion about CO2 supply\u201d).  \n  If nothing found, leave fields empty.\n\n- delivery_update:  \n  User asks delivery/shipment/status/ETA/tracking for an existing order.  \n  Extract order_no or account_no if present.\n\n- greeting:  \n  Simple greetings or pleasantries (e.g., \u201chi\u201d, \u201chello\u201d, \u201chey\u201d, \u201cgood morning/afternoon/evening\u201d, \u201chow are you\u201d, \u201cwho are you\u201d).  \n  If message only greets \u2192 choose `greeting` (NOT unknown).\n\n- smalltalk:  \n  Casual talk not task-related (e.g., \u201cwhat\u2019s up\u201d, \u201cthank you\u201d, \u201cok\u201d, emoji-only responses).\n\nExtraction rules:\n- Be conservative: if it\u2019s *only* a greeting \u2192 `greeting`.  \n- Numbers like \"99.999%\", \"5.0\" or \"UHP\" \u21d2 purity.  \n- **MULTI-INTENT DETECTION**: If the user CLEARLY asks for TWO or more distinct things in a single message, populate `intents` with ALL detected intents (max 3). Example: \"Provide the data sheet for O2 and also a quotation\" \u2192 intents: [\"datasheet\",\"quotation\"]. The `intent` field must still contain the PRIMARY intent for backward compatibility.  \n- If only ONE intent is requested \u2192 `intents` contains just that one intent.  \n- For appointment intent, detect variants of \"schedule\", \"meeting\", \"invite\", \"call\", \"demo\", \"visit\", \"training\".  \n- Multi-intent combos to detect: datasheet+quotation, datasheet+availability, quotation+availability, datasheet+delivery_update.\n\nOutput JSON schema (MUST MATCH KEYS exactly):\n\n{\n  \"intent\": \"datasheet\" | \"quotation\" | \"appointment\" | \"delivery_update\" | \"greeting\" | \"smalltalk\" | \"availability\",\n  \"intents\": [\"datasheet\", \"quotation\"],  // ALL detected intents \u2014 array of 1-3 strings\n  \"entities\": {\n    \"gas\": string,           // e.g. \"N2\", \"Oxygen\", empty \"\" if not found\n    \"sheet_id\": string,      // e.g. \"Sheet_N2\" or file name if obvious\n    \"purity\": string,        // e.g. \"99.999%\", \"5.0\", \"UHP\"\n    \"quantity\": string,      // e.g. \"2 cylinders\", \"50 m3/month\"\n    \"location\": string,      // e.g. \"Berlin\", \"Google Meet\", or \"\"\n    \"email\": string,         // e.g. \"abc@domain.com\"\n    \"phone\": string,\n    \"account_no\": string,\n    \"order_no\": string,\n    \"preferred_date\": string,// \"2025-12-10\" or free text if unstructured\n    \"preferred_time\": string,// \"14:00\", \"2 pm\", etc.\n    \"duration_min\": number,  // integer minutes or 0\n    \"notes\": string          // agenda or extra info\n  },\n  \"confidence\": number       // 0..1 (>=0.6 when reasonably sure)\n}\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        -2368,
-        -3056
+        -3472,
+        1360
       ],
-      "id": "7a299138-b5af-4a3e-b217-967966e67a05",
+      "id": "00c697ad-0d47-411c-a45e-a7db70995785",
       "name": "Intent Agent"
     },
     {
@@ -826,11 +826,11 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        432,
-        -4704
+        -672,
+        -288
       ],
-      "id": "9d1cc11b-62d7-4a00-864c-076ccb068f92",
-      "name": "When clicking ‘Test workflow’"
+      "id": "eb8c6fcf-0825-4c12-87da-de0c41b4a3b4",
+      "name": "When clicking \u2018Test workflow\u2019"
     },
     {
       "parameters": {
@@ -842,12 +842,12 @@
         },
         "options": {}
       },
-      "id": "02e6357a-cd78-413b-8695-429bc0a9fab6",
+      "id": "55c3d5ee-8283-4538-a4f0-0d8045cb1c61",
       "name": "Download file2",
       "type": "n8n-nodes-base.googleDrive",
       "position": [
-        -672,
-        -4384
+        -1776,
+        32
       ],
       "typeVersion": 3,
       "credentials": {
@@ -862,16 +862,16 @@
         "promptType": "define",
         "text": "={{ $('On GET request1').item.json.body.message }}",
         "options": {
-          "systemMessage": "You are a polite, professional, and helpful AI agent for Linde Gas industrial gases assistant.\n\nYour job is to handle *greetings, small talk, and generic user interactions* — such as:\n\"Hi\", \"Hello\", \"Good morning\", \"Who are you?\", \"How are you?\", \"Thanks\", \"Nice to meet you\", etc.\n\nYou should:\n- Always greet the user warmly.\n- Mention your name (Linde Gas AI Agent) briefly.\n- Offer what you can help with — e.g., technical datasheets, quotations, appointments, or delivery updates.\n- Keep replies short, friendly, and contextual.\n\n❌ Avoid:\n- Any long or generic chatbot answers.\n- Making up technical data or product details (those are handled by other agents).\n\n✅ Example responses:\n- \"Hello! 👋 I'm the Linde Gas AI Agent. I can help you with product datasheets, quotations, appointments, or delivery updates. What would you like to do today?\"\n- \"Hi there! I'm here to assist you with any gas-related queries or documentation.\"\n- \"Good morning! How can I help you today — would you like a datasheet or delivery update?\"\n\nYour output **must be strict JSON**, in this format:\n\n{\n  \"response_message\": \"<your polite greeting or intro>\",\n  \"sources\": [{\n    \"doc_id\": \"\",\n    \"title\": \"\",\n    \"file_url\": \"\"\n  }]\n}\n"
+          "systemMessage": "You are a polite, professional, and helpful AI agent for Linde Gas industrial gases assistant.\n\nYour job is to handle *greetings, small talk, and generic user interactions* \u2014 such as:\n\"Hi\", \"Hello\", \"Good morning\", \"Who are you?\", \"How are you?\", \"Thanks\", \"Nice to meet you\", etc.\n\nYou should:\n- Always greet the user warmly.\n- Mention your name (Linde Gas AI Agent) briefly.\n- Offer what you can help with \u2014 e.g., technical datasheets, quotations, appointments, or delivery updates.\n- Keep replies short, friendly, and contextual.\n\n\u274c Avoid:\n- Any long or generic chatbot answers.\n- Making up technical data or product details (those are handled by other agents).\n\n\u2705 Example responses:\n- \"Hello! \ud83d\udc4b I'm the Linde Gas AI Agent. I can help you with product datasheets, quotations, appointments, or delivery updates. What would you like to do today?\"\n- \"Hi there! I'm here to assist you with any gas-related queries or documentation.\"\n- \"Good morning! How can I help you today \u2014 would you like a datasheet or delivery update?\"\n\nYour output **must be strict JSON**, in this format:\n\n{\n  \"response_message\": \"<your polite greeting or intro>\",\n  \"sources\": [{\n    \"doc_id\": \"\",\n    \"title\": \"\",\n    \"file_url\": \"\"\n  }]\n}\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        -384,
-        -720
+        -1488,
+        3696
       ],
-      "id": "5ee3b653-6e4c-4f76-9799-5099eed382d5",
+      "id": "c03576df-5630-4330-8880-4b245e6b6de9",
       "name": "Greeting Agent"
     },
     {
@@ -884,10 +884,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -368,
-        -512
+        -1472,
+        3904
       ],
-      "id": "3d6edf93-ebd7-4fa2-9b2c-bd5abd2991f2",
+      "id": "d17f1ce6-0f9a-490b-9cc2-b2a372f7d1dd",
       "name": "Azure OpenAI Chat Model3",
       "credentials": {
         "azureOpenAiApi": {
@@ -899,16 +899,16 @@
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "={{\n  JSON.stringify(\n    (() => {\n      // 1) Greeting Agent ka raw output uthao\n      //    (Tools Agent aksar { output: \"...\" } deta hai)\n      const g = $('Greeting Agent').first().json || {};\n      const raw = g.output ?? g.text ?? g.message ?? g; // string ya object\n\n // Check if Intent Agent se type mil sakta hai\n      const intentData = $('Intent Agent').first().json || {};\n      const intentType = intentData.type || 'greeting';\n\n      // 2) Agar JSON string/object me hi contract mil gaya ho to sanitize karke return\n      try {\n        const maybe =\n          typeof raw === 'string' ? JSON.parse(raw) :\n          (typeof raw === 'object' ? raw : null);\n\n        if (maybe && (maybe.response_message || maybe.sources)) {\n          const src = Array.isArray(maybe.sources) ? maybe.sources : [];\n          return {\n            response_message: String(maybe.response_message || ''),\n            sources: src.map(s => ({\n              doc_id: s?.doc_id || '',\n              title:  s?.title  || '',\n              file_url: s?.file_url || '',\n               type: intentType\n            }))\n          };\n        }\n      } catch (_) { /* ignore parse errors; fallback below */ }\n\n      // 3) Fallback: plain greeting text -> same contract, empty sources\n      return {\n        response_message: String(\n          typeof raw === 'string' && raw ? raw : 'Hello! 👋'\n        ),\n        sources: []\n      };\n    })()\n  )\n}}\n",
+        "responseBody": "={{\n  JSON.stringify(\n    (() => {\n      // 1) Greeting Agent ka raw output uthao\n      //    (Tools Agent aksar { output: \"...\" } deta hai)\n      const g = $('Greeting Agent').first().json || {};\n      const raw = g.output ?? g.text ?? g.message ?? g; // string ya object\n\n // Check if Intent Agent se type mil sakta hai\n      const intentData = $('Intent Agent').first().json || {};\n      const intentType = intentData.type || 'greeting';\n\n      // 2) Agar JSON string/object me hi contract mil gaya ho to sanitize karke return\n      try {\n        const maybe =\n          typeof raw === 'string' ? JSON.parse(raw) :\n          (typeof raw === 'object' ? raw : null);\n\n        if (maybe && (maybe.response_message || maybe.sources)) {\n          const src = Array.isArray(maybe.sources) ? maybe.sources : [];\n          return {\n            response_message: String(maybe.response_message || ''),\n            sources: src.map(s => ({\n              doc_id: s?.doc_id || '',\n              title:  s?.title  || '',\n              file_url: s?.file_url || '',\n               type: intentType\n            }))\n          };\n        }\n      } catch (_) { /* ignore parse errors; fallback below */ }\n\n      // 3) Fallback: plain greeting text -> same contract, empty sources\n      return {\n        response_message: String(\n          typeof raw === 'string' && raw ? raw : 'Hello! \ud83d\udc4b'\n        ),\n        sources: []\n      };\n    })()\n  )\n}}\n",
         "options": {}
       },
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.2,
       "position": [
-        -32,
-        -720
+        -1136,
+        3696
       ],
-      "id": "dad67f07-a2e8-4959-961e-8eb647272ac6",
+      "id": "69edabc5-b539-49a6-9692-899374629cd9",
       "name": "Respond to Webhook"
     },
     {
@@ -921,10 +921,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -208,
-        -2288
+        -1312,
+        2128
       ],
-      "id": "451ef8fc-9f0c-4e17-b4c7-17c10d2a762d",
+      "id": "5c537b97-d89e-44f7-8a4b-e39bc6b3026a",
       "name": "Azure OpenAI Chat Model4",
       "credentials": {
         "azureOpenAiApi": {
@@ -938,31 +938,31 @@
         "promptType": "define",
         "text": "={{$('Switch').item.json[\"intent\"]}}",
         "options": {
-          "systemMessage": "You are a polite, precise Quotation Agent for industrial gases (Linde Gas).\n\nPURPOSE\n- Handle quotation requests from existing or new customers.\n- Use retrieved documents (price lists, discount tiers, account pricing, freight zones, lead times, taxes).\n- If an “account_no” is provided, honor account agreements; otherwise use public price lists.\n\nINPUT SIGNALS (may come from upstream intent/entity extractor):\n- gas, grade/purity, quantity, uom, location/zone, account_no, email, phone, preferred_date/time, notes.\n\nPOLICY\n- Compute unit price = base list price (+ grade add-on) – eligible discounts (volume tier + loyalty + account-specific), applying caps if policy states.\n- Add packaging, rental (if cylinder), freight by nearest zone, and mention surcharges/taxes as applicable.\n- Quote validity 30 days unless doc states otherwise.\n- Provide realistic lead time per product/package from the docs.\n- If data is missing, ask ONE crisp follow-up within the answer (“Please confirm quantity and delivery location to finalize.”) but still give an indicative price/lead time range.\n\nTONE & FORMAT\n- Keep the main answer under ~10 lines: a short paragraph + bulleted key figures.\n- No JSON. No markdown headings. Plain text with simple bullets is okay.\n- Always cite the basis in natural language (e.g., “based on Cylinder Price List 2025Q4 and Freight Zone B”).\n\nSAFETY\n- If request is outside supported gases or unusually hazardous, respond with a safe refusal and ask to connect to sales.\n\nOUTPUT (TEXT ONLY; the workflow will wrap it into JSON):\n- A clear mini-quote mentioning: product/grade, unit price, any discount, freight/zone, lead time, validity, and next step.\n"
+          "systemMessage": "You are a polite, precise Quotation Agent for industrial gases (Linde Gas).\n\nPURPOSE\n- Handle quotation requests from existing or new customers.\n- Use retrieved documents (price lists, discount tiers, account pricing, freight zones, lead times, taxes).\n- If an \u201caccount_no\u201d is provided, honor account agreements; otherwise use public price lists.\n\nINPUT SIGNALS (may come from upstream intent/entity extractor):\n- gas, grade/purity, quantity, uom, location/zone, account_no, email, phone, preferred_date/time, notes.\n\nPOLICY\n- Compute unit price = base list price (+ grade add-on) \u2013 eligible discounts (volume tier + loyalty + account-specific), applying caps if policy states.\n- Add packaging, rental (if cylinder), freight by nearest zone, and mention surcharges/taxes as applicable.\n- Quote validity 30 days unless doc states otherwise.\n- Provide realistic lead time per product/package from the docs.\n- If data is missing, ask ONE crisp follow-up within the answer (\u201cPlease confirm quantity and delivery location to finalize.\u201d) but still give an indicative price/lead time range.\n\nTONE & FORMAT\n- Keep the main answer under ~10 lines: a short paragraph + bulleted key figures.\n- No JSON. No markdown headings. Plain text with simple bullets is okay.\n- Always cite the basis in natural language (e.g., \u201cbased on Cylinder Price List 2025Q4 and Freight Zone B\u201d).\n\nSAFETY\n- If request is outside supported gases or unusually hazardous, respond with a safe refusal and ask to connect to sales.\n\nOUTPUT (TEXT ONLY; the workflow will wrap it into JSON):\n- A clear mini-quote mentioning: product/grade, unit price, any discount, freight/zone, lead time, validity, and next step.\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        -128,
-        -2528
+        -1232,
+        1888
       ],
-      "id": "216ac871-77c9-4e7f-ac7a-18945fb803c9",
+      "id": "5eb69c3c-34fb-4af6-a53b-30f3efacc68a",
       "name": "Quotation Agent"
     },
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "={{\n  JSON.stringify(\n    (() => {\n      // LLM answer (Quotation Agent)\n      const answer = $('Generate response1').first().json.text\n        || $('Generate response1').first().json.output\n        || 'Here is your quotation.';\n\n      // First matched RAG doc's metadata (for source chip)\n      const meta = $('Get top chunks matching query1')\n        .first()\n        .json?.document?.metadata ?? {};\n\n      const fileName = meta.file_name || '';\n      const parts = fileName.replace(/\\.pdf$/i, '').split('_');\n      const docId = fileName.replace(/\\.(pdf|txt|docx?)$/i, '') || parts.slice(-2).join('_') || meta.doc_id || '';\n\n      // Resolve download URL — try every metadata field Google Drive may store\n      const fileUrl =\n        meta.file_url ||\n        meta.webContentLink ||\n        meta.webViewLink ||\n        (meta.file_id ? `https://drive.google.com/uc?id=${meta.file_id}&export=download` : '') ||\n        (meta.id      ? `https://drive.google.com/uc?id=${meta.id}&export=download`      : '') ||\n        '';\n\n      const intentType = $('downstream node').first().json?.intent || 'quotation';\n\n      // Do not return a source chip if LLM said it couldn't find the data\n      const NOT_FOUND_PHRASES = [\"couldn't find\",\"could not find\",\"not found\",\"no information\",\"i don't have\",\"unable to find\",\"not present in\",\"not available in\",\"doesn't contain\",\"does not contain\",\"cannot find\",\"not in the provided\",\"not mentioned\",\"not specified\"];\n      const lowerAns = answer.toLowerCase();\n      const dataNotFound = NOT_FOUND_PHRASES.some(p => lowerAns.includes(p));\n\n      return {\n        response_message: answer,\n        sources: dataNotFound ? [] : [{\n          doc_id: docId,\n          title: fileName || meta.title || docId,\n          file_url: fileUrl,\n          type: intentType\n        }],\n        meta: {\n          confidence: $('downstream node').first().json?.confidence ?? null\n        }\n      };\n    })()\n  )\n}}\n",
+        "responseBody": "={{\n  JSON.stringify(\n    (() => {\n      // LLM answer (Quotation Agent)\n      const answer = $('Generate response1').first().json.text\n        || $('Generate response1').first().json.output\n        || 'Here is your quotation.';\n\n      // First matched RAG doc's metadata (for source chip)\n      const meta = $('Get top chunks matching query1')\n        .first()\n        .json?.document?.metadata ?? {};\n\n      const fileName = meta.file_name || '';\n      const parts = fileName.replace(/\\.pdf$/i, '').split('_');\n      const docId = fileName.replace(/\\.(pdf|txt|docx?)$/i, '') || parts.slice(-2).join('_') || meta.doc_id || '';\n\n      // Resolve download URL \u2014 try every metadata field Google Drive may store\n      const fileUrl =\n        meta.file_url ||\n        meta.webContentLink ||\n        meta.webViewLink ||\n        (meta.file_id ? `https://drive.google.com/uc?id=${meta.file_id}&export=download` : '') ||\n        (meta.id      ? `https://drive.google.com/uc?id=${meta.id}&export=download`      : '') ||\n        '';\n\n      const intentType = $('downstream node').first().json?.intent || 'quotation';\n\n      // Do not return a source chip if LLM said it couldn't find the data\n      const NOT_FOUND_PHRASES = [\"couldn't find\",\"could not find\",\"not found\",\"no information\",\"i don't have\",\"unable to find\",\"not present in\",\"not available in\",\"doesn't contain\",\"does not contain\",\"cannot find\",\"not in the provided\",\"not mentioned\",\"not specified\"];\n      const lowerAns = answer.toLowerCase();\n      const dataNotFound = NOT_FOUND_PHRASES.some(p => lowerAns.includes(p));\n\n      return {\n        response_message: answer,\n        sources: dataNotFound ? [] : [{\n          doc_id: docId,\n          title: fileName || meta.title || docId,\n          file_url: fileUrl,\n          type: intentType\n        }],\n        meta: {\n          confidence: $('downstream node').first().json?.confidence ?? null\n        }\n      };\n    })()\n  )\n}}\n",
         "options": {}
       },
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.2,
       "position": [
-        1792,
-        -2528
+        688,
+        1888
       ],
-      "id": "e87374df-22c1-4c92-b0e9-76edf5528eee",
+      "id": "a17608b0-c1e6-4c8d-88f0-00997e5f67f6",
       "name": "Respond to Webhook Quotation"
     },
     {
@@ -980,12 +980,12 @@
         "includeOtherFields": true,
         "options": {}
       },
-      "id": "8ba1ba34-813a-4624-9f05-ba9cd43e854a",
+      "id": "38975f09-de45-4f17-be53-eb70653b97ed",
       "name": "Set max chunks to send to model1",
       "type": "n8n-nodes-base.set",
       "position": [
-        208,
-        -2528
+        -896,
+        1888
       ],
       "typeVersion": 3.4
     },
@@ -1002,12 +1002,12 @@
         "topK": "={{ $json.chunks }}",
         "options": {}
       },
-      "id": "9b410b1b-e2d7-4ec4-aeb1-54a1467dd13d",
+      "id": "ad4f25c4-65a0-4da0-b821-61e35c51dd99",
       "name": "Get top chunks matching query1",
       "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
       "position": [
-        416,
-        -2528
+        -688,
+        1888
       ],
       "typeVersion": 1,
       "credentials": {
@@ -1021,12 +1021,12 @@
       "parameters": {
         "jsCode": "let out = \"\"\nfor (const i in $input.all()) {\n  let itemText = \"--- CHUNK \" + i + \" ---\\n\"\n  itemText += $input.all()[i].json.document.pageContent + \"\\n\"\n  itemText += \"\\n\"\n  out += itemText\n}\n\nreturn {\n  'context': out\n};"
       },
-      "id": "09ca654e-2e6e-4510-9a0e-9e09101befcd",
+      "id": "e935b43d-500e-4717-8ca5-32383581d2c0",
       "name": "Prepare chunks1",
       "type": "n8n-nodes-base.code",
       "position": [
-        800,
-        -2528
+        -304,
+        1888
       ],
       "typeVersion": 2
     },
@@ -1036,15 +1036,15 @@
         "schemaType": "manual",
         "inputSchema": "{\n  \"type\": \"object\",\n  \"required\": [\"answer\", \"citations\"],\n  \"properties\": {\n    \"answer\": {\n      \"type\": \"string\"\n    },\n    \"citations\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"number\"\n      }\n    }\n  }\n}",
         "options": {
-          "systemPromptTemplate": "=You are a polite, precise Quotation Agent for industrial gases (Linde Gas).\n\nPURPOSE\n- Handle quotation requests from existing or new customers.\n- Use retrieved documents (price lists, discount tiers, account pricing, freight zones, lead times, taxes).\n- If an “account_no” is provided, honor account agreements; otherwise use public price lists.\n\nINPUT SIGNALS (may come from upstream intent/entity extractor):\n- gas, grade/purity, quantity, uom, location/zone, account_no, email, phone, preferred_date/time, notes.\n\nPOLICY\n- Compute unit price = base list price (+ grade add-on) – eligible discounts (volume tier + loyalty + account-specific), applying caps if policy states.\n- Add packaging, rental (if cylinder), freight by nearest zone, and mention surcharges/taxes as applicable.\n- Quote validity 30 days unless doc states otherwise.\n- Provide realistic lead time per product/package from the docs.\n- If data is missing, ask ONE crisp follow-up within the answer (“Please confirm quantity and delivery location to finalize.”) but still give an indicative price/lead time range.\n\nTONE & FORMAT\n- Keep the main answer under ~10 lines: a short paragraph + bulleted key figures.\n- No JSON. No markdown headings. Plain text with simple bullets is okay.\n- Always cite the basis in natural language (e.g., “based on Cylinder Price List 2025Q4 and Freight Zone B”).\n\nSAFETY\n- If request is outside supported gases or unusually hazardous, respond with a safe refusal and ask to connect to sales.\n\nOUTPUT (TEXT ONLY; the workflow will wrap it into JSON):\n- A clear mini-quote mentioning: product/grade, unit price, any discount, freight/zone, lead time, validity, and delivery location.\n"
+          "systemPromptTemplate": "=You are a polite, precise Quotation Agent for industrial gases (Linde Gas).\n\nPURPOSE\n- Handle quotation requests from existing or new customers.\n- Use retrieved documents (price lists, discount tiers, account pricing, freight zones, lead times, taxes).\n- If an \u201caccount_no\u201d is provided, honor account agreements; otherwise use public price lists.\n\nINPUT SIGNALS (may come from upstream intent/entity extractor):\n- gas, grade/purity, quantity, uom, location/zone, account_no, email, phone, preferred_date/time, notes.\n\nPOLICY\n- Compute unit price = base list price (+ grade add-on) \u2013 eligible discounts (volume tier + loyalty + account-specific), applying caps if policy states.\n- Add packaging, rental (if cylinder), freight by nearest zone, and mention surcharges/taxes as applicable.\n- Quote validity 30 days unless doc states otherwise.\n- Provide realistic lead time per product/package from the docs.\n- If data is missing, ask ONE crisp follow-up within the answer (\u201cPlease confirm quantity and delivery location to finalize.\u201d) but still give an indicative price/lead time range.\n\nTONE & FORMAT\n- Keep the main answer under ~10 lines: a short paragraph + bulleted key figures.\n- No JSON. No markdown headings. Plain text with simple bullets is okay.\n- Always cite the basis in natural language (e.g., \u201cbased on Cylinder Price List 2025Q4 and Freight Zone B\u201d).\n\nSAFETY\n- If request is outside supported gases or unusually hazardous, respond with a safe refusal and ask to connect to sales.\n\nOUTPUT (TEXT ONLY; the workflow will wrap it into JSON):\n- A clear mini-quote mentioning: product/grade, unit price, any discount, freight/zone, lead time, validity, and delivery location.\n"
         }
       },
-      "id": "975d885b-bc0e-48cc-887c-a144f37d76cf",
+      "id": "79c16546-cb0d-4926-8868-71c09eae8e41",
       "name": "Answer the query based on chunks1",
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "position": [
-        992,
-        -2528
+        -112,
+        1888
       ],
       "typeVersion": 1
     },
@@ -1062,12 +1062,12 @@
         },
         "options": {}
       },
-      "id": "0e72c916-620e-4ae4-9064-0a92575c659a",
+      "id": "304a2b1d-4a44-49f2-9fc7-b81e5fa3a76c",
       "name": "Compose citations1",
       "type": "n8n-nodes-base.set",
       "position": [
-        1360,
-        -2528
+        256,
+        1888
       ],
       "typeVersion": 3.4
     },
@@ -1085,12 +1085,12 @@
         },
         "options": {}
       },
-      "id": "9d2c6d1a-b805-4cc8-9d5a-9432af5c9eea",
+      "id": "e2680fea-9373-4de9-b272-07f07ed88acc",
       "name": "Generate response1",
       "type": "n8n-nodes-base.set",
       "position": [
-        1552,
-        -2528
+        448,
+        1888
       ],
       "typeVersion": 3.4
     },
@@ -1102,10 +1102,10 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        416,
-        -2304
+        -688,
+        2112
       ],
-      "id": "0c65f910-1115-42ab-978d-b76739d75d86",
+      "id": "e0db4d85-5f34-43ef-932c-ac95a452d50f",
       "name": "Embeddings Azure OpenAI2",
       "credentials": {
         "azureOpenAiApi": {
@@ -1122,10 +1122,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        992,
-        -2304
+        -112,
+        2112
       ],
-      "id": "ffda2298-90f7-4a6f-85ab-8a140313b9cb",
+      "id": "02654b9a-da2f-487b-93be-859058518501",
       "name": "Azure OpenAI Chat Model5",
       "credentials": {
         "azureOpenAiApi": {
@@ -1141,12 +1141,12 @@
         "width": 1086.039382705461,
         "color": 7
       },
-      "id": "2b5e7800-cf61-4cfa-9bf0-a6765a3c7ea9",
+      "id": "5070fbc1-dc26-4837-b622-63b05b6a6e1a",
       "name": "Sticky Note2",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        736,
-        -4896
+        -368,
+        -480
       ],
       "typeVersion": 1
     },
@@ -1157,12 +1157,12 @@
         "width": 179.58883583572606,
         "color": 7
       },
-      "id": "0b560396-7175-4c87-9f80-a86dba2b3ad6",
+      "id": "f6c571ed-f51b-46a8-b0a0-00c69515deb1",
       "name": "Sticky Note5",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        752,
-        -4800
+        -352,
+        -384
       ],
       "typeVersion": 1
     },
@@ -1177,12 +1177,12 @@
         },
         "options": {}
       },
-      "id": "3329783b-a0ed-465f-b244-8160443896c3",
+      "id": "521f7c07-10ea-402d-8c27-b6df8cb9602a",
       "name": "Pinecone Vector Store1",
       "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
       "position": [
-        1456,
-        -4720
+        352,
+        -304
       ],
       "typeVersion": 1,
       "credentials": {
@@ -1206,12 +1206,12 @@
         },
         "options": {}
       },
-      "id": "1cb7d0a7-5fd0-4a18-a870-36553bfe7729",
+      "id": "a91c2494-0be3-4deb-b9f0-910046a6ac5e",
       "name": "Set file URL in Google Drive1",
       "type": "n8n-nodes-base.set",
       "position": [
-        816,
-        -4720
+        -288,
+        -304
       ],
       "typeVersion": 3.4
     },
@@ -1233,12 +1233,12 @@
           }
         }
       },
-      "id": "c059a0ee-4cc9-4829-930d-57a505604511",
+      "id": "926114b6-de5a-4927-861b-ca3f9c329b80",
       "name": "Default Data Loader1",
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "position": [
-        1552,
-        -4480
+        448,
+        -64
       ],
       "typeVersion": 1
     },
@@ -1248,12 +1248,12 @@
         "chunkOverlap": 200,
         "options": {}
       },
-      "id": "f7af5f38-479f-4ab0-b2fa-f17af7cff225",
+      "id": "c731c7dc-9c29-4104-9296-f1cbf1237231",
       "name": "Recursive Character Text Splitter1",
       "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
       "position": [
-        1648,
-        -4320
+        544,
+        96
       ],
       "typeVersion": 1
     },
@@ -1265,10 +1265,10 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        1424,
-        -4464
+        320,
+        -48
       ],
-      "id": "b2ab5c3d-a528-4356-ae93-2b6144a884be",
+      "id": "b8c32caf-e0e6-4de7-8dfd-8dd73a84ec0e",
       "name": "Embeddings Azure OpenAI3",
       "credentials": {
         "azureOpenAiApi": {
@@ -1287,12 +1287,12 @@
         },
         "options": {}
       },
-      "id": "11eb7279-af8c-44e1-b3b9-259588e31536",
+      "id": "5cf828cb-2c62-4c3f-a47d-b1c3a58e1491",
       "name": "Download file3",
       "type": "n8n-nodes-base.googleDrive",
       "position": [
-        1136,
-        -4720
+        32,
+        -304
       ],
       "typeVersion": 3,
       "credentials": {
@@ -1308,16 +1308,16 @@
         "text": "={{ $('On GET request1').item.json.body.message }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "You are a calendar assistant. Create/update/delete events in Google Calendar.\n\nSLOT-FILLING (do this FIRST, before calling any tool):\nCheck what required fields the user has explicitly provided in their message:\n  - email     : a valid attendee email address   (REQUIRED to send invite)\n  - date      : a specific meeting date           (REQUIRED)\n  - time      : a specific meeting time           (REQUIRED)\n  - subject   : meeting topic or agenda           (optional)\n  - duration  : duration in minutes               (optional, default 60)\n  - platform  : preferred platform                (optional, default Google Meet)\n\nRULE: Do NOT auto-fill missing date / time / email with defaults or \"next day 10 AM\".\n\nIf ANY of the REQUIRED fields (email, date, time) are missing:\n  Return this STRICT JSON immediately — do NOT call any calendar tool:\n  {\n    \"status\": \"needs_info\",\n    \"missing_fields\": [\"email\", \"date\", \"time\"],\n    \"clarification_message\": \"To schedule your call with a Linde sales representative, I need a few more details. Could you please provide: [list each missing field on a new line with a dash and a human-readable explanation, e.g. '- Your email address (so we can send you a calendar invite)']\",\n    \"prefill\": {\n      \"subject\": \"<inferred from message or empty string>\",\n      \"duration_min\": 60\n    }\n  }\n  List ONLY the truly missing fields in \"missing_fields\".\n\nIf ALL required fields are present:\n  Return this STRICT JSON (confirmed booking — proceed to call calendar tools):\n  {\n    \"status\": \"confirmed\",\n    \"action\": \"create_event_with_attendee\",\n    \"summary\": \"<subject or 'Linde Gas Consultation'>\",\n    \"start\": \"<ISO 8601 datetime>\",\n    \"end\": \"<ISO 8601 datetime>\",\n    \"attendees\": [\"<email>\"],\n    \"notes\": \"<any notes from the user>\"\n  }\n\nTOOLS\n- Use \"Create Event with Attendee\" only when status === \"confirmed\" AND attendees list is non-empty.\n- Use \"Create Event\" when status === \"confirmed\" AND no attendees provided.\n- Prefer creating a Google Meet link (set conference on the calendar node).\n- Dates like \"10 March 2026 2 pm\" must be normalized to ISO strings (Europe/Berlin timezone).\n\nRULES\n- NEVER call any calendar tool when status === \"needs_info\".\n- Never include empty strings in \"attendees\"; if none, use [].\n- For confirmed events: if time is provided but no explicit timezone, default to Europe/Berlin.\n- Meet link should be requested by setting conference on the calendar node (downstream).\n\nCRITICAL OUTPUT CONTRACT\nReturn STRICT JSON only — no prose, no markdown, no explanation outside the JSON object."
+          "systemMessage": "You are a calendar assistant. Create/update/delete events in Google Calendar.\n\nSLOT-FILLING (do this FIRST, before calling any tool):\nCheck what required fields the user has explicitly provided in their message:\n  - email     : a valid attendee email address   (REQUIRED to send invite)\n  - date      : a specific meeting date           (REQUIRED)\n  - time      : a specific meeting time           (REQUIRED)\n  - subject   : meeting topic or agenda           (optional)\n  - duration  : duration in minutes               (optional, default 60)\n  - platform  : preferred platform                (optional, default Google Meet)\n\nRULE: Do NOT auto-fill missing date / time / email with defaults or \"next day 10 AM\".\n\nIf ANY of the REQUIRED fields (email, date, time) are missing:\n  Return this STRICT JSON immediately \u2014 do NOT call any calendar tool:\n  {\n    \"status\": \"needs_info\",\n    \"missing_fields\": [\"email\", \"date\", \"time\"],\n    \"clarification_message\": \"To schedule your call with a Linde sales representative, I need a few more details. Could you please provide: [list each missing field on a new line with a dash and a human-readable explanation, e.g. '- Your email address (so we can send you a calendar invite)']\",\n    \"prefill\": {\n      \"subject\": \"<inferred from message or empty string>\",\n      \"duration_min\": 60\n    }\n  }\n  List ONLY the truly missing fields in \"missing_fields\".\n\nIf ALL required fields are present:\n  Return this STRICT JSON (confirmed booking \u2014 proceed to call calendar tools):\n  {\n    \"status\": \"confirmed\",\n    \"action\": \"create_event_with_attendee\",\n    \"summary\": \"<subject or 'Linde Gas Consultation'>\",\n    \"start\": \"<ISO 8601 datetime>\",\n    \"end\": \"<ISO 8601 datetime>\",\n    \"attendees\": [\"<email>\"],\n    \"notes\": \"<any notes from the user>\"\n  }\n\nTOOLS\n- Use \"Create Event with Attendee\" only when status === \"confirmed\" AND attendees list is non-empty.\n- Use \"Create Event\" when status === \"confirmed\" AND no attendees provided.\n- Prefer creating a Google Meet link (set conference on the calendar node).\n- Dates like \"10 March 2026 2 pm\" must be normalized to ISO strings (Europe/Berlin timezone).\n\nRULES\n- NEVER call any calendar tool when status === \"needs_info\".\n- Never include empty strings in \"attendees\"; if none, use [].\n- For confirmed events: if time is provided but no explicit timezone, default to Europe/Berlin.\n- Meet link should be requested by setting conference on the calendar node (downstream).\n\nCRITICAL OUTPUT CONTRACT\nReturn STRICT JSON only \u2014 no prose, no markdown, no explanation outside the JSON object."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        -400,
-        -1920
+        -1504,
+        2496
       ],
-      "id": "2e494b31-08d7-41a6-ac2d-d610e3b2ed48",
+      "id": "5a751471-ea4a-4119-b5c5-171cca1006a3",
       "name": "Calendar Agent"
     },
     {
@@ -1333,10 +1333,10 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        864,
-        -1936
+        -240,
+        2480
       ],
-      "id": "3c0d2760-a0a0-4fc9-8bfa-b6b98fd280ed",
+      "id": "bb7e9a3b-2fb4-4377-9505-b1946f10b578",
       "name": "Send Confirmation Email",
       "webhookId": "26c93eda-2b74-4640-befb-730cfb0dca5e",
       "executeOnce": true,
@@ -1355,10 +1355,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -400,
-        -1664
+        -1504,
+        2752
       ],
-      "id": "ae28a7d2-76d2-4202-988a-ad80cf716b00",
+      "id": "6139040c-adf9-4890-bdb0-a0cf78c3f1e1",
       "name": "Azure OpenAI Chat Model6",
       "credentials": {
         "azureOpenAiApi": {
@@ -1383,10 +1383,10 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        -1552,
-        -4464
+        -2656,
+        -48
       ],
-      "id": "1353fd6f-c1e8-415b-935d-293a7a69b3f6",
+      "id": "70d59e21-2d9a-4e26-a00d-76bec31b1375",
       "name": "Send Document in Gmail",
       "webhookId": "a9c12f3d-51de-4e36-a1c5-4f5bf8fdb918",
       "credentials": {
@@ -1399,16 +1399,16 @@
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "={{\nJSON.stringify(\n  (() => {\n    const ev = $('Google Calendar').first().json || {};\n\n // Check if Intent Agent se type mil sakta hai\n      const intentData = $('Intent Agent').first().json || {};\n      const intentType = $('downstream node').first().json?.intent || 'appointment';\n\n    const meet =\n      ev.conferenceData?.entryPoints?.find(p => p.entryPointType === 'video')?.uri\n      || ev.hangoutLink\n      || ev.htmlLink\n      || '';\n    const start = ev.start?.dateTime || ev.start?.date || '';\n    const end   = ev.end?.dateTime   || ev.end?.date   || '';\n    const msg = `Your meeting is booked on ${start} → ${end}.${meet ? ` Meet link: ${meet}` : ''}`;\n\n    return {\n      response_message: msg,\n      sources: [{\n        doc_id: '',\n        title: 'Join Google Meet',\n        file_url: meet,\n         type: intentType\n      }]\n    };\n  })()\n)\n}}\n",
+        "responseBody": "={{\nJSON.stringify(\n  (() => {\n    const ev = $('Google Calendar').first().json || {};\n\n // Check if Intent Agent se type mil sakta hai\n      const intentData = $('Intent Agent').first().json || {};\n      const intentType = $('downstream node').first().json?.intent || 'appointment';\n\n    const meet =\n      ev.conferenceData?.entryPoints?.find(p => p.entryPointType === 'video')?.uri\n      || ev.hangoutLink\n      || ev.htmlLink\n      || '';\n    const start = ev.start?.dateTime || ev.start?.date || '';\n    const end   = ev.end?.dateTime   || ev.end?.date   || '';\n    const msg = `Your meeting is booked on ${start} \u2192 ${end}.${meet ? ` Meet link: ${meet}` : ''}`;\n\n    return {\n      response_message: msg,\n      sources: [{\n        doc_id: '',\n        title: 'Join Google Meet',\n        file_url: meet,\n         type: intentType\n      }]\n    };\n  })()\n)\n}}\n",
         "options": {}
       },
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.2,
       "position": [
-        1104,
-        -1936
+        0,
+        2480
       ],
-      "id": "8ed6832b-c206-4738-9521-06e221ad3117",
+      "id": "47f0d7d4-1308-4e82-826f-fff4db30dfee",
       "name": "Respond to Webhook1"
     },
     {
@@ -1422,24 +1422,28 @@
         "start": "={{\n(() => {\n  const raw = $('Calendar Agent').first().json?.output || '';\n  let data = {};\n  try { \n    data = typeof raw === 'string' ? JSON.parse(raw) : raw; \n  } catch {}\n  \n  const s = data.start || data.start_time || data.startISO || data.preferred_date || '';\n  const t = data.preferred_time || '';\n  \n  let d;\n  if (s && t && !s.includes('T')) {\n    d = new Date(`${s}T${t}:00`);\n  } else if (s) {\n    d = new Date(s);\n  } else {\n    d = new Date();\n  }\n  \n  // ISO 8601 format with timezone\n  return d.toISOString();\n})()\n}}",
         "end": "={{\n(() => {\n  const raw = $('Calendar Agent').first().json?.output || '';\n  let data = {};\n  try { \n    data = typeof raw === 'string' ? JSON.parse(raw) : raw; \n  } catch {}\n  \n  const s = data.start || data.start_time || data.startISO || data.preferred_date || '';\n  const t = data.preferred_time || '';\n  const e = data.end || data.end_time || data.endISO || '';\n  const durMin = Number.isFinite(+data.duration_min) ? +data.duration_min : 60;\n  \n  let start;\n  if (s && t && !s.includes('T')) {\n    start = new Date(`${s}T${t}:00`);\n  } else if (s) {\n    start = new Date(s);\n  } else {\n    start = new Date();\n  }\n  \n  let end = e ? new Date(e) : new Date(start.getTime() + durMin * 60000);\n  \n  // ISO 8601 format with timezone\n  return end.toISOString();\n})()\n}}",
         "additionalFields": {
-          "attendees": [
-            "={{ (() => { const raw = $('Calendar Agent').first().json?.output || ''; let data = {}; try { data = typeof raw === 'string' ? JSON.parse(raw) : raw; } catch(e) {} const att = data.attendees; if (Array.isArray(att) && att.length > 0) return att[0]; return data.email || ''; })() }}"
-          ],
           "conferenceDataUi": {
             "conferenceDataValues": {
               "conferenceSolution": "hangoutsMeet"
             }
           },
-          "summary": "={{ $(\"Calendar Agent\").first().json?.output && (JSON.parse($(\"Calendar Agent\").first().json.output).summary || 'Linde Gas Meeting') }}\n"
+          "summary": "={{ $(\"Calendar Agent\").first().json?.output && (JSON.parse($(\"Calendar Agent\").first().json.output).summary || 'Linde Gas Meeting') }}\n",
+          "attendeesUi": {
+            "attendeeValues": [
+              {
+                "attendee": "={{\n(() => {\n  const raw = $('Calendar Agent').first().json?.output || '';\n  let data = {};\n  try { data = typeof raw === 'string' ? JSON.parse(raw) : raw; } catch (e) {}\n  const att = data.attendees;\n  if (Array.isArray(att) && att.length > 0) { return att[0]; }\n  return data.email || '';\n})()\n}}"
+              }
+            ]
+          }
         }
       },
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.3,
       "position": [
-        480,
-        -1936
+        -624,
+        2480
       ],
-      "id": "d0d70d70-de05-431f-838a-e15f4f1ab0b9",
+      "id": "efc6bad2-af6b-4376-b479-81a7e18536be",
       "name": "Google Calendar",
       "credentials": {
         "googleCalendarOAuth2Api": {
@@ -1450,15 +1454,15 @@
     },
     {
       "parameters": {
-        "jsCode": "// --- Read event from Google Calendar node ---\nconst ev = ($('Google Calendar')?.first()?.json) || {};\n\n// --- Meet link ---\nconst meetFromEntry =\n  ev?.conferenceData?.entryPoints?.find(e => e?.entryPointType === 'video')?.uri || '';\nconst hangoutLink = ev?.hangoutLink || '';\nconst htmlLink    = ev?.htmlLink    || '';\nconst meet        = meetFromEntry || hangoutLink || htmlLink || '';\n\n// --- Title ---\nconst title = ev?.summary || 'Linde Gas Connect with Clients';\n\n// --- Timezone & times ---\nconst tz   = 'Europe/Berlin';\nconst sISO = ev?.start?.dateTime || ev?.start?.date || '';\nconst eISO = ev?.end?.dateTime   || ev?.end?.date   || '';\n\nconst safeDate = (iso) => iso ? new Date(iso) : null;\n\nconst formatDate = (iso, zone) => {\n  if (!iso) return 'Meeting date';\n  try {\n    return new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeZone: zone })\n      .format(safeDate(iso));\n  } catch { return iso; }\n};\n\nconst formatTime = (iso, zone, withZone = false) => {\n  if (!iso) return '';\n  try {\n    return new Intl.DateTimeFormat('en-GB', {\n      timeStyle: 'short', timeZone: zone,\n      ...(withZone ? { timeZoneName: 'short' } : {})\n    }).format(safeDate(iso));\n  } catch { return iso; }\n};\n\nconst meetingDate = formatDate(sISO, tz);\nconst startTime   = formatTime(sISO, tz, false);\nconst endTime     = formatTime(eISO, tz, false);\nconst tzShort     = formatTime(sISO, tz, true).split(' ').slice(-1)[0] || tz;\n\nlet meetingTime = 'Time not set';\nif (startTime && endTime) meetingTime = `${startTime} – ${endTime} (${tzShort})`;\nelse if (startTime)       meetingTime = `${startTime} (${tzShort})`;\n\nconst isGoogleMeet = !!meet && meet.includes('meet.google.com');\nconst buttonText   = isGoogleMeet ? 'Join Google Meet' : 'View Calendar Event';\n\n// --- Participant info ---\n// Email from Calendar Agent confirmed output (user-provided via chat form)\nconst calAgentRaw = ($('Calendar Agent')?.first()?.json?.output) || '{}';\nlet calAgentData = {};\ntry { calAgentData = typeof calAgentRaw === 'string' ? JSON.parse(calAgentRaw) : calAgentRaw; } catch(e) {}\nconst _att = calAgentData.attendees;\nconst participantEmail = (Array.isArray(_att) && _att.length > 0) ? _att[0] : (calAgentData.email || '');\nconst participantName  = '';\nconst companyName      = 'Linde Gas';\n\n// --- Enterprise HTML ---\nconst html = `<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n</head>\n<body style=\"margin:0;padding:0;background-color:#E8EAED;font-family:'Segoe UI',Arial,sans-serif;\">\n\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#E8EAED;padding:48px 16px;\">\n  <tr><td align=\"center\">\n    <table width=\"640\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:640px;width:100%;\">\n\n      <!-- BRAND BAR -->\n      <tr>\n        <td style=\"background:#003057;padding:16px 44px;border-radius:14px 14px 0 0;\">\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n            <td style=\"font-size:13px;font-weight:700;letter-spacing:3px;color:#4A90B8;text-transform:uppercase;\">\n              Linde Gas\n            </td>\n            <td align=\"right\" style=\"font-size:11px;color:#1E4A6B;letter-spacing:1px;text-transform:uppercase;\">\n              AI Scheduling Assistant\n            </td>\n          </tr></table>\n        </td>\n      </tr>\n\n      <!-- HERO -->\n      <tr>\n        <td style=\"background:#003057;padding:44px 44px 40px;\">\n          <div style=\"display:inline-block;background:rgba(0,160,210,0.12);border:1px solid rgba(0,160,210,0.3);border-radius:100px;padding:5px 16px;margin-bottom:24px;\">\n            <span style=\"font-size:10px;font-weight:700;letter-spacing:2px;color:#00A0D2;text-transform:uppercase;\">Meeting Invitation</span>\n          </div>\n          <h1 style=\"margin:0 0 14px;font-size:34px;font-weight:300;color:#FFFFFF;line-height:1.2;letter-spacing:-0.3px;\">\n            You have been<br><strong style=\"font-weight:700;\">invited to a meeting.</strong>\n          </h1>\n          <p style=\"margin:0;font-size:14px;color:#5A8BAA;line-height:1.7;max-width:440px;\">\n            ${participantName ? `Dear ${participantName}, a` : 'A'} meeting has been scheduled on your behalf via the Linde Gas AI-Powered Scheduling Assistant. Please review the details below.\n          </p>\n        </td>\n      </tr>\n\n      <!-- ACCENT LINE -->\n      <tr>\n        <td style=\"background:#FFFFFF;padding:0 44px;\">\n          <div style=\"height:3px;background:linear-gradient(90deg,#003057,#00A0D2,#00C8E6,transparent);\"></div>\n        </td>\n      </tr>\n\n      <!-- MEETING DETAILS -->\n      <tr>\n        <td style=\"background:#FFFFFF;padding:36px 44px 32px;\">\n\n          <!-- 3-col grid -->\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-bottom:28px;\">\n            <tr>\n              <td width=\"44%\" style=\"vertical-align:top;padding-right:20px;\">\n                <p style=\"margin:0 0 5px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8FA8B8;\">Meeting Title</p>\n                <p style=\"margin:0;font-size:15px;font-weight:600;color:#003057;line-height:1.4;\">${title}</p>\n              </td>\n              <td width=\"18%\" style=\"vertical-align:top;padding:0 20px;border-left:1px solid #EBF0F4;\">\n                <p style=\"margin:0 0 5px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8FA8B8;\">Date</p>\n                <p style=\"margin:0;font-size:15px;font-weight:600;color:#003057;\">${meetingDate}</p>\n              </td>\n              <td width=\"38%\" style=\"vertical-align:top;padding-left:20px;border-left:1px solid #EBF0F4;\">\n                <p style=\"margin:0 0 5px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8FA8B8;\">Time</p>\n                <p style=\"margin:0;font-size:15px;font-weight:600;color:#003057;\">${meetingTime}</p>\n              </td>\n            </tr>\n          </table>\n\n          <!-- Time block card -->\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-bottom:32px;background:#F4F7FA;border:1px solid #DDE6ED;border-radius:10px;\">\n            <tr>\n              <td width=\"50%\" style=\"padding:18px 24px;border-right:1px solid #DDE6ED;\">\n                <p style=\"margin:0 0 4px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8FA8B8;\">Starts</p>\n                <p style=\"margin:0;font-size:14px;font-weight:600;color:#003057;\">${startTime || '—'} <span style=\"font-weight:400;color:#5A8BAA;font-size:12px;\">${tzShort}</span></p>\n              </td>\n              <td width=\"50%\" style=\"padding:18px 24px;\">\n                <p style=\"margin:0 0 4px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8FA8B8;\">Ends</p>\n                <p style=\"margin:0;font-size:14px;font-weight:600;color:#003057;\">${endTime || '—'} <span style=\"font-weight:400;color:#5A8BAA;font-size:12px;\">${tzShort}</span></p>\n              </td>\n            </tr>\n          </table>\n\n          <!-- CTA Button -->\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-bottom:14px;\">\n            <tr>\n              <td>\n                <a href=\"${meet}\"\n                   style=\"display:block;background:#003057;color:#ffffff;text-decoration:none;padding:18px 32px;border-radius:10px;font-size:14px;font-weight:700;letter-spacing:0.8px;text-align:center;border-bottom:3px solid #00A0D2;\">\n                  ${isGoogleMeet ? '📹 &nbsp;Join via Google Meet' : '📅 &nbsp;View Calendar Event'} &nbsp;→\n                </a>\n              </td>\n            </tr>\n          </table>\n\n          <!-- Copy link -->\n          ${meet ? `\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-bottom:36px;\">\n            <tr>\n              <td style=\"background:#F4F7FA;border:1px solid #DDE6ED;border-radius:8px;padding:12px 18px;\">\n                <p style=\"margin:0 0 3px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8FA8B8;\">Meeting Link</p>\n                <a href=\"${meet}\" style=\"font-size:12px;color:#00A0D2;text-decoration:none;word-break:break-all;\">${meet}</a>\n              </td>\n            </tr>\n          </table>` : ''}\n\n          <!-- Preparation checklist -->\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-bottom:36px;\">\n            <tr>\n              <td style=\"border-top:1px solid #EBF0F4;padding-top:32px;\">\n                <p style=\"margin:0 0 18px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8FA8B8;\">Before the Meeting</p>\n                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n                  <tr><td style=\"padding:11px 0;border-bottom:1px solid #F4F7FA;\">\n                    <table cellpadding=\"0\" cellspacing=\"0\"><tr>\n                      <td style=\"width:26px;vertical-align:top;\">\n                        <div style=\"width:20px;height:20px;background:#E8F4FB;border-radius:50%;text-align:center;line-height:20px;font-size:9px;color:#00A0D2;font-weight:700;\">01</div>\n                      </td>\n                      <td style=\"font-size:13px;color:#4A6070;line-height:1.5;padding-left:10px;\">Test your audio and video connection prior to joining.</td>\n                    </tr></table>\n                  </td></tr>\n                  <tr><td style=\"padding:11px 0;border-bottom:1px solid #F4F7FA;\">\n                    <table cellpadding=\"0\" cellspacing=\"0\"><tr>\n                      <td style=\"width:26px;vertical-align:top;\">\n                        <div style=\"width:20px;height:20px;background:#E8F4FB;border-radius:50%;text-align:center;line-height:20px;font-size:9px;color:#00A0D2;font-weight:700;\">02</div>\n                      </td>\n                      <td style=\"font-size:13px;color:#4A6070;line-height:1.5;padding-left:10px;\">Prepare a brief overview of your agenda or key discussion points.</td>\n                    </tr></table>\n                  </td></tr>\n                  <tr><td style=\"padding:11px 0;\">\n                    <table cellpadding=\"0\" cellspacing=\"0\"><tr>\n                      <td style=\"width:26px;vertical-align:top;\">\n                        <div style=\"width:20px;height:20px;background:#E8F4FB;border-radius:50%;text-align:center;line-height:20px;font-size:9px;color:#00A0D2;font-weight:700;\">03</div>\n                      </td>\n                      <td style=\"font-size:13px;color:#4A6070;line-height:1.5;padding-left:10px;\">Have any relevant documentation or references ready to share.</td>\n                    </tr></table>\n                  </td></tr>\n                </table>\n              </td>\n            </tr>\n          </table>\n\n          <!-- Reschedule note -->\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-bottom:36px;\">\n            <tr>\n              <td style=\"background:#FFF8E6;border:1px solid #F0D060;border-left:4px solid #F0B020;border-radius:0 8px 8px 0;padding:14px 20px;\">\n                <p style=\"margin:0;font-size:12px;color:#7A5A00;line-height:1.6;\">\n                  <strong>Need to reschedule or cancel?</strong> Please contact your Linde Gas representative or reply to this email at least 24 hours before the meeting.\n                </p>\n              </td>\n            </tr>\n          </table>\n\n        </td>\n      </tr>\n\n      <!-- SIGNATURE -->\n      <tr>\n        <td style=\"background:#FFFFFF;padding:0 44px 40px;\">\n          <table cellpadding=\"0\" cellspacing=\"0\"><tr>\n            <td style=\"width:44px;height:44px;background:#003057;border-radius:50%;text-align:center;vertical-align:middle;\">\n              <span style=\"font-size:18px;color:#00A0D2;font-weight:700;\">L</span>\n            </td>\n            <td style=\"padding-left:14px;vertical-align:middle;\">\n              <p style=\"margin:0;font-size:14px;font-weight:700;color:#003057;\">Linde Gas</p>\n              <p style=\"margin:2px 0 0;font-size:12px;color:#5A8BAA;\">AI-Powered Scheduling Assistant · ${companyName}</p>\n            </td>\n          </tr></table>\n        </td>\n      </tr>\n\n      <!-- FOOTER -->\n      <tr>\n        <td style=\"background:#003057;padding:22px 44px;border-radius:0 0 14px 14px;\">\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n            <td style=\"font-size:11px;color:#1E4A6B;line-height:1.8;\">\n              <a href=\"https://www.linde.com\" style=\"color:#4A90B8;text-decoration:none;\">linde.com</a>\n              &nbsp;·&nbsp;\n              <a href=\"mailto:support@linde.com\" style=\"color:#4A90B8;text-decoration:none;\">support@linde.com</a>\n            </td>\n            <td align=\"right\" style=\"font-size:10px;color:#1E4A6B;\">Automated · Do not reply directly</td>\n          </tr></table>\n        </td>\n      </tr>\n\n    </table>\n  </td></tr>\n</table>\n\n</body>\n</html>`;\n\nreturn [{ json: { html } }];"
+        "jsCode": "// --- Read event from Google Calendar node ---\nconst ev = ($('Google Calendar')?.first()?.json) || {};\n\n// --- Meet link ---\nconst meetFromEntry =\n  ev?.conferenceData?.entryPoints?.find(e => e?.entryPointType === 'video')?.uri || '';\nconst hangoutLink = ev?.hangoutLink || '';\nconst htmlLink    = ev?.htmlLink    || '';\nconst meet        = meetFromEntry || hangoutLink || htmlLink || '';\n\n// --- Title ---\nconst title = ev?.summary || 'Linde Gas Connect with Clients';\n\n// --- Timezone & times ---\nconst tz   = 'Europe/Berlin';\nconst sISO = ev?.start?.dateTime || ev?.start?.date || '';\nconst eISO = ev?.end?.dateTime   || ev?.end?.date   || '';\n\nconst safeDate = (iso) => iso ? new Date(iso) : null;\n\nconst formatDate = (iso, zone) => {\n  if (!iso) return 'Meeting date';\n  try {\n    return new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeZone: zone })\n      .format(safeDate(iso));\n  } catch { return iso; }\n};\n\nconst formatTime = (iso, zone, withZone = false) => {\n  if (!iso) return '';\n  try {\n    return new Intl.DateTimeFormat('en-GB', {\n      timeStyle: 'short', timeZone: zone,\n      ...(withZone ? { timeZoneName: 'short' } : {})\n    }).format(safeDate(iso));\n  } catch { return iso; }\n};\n\nconst meetingDate = formatDate(sISO, tz);\nconst startTime   = formatTime(sISO, tz, false);\nconst endTime     = formatTime(eISO, tz, false);\nconst tzShort     = formatTime(sISO, tz, true).split(' ').slice(-1)[0] || tz;\n\nlet meetingTime = 'Time not set';\nif (startTime && endTime) meetingTime = `${startTime} \u2013 ${endTime} (${tzShort})`;\nelse if (startTime)       meetingTime = `${startTime} (${tzShort})`;\n\nconst isGoogleMeet = !!meet && meet.includes('meet.google.com');\nconst buttonText   = isGoogleMeet ? 'Join Google Meet' : 'View Calendar Event';\n\n// --- Participant info ---\n// Email from Calendar Agent confirmed output (user-provided via chat form)\nconst calAgentRaw = ($('Calendar Agent')?.first()?.json?.output) || '{}';\nlet calAgentData = {};\ntry { calAgentData = typeof calAgentRaw === 'string' ? JSON.parse(calAgentRaw) : calAgentRaw; } catch(e) {}\nconst _att = calAgentData.attendees;\nconst participantEmail = (Array.isArray(_att) && _att.length > 0) ? _att[0] : (calAgentData.email || '');\nconst participantName  = '';\nconst companyName      = 'Linde Gas';\n\n// --- Enterprise HTML ---\nconst html = `<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n</head>\n<body style=\"margin:0;padding:0;background-color:#E8EAED;font-family:'Segoe UI',Arial,sans-serif;\">\n\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#E8EAED;padding:48px 16px;\">\n  <tr><td align=\"center\">\n    <table width=\"640\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:640px;width:100%;\">\n\n      <!-- BRAND BAR -->\n      <tr>\n        <td style=\"background:#003057;padding:16px 44px;border-radius:14px 14px 0 0;\">\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n            <td style=\"font-size:13px;font-weight:700;letter-spacing:3px;color:#4A90B8;text-transform:uppercase;\">\n              Linde Gas\n            </td>\n            <td align=\"right\" style=\"font-size:11px;color:#1E4A6B;letter-spacing:1px;text-transform:uppercase;\">\n              AI Scheduling Assistant\n            </td>\n          </tr></table>\n        </td>\n      </tr>\n\n      <!-- HERO -->\n      <tr>\n        <td style=\"background:#003057;padding:44px 44px 40px;\">\n          <div style=\"display:inline-block;background:rgba(0,160,210,0.12);border:1px solid rgba(0,160,210,0.3);border-radius:100px;padding:5px 16px;margin-bottom:24px;\">\n            <span style=\"font-size:10px;font-weight:700;letter-spacing:2px;color:#00A0D2;text-transform:uppercase;\">Meeting Invitation</span>\n          </div>\n          <h1 style=\"margin:0 0 14px;font-size:34px;font-weight:300;color:#FFFFFF;line-height:1.2;letter-spacing:-0.3px;\">\n            You have been<br><strong style=\"font-weight:700;\">invited to a meeting.</strong>\n          </h1>\n          <p style=\"margin:0;font-size:14px;color:#5A8BAA;line-height:1.7;max-width:440px;\">\n            ${participantName ? `Dear ${participantName}, a` : 'A'} meeting has been scheduled on your behalf via the Linde Gas AI-Powered Scheduling Assistant. Please review the details below.\n          </p>\n        </td>\n      </tr>\n\n      <!-- ACCENT LINE -->\n      <tr>\n        <td style=\"background:#FFFFFF;padding:0 44px;\">\n          <div style=\"height:3px;background:linear-gradient(90deg,#003057,#00A0D2,#00C8E6,transparent);\"></div>\n        </td>\n      </tr>\n\n      <!-- MEETING DETAILS -->\n      <tr>\n        <td style=\"background:#FFFFFF;padding:36px 44px 32px;\">\n\n          <!-- 3-col grid -->\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-bottom:28px;\">\n            <tr>\n              <td width=\"44%\" style=\"vertical-align:top;padding-right:20px;\">\n                <p style=\"margin:0 0 5px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8FA8B8;\">Meeting Title</p>\n                <p style=\"margin:0;font-size:15px;font-weight:600;color:#003057;line-height:1.4;\">${title}</p>\n              </td>\n              <td width=\"18%\" style=\"vertical-align:top;padding:0 20px;border-left:1px solid #EBF0F4;\">\n                <p style=\"margin:0 0 5px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8FA8B8;\">Date</p>\n                <p style=\"margin:0;font-size:15px;font-weight:600;color:#003057;\">${meetingDate}</p>\n              </td>\n              <td width=\"38%\" style=\"vertical-align:top;padding-left:20px;border-left:1px solid #EBF0F4;\">\n                <p style=\"margin:0 0 5px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8FA8B8;\">Time</p>\n                <p style=\"margin:0;font-size:15px;font-weight:600;color:#003057;\">${meetingTime}</p>\n              </td>\n            </tr>\n          </table>\n\n          <!-- Time block card -->\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-bottom:32px;background:#F4F7FA;border:1px solid #DDE6ED;border-radius:10px;\">\n            <tr>\n              <td width=\"50%\" style=\"padding:18px 24px;border-right:1px solid #DDE6ED;\">\n                <p style=\"margin:0 0 4px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8FA8B8;\">Starts</p>\n                <p style=\"margin:0;font-size:14px;font-weight:600;color:#003057;\">${startTime || '\u2014'} <span style=\"font-weight:400;color:#5A8BAA;font-size:12px;\">${tzShort}</span></p>\n              </td>\n              <td width=\"50%\" style=\"padding:18px 24px;\">\n                <p style=\"margin:0 0 4px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8FA8B8;\">Ends</p>\n                <p style=\"margin:0;font-size:14px;font-weight:600;color:#003057;\">${endTime || '\u2014'} <span style=\"font-weight:400;color:#5A8BAA;font-size:12px;\">${tzShort}</span></p>\n              </td>\n            </tr>\n          </table>\n\n          <!-- CTA Button -->\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-bottom:14px;\">\n            <tr>\n              <td>\n                <a href=\"${meet}\"\n                   style=\"display:block;background:#003057;color:#ffffff;text-decoration:none;padding:18px 32px;border-radius:10px;font-size:14px;font-weight:700;letter-spacing:0.8px;text-align:center;border-bottom:3px solid #00A0D2;\">\n                  ${isGoogleMeet ? '\ud83d\udcf9 &nbsp;Join via Google Meet' : '\ud83d\udcc5 &nbsp;View Calendar Event'} &nbsp;\u2192\n                </a>\n              </td>\n            </tr>\n          </table>\n\n          <!-- Copy link -->\n          ${meet ? `\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-bottom:36px;\">\n            <tr>\n              <td style=\"background:#F4F7FA;border:1px solid #DDE6ED;border-radius:8px;padding:12px 18px;\">\n                <p style=\"margin:0 0 3px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8FA8B8;\">Meeting Link</p>\n                <a href=\"${meet}\" style=\"font-size:12px;color:#00A0D2;text-decoration:none;word-break:break-all;\">${meet}</a>\n              </td>\n            </tr>\n          </table>` : ''}\n\n          <!-- Preparation checklist -->\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-bottom:36px;\">\n            <tr>\n              <td style=\"border-top:1px solid #EBF0F4;padding-top:32px;\">\n                <p style=\"margin:0 0 18px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8FA8B8;\">Before the Meeting</p>\n                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n                  <tr><td style=\"padding:11px 0;border-bottom:1px solid #F4F7FA;\">\n                    <table cellpadding=\"0\" cellspacing=\"0\"><tr>\n                      <td style=\"width:26px;vertical-align:top;\">\n                        <div style=\"width:20px;height:20px;background:#E8F4FB;border-radius:50%;text-align:center;line-height:20px;font-size:9px;color:#00A0D2;font-weight:700;\">01</div>\n                      </td>\n                      <td style=\"font-size:13px;color:#4A6070;line-height:1.5;padding-left:10px;\">Test your audio and video connection prior to joining.</td>\n                    </tr></table>\n                  </td></tr>\n                  <tr><td style=\"padding:11px 0;border-bottom:1px solid #F4F7FA;\">\n                    <table cellpadding=\"0\" cellspacing=\"0\"><tr>\n                      <td style=\"width:26px;vertical-align:top;\">\n                        <div style=\"width:20px;height:20px;background:#E8F4FB;border-radius:50%;text-align:center;line-height:20px;font-size:9px;color:#00A0D2;font-weight:700;\">02</div>\n                      </td>\n                      <td style=\"font-size:13px;color:#4A6070;line-height:1.5;padding-left:10px;\">Prepare a brief overview of your agenda or key discussion points.</td>\n                    </tr></table>\n                  </td></tr>\n                  <tr><td style=\"padding:11px 0;\">\n                    <table cellpadding=\"0\" cellspacing=\"0\"><tr>\n                      <td style=\"width:26px;vertical-align:top;\">\n                        <div style=\"width:20px;height:20px;background:#E8F4FB;border-radius:50%;text-align:center;line-height:20px;font-size:9px;color:#00A0D2;font-weight:700;\">03</div>\n                      </td>\n                      <td style=\"font-size:13px;color:#4A6070;line-height:1.5;padding-left:10px;\">Have any relevant documentation or references ready to share.</td>\n                    </tr></table>\n                  </td></tr>\n                </table>\n              </td>\n            </tr>\n          </table>\n\n          <!-- Reschedule note -->\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-bottom:36px;\">\n            <tr>\n              <td style=\"background:#FFF8E6;border:1px solid #F0D060;border-left:4px solid #F0B020;border-radius:0 8px 8px 0;padding:14px 20px;\">\n                <p style=\"margin:0;font-size:12px;color:#7A5A00;line-height:1.6;\">\n                  <strong>Need to reschedule or cancel?</strong> Please contact your Linde Gas representative or reply to this email at least 24 hours before the meeting.\n                </p>\n              </td>\n            </tr>\n          </table>\n\n        </td>\n      </tr>\n\n      <!-- SIGNATURE -->\n      <tr>\n        <td style=\"background:#FFFFFF;padding:0 44px 40px;\">\n          <table cellpadding=\"0\" cellspacing=\"0\"><tr>\n            <td style=\"width:44px;height:44px;background:#003057;border-radius:50%;text-align:center;vertical-align:middle;\">\n              <span style=\"font-size:18px;color:#00A0D2;font-weight:700;\">L</span>\n            </td>\n            <td style=\"padding-left:14px;vertical-align:middle;\">\n              <p style=\"margin:0;font-size:14px;font-weight:700;color:#003057;\">Linde Gas</p>\n              <p style=\"margin:2px 0 0;font-size:12px;color:#5A8BAA;\">AI-Powered Scheduling Assistant \u00b7 ${companyName}</p>\n            </td>\n          </tr></table>\n        </td>\n      </tr>\n\n      <!-- FOOTER -->\n      <tr>\n        <td style=\"background:#003057;padding:22px 44px;border-radius:0 0 14px 14px;\">\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n            <td style=\"font-size:11px;color:#1E4A6B;line-height:1.8;\">\n              <a href=\"https://www.linde.com\" style=\"color:#4A90B8;text-decoration:none;\">linde.com</a>\n              &nbsp;\u00b7&nbsp;\n              <a href=\"mailto:support@linde.com\" style=\"color:#4A90B8;text-decoration:none;\">support@linde.com</a>\n            </td>\n            <td align=\"right\" style=\"font-size:10px;color:#1E4A6B;\">Automated \u00b7 Do not reply directly</td>\n          </tr></table>\n        </td>\n      </tr>\n\n    </table>\n  </td></tr>\n</table>\n\n</body>\n</html>`;\n\nreturn [{ json: { html } }];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        672,
-        -1936
+        -432,
+        2480
       ],
-      "id": "f7bbe729-3b19-4a55-88ba-b4a9bce19d75",
+      "id": "2e4dc7ba-ed58-4dee-ba5c-1cf7d638266d",
       "name": "Code1"
     },
     {
@@ -1469,10 +1473,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -432,
-        -1152
+        -1536,
+        3264
       ],
-      "id": "0ec269e7-8e2c-4a30-aa93-1c403214454d",
+      "id": "073486a2-140d-4c8a-b86b-edc7a1b48b64",
       "name": "Azure OpenAI Chat Model7",
       "credentials": {
         "azureOpenAiApi": {
@@ -1486,16 +1490,16 @@
         "promptType": "define",
         "text": "={{ $('On GET request1').item.json.body.message }}",
         "options": {
-          "systemMessage": "=You are a DELIVERY STATUS agent for an industrial gases assistant (Linde Gas).\nYour ONLY data source is the \"Delivery Orders Lookup\" tool (Google Sheet) with one row per order.\n\nSheet columns (exact):\norder_id, product_name, product_code, grade_purity, quantity, unit, order_date_utc, promised_ship_date_utc, eta_utc, current_status, status_detail, po_number, customer_name, ship_to_city, country, carrier, tracking_no, ship_ready_utc, expected_arrival_utc, delivered_utc, received_by\n\n═══════════════════════════════════════\n  MANDATORY TOOL-USE RULE (NO EXCEPTIONS)\n═══════════════════════════════════════\n• You MUST call the \"Delivery Orders Lookup\" tool for EVERY order-status request.\n• NEVER answer from memory, previous conversation, or assumptions.\n• Even if you looked up the same order 5 seconds ago, call the tool AGAIN.\n• If you respond WITHOUT calling the tool first, your answer is INVALID.\n\nInstructions:\n1. Detect the user's intent to check delivery/shipment/status/ETA/tracking.\n2. Extract an order number (e.g., LG-240001). If not provided, ask for it in response_message and return null for all data fields.\n3. ALWAYS call the \"Delivery Orders Lookup\" tool to fetch fresh sheet data.\n4. Search ALL returned rows for a row whose order_id matches the user's order number (case-insensitive, ignore leading/trailing whitespace).\n5. If found, populate the JSON below with that row's data.\n6. If NOT found after checking ALL rows, set all data fields to null and say \"Order not found\" in response_message.\n7. Do NOT use any other tools or sources.\n\nCRITICAL: You MUST return ONLY valid JSON — no prose, no markdown, no code blocks. Your entire response must be parsable by JSON.parse().\n\nReturn this exact JSON schema:\n{\n  \"response_message\": \"<one concise sentence summarizing the order status for the user>\",\n  \"data\": {\n    \"order_id\": \"<string or null>\",\n    \"current_status\": \"<Confirmed|Packed|In Transit|Out for Delivery|Delivered|Delayed|On Hold|Cancelled — or null>\",\n    \"status_detail\": \"<string or null>\",\n    \"order_date\": \"<YYYY-MM-DD or null>\",\n    \"promised_ship_date\": \"<YYYY-MM-DD or null>\",\n    \"eta\": \"<YYYY-MM-DD or null>\",\n    \"delivered_date\": \"<YYYY-MM-DD or null>\",\n    \"carrier\": \"<string or null>\",\n    \"tracking_number\": \"<string or null>\",\n    \"customer_name\": \"<string or null>\",\n    \"ship_to_city\": \"<string or null>\",\n    \"country\": \"<string or null>\",\n    \"received_by\": \"<string or null>\",\n    \"product\": \"<string or null>\"\n  }\n}\n\nColumn mapping (sheet column -> data field):\n- order_id -> order_id\n- current_status -> current_status (use exact enum values above)\n- status_detail -> status_detail\n- order_date_utc -> order_date (format as YYYY-MM-DD, strip time)\n- promised_ship_date_utc -> promised_ship_date (format as YYYY-MM-DD, strip time)\n- eta_utc -> eta (format as YYYY-MM-DD, strip time)\n- delivered_utc -> delivered_date (format as YYYY-MM-DD, strip time)\n- carrier -> carrier\n- tracking_no -> tracking_number\n- customer_name -> customer_name\n- ship_to_city -> ship_to_city\n- country -> country\n- received_by -> received_by\n- product_name -> product\n\nIf order not found — set all data fields to null and explain in response_message.\nIf user did not provide an order number — set all data fields to null and ask for it in response_message."
+          "systemMessage": "=You are a DELIVERY STATUS agent for an industrial gases assistant (Linde Gas).\nYour ONLY data source is a Google Sheet tool with one row per order.\n\nSheet columns (exact):\norder_id, product_name, product_code, grade_purity, quantity, unit, order_date_utc, promised_ship_date_utc, eta_utc, current_status, status_detail, po_number, customer_name, ship_to_city, country, carrier, tracking_no, ship_ready_utc, expected_arrival_utc, delivered_utc, received_by\n\nInstructions:\n1. Detect the user's intent to check delivery/shipment/status/ETA/tracking.\n2. Extract an order number (e.g., LG-240001). If not provided, ask for it in response_message and return null for all data fields.\n3. Query the Google Sheet for an exact match on order_id. Try case-insensitive if not found.\n4. Do NOT use any other tools or sources.\n\nCRITICAL: You MUST return ONLY valid JSON \u2014 no prose, no markdown, no code blocks. Your entire response must be parsable by JSON.parse().\n\nReturn this exact JSON schema:\n{\n  \"response_message\": \"<one concise sentence summarizing the order status for the user>\",\n  \"data\": {\n    \"order_id\": \"<string or null>\",\n    \"current_status\": \"<Confirmed|Packed|In Transit|Out for Delivery|Delivered|Delayed|On Hold|Cancelled \u2014 or null>\",\n    \"status_detail\": \"<string or null>\",\n    \"order_date\": \"<YYYY-MM-DD or null>\",\n    \"promised_ship_date\": \"<YYYY-MM-DD or null>\",\n    \"eta\": \"<YYYY-MM-DD or null>\",\n    \"delivered_date\": \"<YYYY-MM-DD or null>\",\n    \"carrier\": \"<string or null>\",\n    \"tracking_number\": \"<string or null>\",\n    \"customer_name\": \"<string or null>\",\n    \"ship_to_city\": \"<string or null>\",\n    \"country\": \"<string or null>\",\n    \"received_by\": \"<string or null>\",\n    \"product\": \"<string or null>\"\n  }\n}\n\nColumn mapping (sheet column -> data field):\n- order_id -> order_id\n- current_status -> current_status (use exact enum values above)\n- status_detail -> status_detail\n- order_date_utc -> order_date (format as YYYY-MM-DD, strip time)\n- promised_ship_date_utc -> promised_ship_date (format as YYYY-MM-DD, strip time)\n- eta_utc -> eta (format as YYYY-MM-DD, strip time)\n- delivered_utc -> delivered_date (format as YYYY-MM-DD, strip time)\n- carrier -> carrier\n- tracking_no -> tracking_number\n- customer_name -> customer_name\n- ship_to_city -> ship_to_city\n- country -> country\n- received_by -> received_by\n- product_name -> product\n\nIf order not found \u2014 set all data fields to null and explain in response_message.\nIf user did not provide an order number \u2014 set all data fields to null and ask for it in response_message."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        -432,
-        -1408
+        -1536,
+        3008
       ],
-      "id": "d1e93b17-baa2-4461-ad37-9fa24e8272be",
+      "id": "97fdece9-269a-4080-b214-37b4f63e7b33",
       "name": "Delivery Status Agent"
     },
     {
@@ -1519,11 +1523,11 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.5,
       "position": [
-        -96,
-        -1152
+        -1200,
+        3264
       ],
-      "id": "031610cc-bca3-4f97-b74a-01eb81ff585f",
-      "name": "Delivery Orders Lookup",
+      "id": "f94518b7-d379-495c-afcc-922d9ed6ad19",
+      "name": "Google Sheets",
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "Su8v9Q233m6xH1Nv",
@@ -1540,10 +1544,10 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.2,
       "position": [
-        -48,
-        -1408
+        -1152,
+        3008
       ],
-      "id": "9b63aae6-426a-4d73-a16b-4a83f7ecd4e0",
+      "id": "a22f3fb1-0c90-48f6-b2ba-3b9e62ee1a05",
       "name": "Respond to Webhook2"
     },
     {
@@ -1556,10 +1560,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -384,
-        -32
+        -1488,
+        4384
       ],
-      "id": "64f097a8-3e78-4010-810f-97f51cc86618",
+      "id": "04ddf79e-d5e8-40ea-a688-5d3ab8ba3a68",
       "name": "Azure OpenAI Chat Model8",
       "credentials": {
         "azureOpenAiApi": {
@@ -1571,16 +1575,16 @@
     {
       "parameters": {
         "respondWith": "json",
-        "responseBody": "={{\n  JSON.stringify(\n    (() => {\n      // 1) Greeting Agent ka raw output uthao\n      //    (Tools Agent aksar { output: \"...\" } deta hai)\n      const g = $('General Agent').first().json || {};\n      const raw = g.output ?? g.text ?? g.message ?? g; // string ya object\n\n // Check if Intent Agent se type mil sakta hai\n      const intentData = $('Intent Agent').first().json || {};\n      const intentType = intentData.type || 'greeting';\n\n      // 2) Agar JSON string/object me hi contract mil gaya ho to sanitize karke return\n      try {\n        const maybe =\n          typeof raw === 'string' ? JSON.parse(raw) :\n          (typeof raw === 'object' ? raw : null);\n\n        if (maybe && (maybe.response_message || maybe.sources)) {\n          const src = Array.isArray(maybe.sources) ? maybe.sources : [];\n          return {\n            response_message: String(maybe.response_message || ''),\n            sources: src.map(s => ({\n              doc_id: s?.doc_id || '',\n              title:  s?.title  || '',\n              file_url: s?.file_url || '',\n               type: intentType\n            }))\n          };\n        }\n      } catch (_) { /* ignore parse errors; fallback below */ }\n\n      // 3) Fallback: plain greeting text -> same contract, empty sources\n      return {\n        response_message: String(\n          typeof raw === 'string' && raw ? raw : 'Hello! 👋'\n        ),\n        sources: []\n      };\n    })()\n  )\n}}\n",
+        "responseBody": "={{\n  JSON.stringify(\n    (() => {\n      // 1) Greeting Agent ka raw output uthao\n      //    (Tools Agent aksar { output: \"...\" } deta hai)\n      const g = $('General Agent').first().json || {};\n      const raw = g.output ?? g.text ?? g.message ?? g; // string ya object\n\n // Check if Intent Agent se type mil sakta hai\n      const intentData = $('Intent Agent').first().json || {};\n      const intentType = intentData.type || 'greeting';\n\n      // 2) Agar JSON string/object me hi contract mil gaya ho to sanitize karke return\n      try {\n        const maybe =\n          typeof raw === 'string' ? JSON.parse(raw) :\n          (typeof raw === 'object' ? raw : null);\n\n        if (maybe && (maybe.response_message || maybe.sources)) {\n          const src = Array.isArray(maybe.sources) ? maybe.sources : [];\n          return {\n            response_message: String(maybe.response_message || ''),\n            sources: src.map(s => ({\n              doc_id: s?.doc_id || '',\n              title:  s?.title  || '',\n              file_url: s?.file_url || '',\n               type: intentType\n            }))\n          };\n        }\n      } catch (_) { /* ignore parse errors; fallback below */ }\n\n      // 3) Fallback: plain greeting text -> same contract, empty sources\n      return {\n        response_message: String(\n          typeof raw === 'string' && raw ? raw : 'Hello! \ud83d\udc4b'\n        ),\n        sources: []\n      };\n    })()\n  )\n}}\n",
         "options": {}
       },
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.2,
       "position": [
-        -48,
-        -240
+        -1152,
+        4176
       ],
-      "id": "0a02fda0-f9cb-4007-b31d-875ac6835afb",
+      "id": "43a1245f-fa3e-42bf-a040-46c159bbeda1",
       "name": "Respond to Webhook3"
     },
     {
@@ -1588,16 +1592,16 @@
         "promptType": "define",
         "text": "={{ $('On GET request1').item.json.body.message }}",
         "options": {
-          "systemMessage": "You are Linde Gas Assistant, designed to help users with internal Linde-related information and services.\nYour primary responsibilities include:\n\nProviding details about TDS (Technical Data Sheets)\n\nSupporting quotation-related queries\n\nHelping users schedule a call with a Linde sales representative\n\nChecking delivery status\n\nAnswering questions about Linde Gas, our products, processes, and services\n\nIf a user asks about your role or who you are, politely explain that you are an assistant created to support Linde employees/customers with information and internal processes.\n\nIf the user asks something not related to Linde Gas, or a question outside your supported domain, respond with:\n\n“Sorry, I think I might not be able to answer this query. My role is to assist only with Linde Gas internal information like TDS, quotations, sales support, and delivery status checks.”\n\nBe interactive, concise, and professional.\nYour goal is to guide the user toward what you can help with rather than what you cannot.\nWhen appropriate, offer actionable next steps (e.g., “Would you like me to fetch the TDS?” or “Should I check the delivery status for you?”).\n\nDo not guess or provide any information unrelated to Linde Gas."
+          "systemMessage": "You are Linde Gas Assistant, designed to help users with internal Linde-related information and services.\nYour primary responsibilities include:\n\nProviding details about TDS (Technical Data Sheets)\n\nSupporting quotation-related queries\n\nHelping users schedule a call with a Linde sales representative\n\nChecking delivery status\n\nAnswering questions about Linde Gas, our products, processes, and services\n\nIf a user asks about your role or who you are, politely explain that you are an assistant created to support Linde employees/customers with information and internal processes.\n\nIf the user asks something not related to Linde Gas, or a question outside your supported domain, respond with:\n\n\u201cSorry, I think I might not be able to answer this query. My role is to assist only with Linde Gas internal information like TDS, quotations, sales support, and delivery status checks.\u201d\n\nBe interactive, concise, and professional.\nYour goal is to guide the user toward what you can help with rather than what you cannot.\nWhen appropriate, offer actionable next steps (e.g., \u201cWould you like me to fetch the TDS?\u201d or \u201cShould I check the delivery status for you?\u201d).\n\nDo not guess or provide any information unrelated to Linde Gas."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        -400,
-        -240
+        -1504,
+        4176
       ],
-      "id": "2a2fc095-7492-48c7-ae50-1314591a967c",
+      "id": "d6085e09-2414-446c-b9a2-de7f416dcc30",
       "name": "General Agent"
     },
     {
@@ -1605,16 +1609,16 @@
         "promptType": "define",
         "text": "={{ $('On GET request1').item.json.body.message }}",
         "options": {
-          "systemMessage": "You are an AVAILABILITY agent for Linde Gas industrial products.\nYour ONLY data source is the Availability Master Google Sheet tool provided.\n\nSheet columns (exact):\nproduct_code, product_name, grade_purity, location_dc, stock_status, available_qty, lead_time_days, next_restock_date, notes\n\nWhat to do:\n1. Extract the gas/product name, purity (if mentioned), and location (if mentioned) from the user message.\n2. Read the Availability Master sheet.\n3. Filter rows matching the product (case-insensitive). Also filter by purity and location if provided.\n4. If a match is found, respond with:\n   - stock_status\n   - available_qty\n   - lead_time_days\n   - next_restock_date (if set)\n   - notes (if any)\n5. If no match → respond clearly that the product is not found in the availability data. Do NOT hallucinate.\n6. If multiple matches (e.g. multiple locations), list all of them.\n\nFormat: plain text summary (the workflow wraps it into JSON).\n\nDo NOT use any other tool or knowledge source."
+          "systemMessage": "You are an AVAILABILITY agent for Linde Gas industrial products.\nYour ONLY data source is the Availability Master Google Sheet tool provided.\n\nSheet columns (exact):\nproduct_code, product_name, grade_purity, location_dc, stock_status, available_qty, lead_time_days, next_restock_date, notes\n\nWhat to do:\n1. Extract the gas/product name, purity (if mentioned), and location (if mentioned) from the user message.\n2. Read the Availability Master sheet.\n3. Filter rows matching the product (case-insensitive). Also filter by purity and location if provided.\n4. If a match is found, respond with:\n   - stock_status\n   - available_qty\n   - lead_time_days\n   - next_restock_date (if set)\n   - notes (if any)\n5. If no match \u2192 respond clearly that the product is not found in the availability data. Do NOT hallucinate.\n6. If multiple matches (e.g. multiple locations), list all of them.\n\nFormat: plain text summary (the workflow wraps it into JSON).\n\nDo NOT use any other tool or knowledge source."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        -432,
-        144
+        -1536,
+        4560
       ],
-      "id": "195fceb6-39a7-457f-a99e-1f7436482af8",
+      "id": "0defbb07-1982-46b3-9aee-e7726f82e7fd",
       "name": "Availability Agent"
     },
     {
@@ -1627,10 +1631,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -432,
-        368
+        -1536,
+        4784
       ],
-      "id": "8ac18c27-da1a-4206-ade9-e05c8b7f22c6",
+      "id": "70b36270-434b-4fb2-beac-5dee03d66571",
       "name": "Azure OpenAI Chat Model Availability",
       "credentials": {
         "azureOpenAiApi": {
@@ -1658,10 +1662,10 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.5,
       "position": [
-        -80,
-        368
+        -1184,
+        4784
       ],
-      "id": "e9ce10cd-5c8a-4c87-ae57-e4c73a98538e",
+      "id": "17a5463e-0809-4326-b01e-b024ca6bbda1",
       "name": "Availability Master Sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -1679,10 +1683,10 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.2,
       "position": [
-        -48,
-        144
+        -1152,
+        4560
       ],
-      "id": "ffcad412-cb5d-46eb-8afa-2bcc4c8bcee7",
+      "id": "8c456f5c-a94e-4af4-a14e-38a95d6caeb7",
       "name": "Respond to Webhook Availability"
     },
     {
@@ -1694,10 +1698,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -2256,
-        -2848
+        -3360,
+        1568
       ],
-      "id": "a6867e14-9c97-46b3-96a1-2f5deb53bd09",
+      "id": "163c1f0b-389c-4959-86e4-1cd724265b1a",
       "name": "Memory - Intent Agent"
     },
     {
@@ -1709,10 +1713,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -192,
-        -528
+        -1296,
+        3888
       ],
-      "id": "fb2f514b-845e-43ba-9961-d9737b057061",
+      "id": "d617da76-bb34-4cfe-98a6-8f057fd1be57",
       "name": "Memory - Greeting Agent"
     },
     {
@@ -1724,10 +1728,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -16,
-        -2288
+        -1120,
+        2128
       ],
-      "id": "2a29063c-d601-40b9-bdd6-be575b68e2c7",
+      "id": "67170e1a-7014-49d2-8d74-552609ec3660",
       "name": "Memory - Quotation Agent"
     },
     {
@@ -1739,25 +1743,25 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -224,
-        -1648
+        -1328,
+        2768
       ],
-      "id": "9857038d-0062-4809-bc1a-2918d23d2929",
+      "id": "8a00017f-db51-4274-8dce-63f8cdb31964",
       "name": "Memory - Calendar Agent"
     },
     {
       "parameters": {
         "sessionIdType": "customKey",
         "sessionKey": "={{ $('On GET request1').item.json.body.sessionId }}",
-        "contextWindowLength": 2
+        "contextWindowLength": 10
       },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -256,
-        -1152
+        -1360,
+        3264
       ],
-      "id": "cd96e17e-2b18-4434-8976-049f69c44251",
+      "id": "52658400-812e-47f5-a09f-045cb90098de",
       "name": "Memory - Delivery Status Agent"
     },
     {
@@ -1769,10 +1773,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -208,
-        -48
+        -1312,
+        4368
       ],
-      "id": "968c62d2-e904-4c58-8090-f025dcef1084",
+      "id": "c3c84f2a-6968-4ca6-acd6-acb4a5bcd9fc",
       "name": "Memory - General Agent"
     },
     {
@@ -1784,10 +1788,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -256,
-        368
+        -1360,
+        4784
       ],
-      "id": "649e5669-287e-4686-868f-0fe9be62ac10",
+      "id": "302cf0df-ef2a-4fb7-af5f-bcfcdc52de13",
       "name": "Memory - Availability Agent"
     },
     {
@@ -1815,12 +1819,12 @@
         },
         "options": {}
       },
-      "id": "674d12ba-f6cc-40ca-9346-c3a943860e56",
+      "id": "44be3169-1060-44fb-a6d6-5ba5a73f4ebc",
       "name": "Multi-Intent Check",
       "type": "n8n-nodes-base.if",
       "position": [
-        -1296,
-        -3072
+        -2400,
+        1344
       ],
       "typeVersion": 2.2
     },
@@ -1833,10 +1837,10 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.2,
       "position": [
-        912,
-        -3552
+        -192,
+        864
       ],
-      "id": "fc04bc37-ca35-4c2b-afed-761e9dd6d89e",
+      "id": "c75520e8-007b-4be8-88ea-48712dc874e5",
       "name": "Respond Multi-Intent"
     },
     {
@@ -1857,10 +1861,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -848,
-        -3552
+        -1952,
+        864
       ],
-      "id": "92dab8c9-43dd-47e5-914a-e7419079ec75",
+      "id": "f8f21bd0-9ba1-4acf-8b56-c2355c9e62fb",
       "name": "Set Chunks Multi"
     },
     {
@@ -1879,10 +1883,10 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
       "typeVersion": 1,
       "position": [
-        -208,
-        -3552
+        -1312,
+        864
       ],
-      "id": "835c61e2-cb07-491f-abd7-51b086fb0c4c",
+      "id": "b6c02dc3-9c98-4077-8d16-a527d6714c26",
       "name": "Get DS Chunks Multi",
       "credentials": {
         "pineconeApi": {
@@ -1899,10 +1903,10 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -208,
-        -3360
+        -1312,
+        1056
       ],
-      "id": "eda96bba-6d0b-4624-8273-29d0a4782cd7",
+      "id": "e7ac7fe3-9616-4f64-baf8-a4f90d81e23c",
       "name": "Embeddings DS Multi",
       "credentials": {
         "azureOpenAiApi": {
@@ -1913,15 +1917,15 @@
     },
     {
       "parameters": {
-        "jsCode": "// Gas alias map: normalized name (from downstream node) → tokens to match in filenames\nconst GAS_ALIASES = {\n  'oxygen':         ['O2','Oxygen'],\n  'o2':             ['O2','Oxygen'],\n  'nitrogen':       ['N2','Nitrogen'],\n  'n2':             ['N2','Nitrogen'],\n  'argon':          ['Ar','Argon'],\n  'ar':             ['Ar','Argon'],\n  'hydrogen':       ['H2','Hydrogen'],\n  'h2':             ['H2','Hydrogen'],\n  'carbon dioxide': ['CO2'],\n  'co2':            ['CO2'],\n  'helium':         ['He','Helium'],\n  'he':             ['He','Helium'],\n  'methane':        ['CH4','Methane'],\n  'ch4':            ['CH4','Methane'],\n};\n\nfunction getGasTerms(gasName) {\n  if (!gasName) return [];\n  const key = gasName.toLowerCase().trim();\n  return GAS_ALIASES[key] || [gasName];\n}\n\nfunction fileNameMatchesGas(fileName, gasTerms) {\n  if (!gasTerms || gasTerms.length === 0) return true;\n  const up = fileName.toUpperCase();\n  return gasTerms.some(function(raw) {\n    const t = raw.toUpperCase();\n    return up.indexOf('_' + t + '_') !== -1\n        || up.indexOf('_' + t + '.') !== -1\n        || up.indexOf('-' + t + '-') !== -1\n        || up.indexOf('-' + t + '.') !== -1\n        || up.startsWith(t + '_') || up.startsWith(t + '-')\n        || up.endsWith('_' + t)   || up.endsWith('-' + t);\n  });\n}\n\n// Read gas entity from downstream node (accessible before Pinecone retrieval)\nconst gasName = $('downstream node').first().json.entities?.gas || '';\nconst gasTerms = getGasTerms(gasName);\n\n// Extract unique document sources from Datasheet Pinecone chunks\nconst chunks = $input.all();\nconst seen = {};\nconst dsSources = [];\n\nfor (const chunk of chunks) {\n  const meta = chunk.json?.document?.metadata ?? {};\n  const fileName = meta.file_name || '';\n  const dedupeKey = fileName || meta.doc_id || meta.source || '';\n  if (!dedupeKey) continue;\n  // ── Gas filter: skip if filename doesn't match extracted gas ──\n  if (gasTerms.length > 0 && !fileNameMatchesGas(fileName, gasTerms)) continue;\n  if (!seen[dedupeKey]) {\n    seen[dedupeKey] = true;\n    const fileUrl =\n      meta.file_url ||\n      meta.webContentLink ||\n      meta.webViewLink ||\n      (meta.file_id ? 'https://drive.google.com/uc?id=' + meta.file_id + '&export=download' : '') ||\n      (meta.id      ? 'https://drive.google.com/uc?id=' + meta.id      + '&export=download' : '') ||\n      '';\n    const docId = fileName.replace(/\\.(pdf|txt|docx?)$/i, '') || meta.doc_id || fileName || '';\n    dsSources.push({ doc_id: docId, title: fileName || docId, file_url: fileUrl, type: 'datasheet' });\n  }\n  if (dsSources.length >= 2) break;\n}\n\n// Pass gas + gasTerms through so Build Multi Response can reuse them\nreturn {\n  dsSources: dsSources,\n  chunks: 4,\n  gas: gasName,\n  gasTerms: gasTerms\n};"
+        "jsCode": "// Gas alias map: normalized name (from downstream node) \u2192 tokens to match in filenames\nconst GAS_ALIASES = {\n  'oxygen':         ['O2','Oxygen'],\n  'o2':             ['O2','Oxygen'],\n  'nitrogen':       ['N2','Nitrogen'],\n  'n2':             ['N2','Nitrogen'],\n  'argon':          ['Ar','Argon'],\n  'ar':             ['Ar','Argon'],\n  'hydrogen':       ['H2','Hydrogen'],\n  'h2':             ['H2','Hydrogen'],\n  'carbon dioxide': ['CO2'],\n  'co2':            ['CO2'],\n  'helium':         ['He','Helium'],\n  'he':             ['He','Helium'],\n  'methane':        ['CH4','Methane'],\n  'ch4':            ['CH4','Methane'],\n};\n\nfunction getGasTerms(gasName) {\n  if (!gasName) return [];\n  const key = gasName.toLowerCase().trim();\n  return GAS_ALIASES[key] || [gasName];\n}\n\nfunction fileNameMatchesGas(fileName, gasTerms) {\n  if (!gasTerms || gasTerms.length === 0) return true;\n  const up = fileName.toUpperCase();\n  return gasTerms.some(function(raw) {\n    const t = raw.toUpperCase();\n    return up.indexOf('_' + t + '_') !== -1\n        || up.indexOf('_' + t + '.') !== -1\n        || up.indexOf('-' + t + '-') !== -1\n        || up.indexOf('-' + t + '.') !== -1\n        || up.startsWith(t + '_') || up.startsWith(t + '-')\n        || up.endsWith('_' + t)   || up.endsWith('-' + t);\n  });\n}\n\n// Read gas entity from downstream node (accessible before Pinecone retrieval)\nconst gasName = $('downstream node').first().json.entities?.gas || '';\nconst gasTerms = getGasTerms(gasName);\n\n// Extract unique document sources from Datasheet Pinecone chunks\nconst chunks = $input.all();\nconst seen = {};\nconst dsSources = [];\n\nfor (const chunk of chunks) {\n  const meta = chunk.json?.document?.metadata ?? {};\n  const fileName = meta.file_name || '';\n  const dedupeKey = fileName || meta.doc_id || meta.source || '';\n  if (!dedupeKey) continue;\n  // \u2500\u2500 Gas filter: skip if filename doesn't match extracted gas \u2500\u2500\n  if (gasTerms.length > 0 && !fileNameMatchesGas(fileName, gasTerms)) continue;\n  if (!seen[dedupeKey]) {\n    seen[dedupeKey] = true;\n    const fileUrl =\n      meta.file_url ||\n      meta.webContentLink ||\n      meta.webViewLink ||\n      (meta.file_id ? 'https://drive.google.com/uc?id=' + meta.file_id + '&export=download' : '') ||\n      (meta.id      ? 'https://drive.google.com/uc?id=' + meta.id      + '&export=download' : '') ||\n      '';\n    const docId = fileName.replace(/\\.(pdf|txt|docx?)$/i, '') || meta.doc_id || fileName || '';\n    dsSources.push({ doc_id: docId, title: fileName || docId, file_url: fileUrl, type: 'datasheet' });\n  }\n  if (dsSources.length >= 2) break;\n}\n\n// Pass gas + gasTerms through so Build Multi Response can reuse them\nreturn {\n  dsSources: dsSources,\n  chunks: 4,\n  gas: gasName,\n  gasTerms: gasTerms\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        112,
-        -3552
+        -992,
+        864
       ],
-      "id": "4777bf82-e3a4-4ba8-92b5-c65d32a85f34",
+      "id": "02291ff7-722d-42e2-a3fa-2c22db049304",
       "name": "Extract DS Sources"
     },
     {
@@ -1940,10 +1944,10 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
       "typeVersion": 1,
       "position": [
-        336,
-        -3552
+        -768,
+        864
       ],
-      "id": "62e658f0-d840-4876-810d-b2038387e241",
+      "id": "1a579f54-e8c5-4fe7-a3a6-bf862aa8d0a4",
       "name": "Get QT Chunks Multi",
       "credentials": {
         "pineconeApi": {
@@ -1960,10 +1964,10 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        336,
-        -3360
+        -768,
+        1056
       ],
-      "id": "2ef13408-dd5e-44d8-9e1b-d50c102e87b8",
+      "id": "19b1c06b-cfb7-4215-90e8-6fd99ec11699",
       "name": "Embeddings QT Multi",
       "credentials": {
         "azureOpenAiApi": {
@@ -1974,15 +1978,15 @@
     },
     {
       "parameters": {
-        "jsCode": "// Retrieve DS sources + gas context from upstream Extract DS Sources node\nconst dsResult  = $('Extract DS Sources').first().json;\nconst dsSources = dsResult.dsSources || [];\nconst gasName   = dsResult.gas || $('downstream node').first().json.entities?.gas || '';\nconst gasTerms  = dsResult.gasTerms || [];\n\n// ── Gas filename-matching helper ──────────────────────────────────────────\nfunction fileNameMatchesGas(fileName, terms) {\n  if (!terms || terms.length === 0) return true;\n  const up = fileName.toUpperCase();\n  return terms.some(function(raw) {\n    const t = raw.toUpperCase();\n    return up.indexOf('_' + t + '_') !== -1\n        || up.indexOf('_' + t + '.') !== -1\n        || up.indexOf('-' + t + '-') !== -1\n        || up.indexOf('-' + t + '.') !== -1\n        || up.startsWith(t + '_') || up.startsWith(t + '-')\n        || up.endsWith('_' + t)   || up.endsWith('-' + t);\n  });\n}\n\n// ── Extract QT sources from Pinecone chunks ───────────────────────────────\nconst qtChunksAll = $input.all();\nconst seenQt = {};\nconst qtSourcesRaw = [];\n\nfor (const chunk of qtChunksAll) {\n  const meta = chunk.json?.document?.metadata ?? {};\n  const fileName = meta.file_name || '';\n  const dedupeKey = fileName || meta.doc_id || meta.source || '';\n  if (!dedupeKey) continue;\n  if (!seenQt[dedupeKey]) {\n    seenQt[dedupeKey] = true;\n    const fileUrl =\n      meta.file_url ||\n      meta.webContentLink ||\n      meta.webViewLink ||\n      (meta.file_id ? 'https://drive.google.com/uc?id=' + meta.file_id + '&export=download' : '') ||\n      (meta.id      ? 'https://drive.google.com/uc?id=' + meta.id      + '&export=download' : '') ||\n      '';\n    const docId = fileName.replace(/\\.(pdf|txt|docx?)$/i, '') || meta.doc_id || fileName || '';\n    qtSourcesRaw.push({ doc_id: docId, title: fileName || docId, file_url: fileUrl, type: 'quotation' });\n  }\n}\n\n// ── Gas filter for QT: keep only files whose name matches the queried gas ──\nlet qtSources = gasTerms.length > 0\n  ? qtSourcesRaw.filter(s => fileNameMatchesGas(s.title, gasTerms))\n  : qtSourcesRaw;\n\n// Fallback: if filter eliminated everything but we have raw results, log partial\nconst qtFilteredOut = gasTerms.length > 0 && qtSourcesRaw.length > 0 && qtSources.length === 0;\n\n// Only take best 1 quotation document\nqtSources = qtSources.slice(0, 1);\n\n// ── Intent metadata ───────────────────────────────────────────────────────\nconst intentsList = $('downstream node').first().json.intents || [];\nconst confidence  = $('downstream node').first().json.confidence ?? null;\n\n// ── Merge sources ─────────────────────────────────────────────────────────\nconst allSources = [...dsSources, ...qtSources];\n\n// ── Build response message ────────────────────────────────────────────────\nconst gasStr = gasName ? ' for ' + gasName : '';\nconst parts = [];\nif (dsSources.length > 0) {\n  parts.push('Product data sheet' + (dsSources.length > 1 ? 's' : '') + ': ' + dsSources.map(s => s.title).join(', ') + '.');\n} else {\n  parts.push('No product data sheet was found for this query.');\n}\nif (qtSources.length > 0) {\n  parts.push('Quotation document: ' + qtSources.map(s => s.title).join(', ') + '.');\n} else if (qtFilteredOut) {\n  parts.push('Quotation documents were found but none matched ' + (gasName || 'the requested product') + ' specifically.');\n} else {\n  parts.push('No quotation document was found for this query.');\n}\n\nconst responseMessage = (allSources.length > 0\n  ? 'Here are the requested documents' + gasStr + '. '\n  : 'I was unable to find the requested documents' + gasStr + '. ')\n  + parts.join(' ');\n\nreturn {\n  result: {\n    response_message: responseMessage,\n    sources: allSources,\n    meta: {\n      confidence: confidence,\n      sources_used: allSources.length,\n      intents: intentsList\n    }\n  }\n};"
+        "jsCode": "// Retrieve DS sources + gas context from upstream Extract DS Sources node\nconst dsResult  = $('Extract DS Sources').first().json;\nconst dsSources = dsResult.dsSources || [];\nconst gasName   = dsResult.gas || $('downstream node').first().json.entities?.gas || '';\nconst gasTerms  = dsResult.gasTerms || [];\n\n// \u2500\u2500 Gas filename-matching helper \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nfunction fileNameMatchesGas(fileName, terms) {\n  if (!terms || terms.length === 0) return true;\n  const up = fileName.toUpperCase();\n  return terms.some(function(raw) {\n    const t = raw.toUpperCase();\n    return up.indexOf('_' + t + '_') !== -1\n        || up.indexOf('_' + t + '.') !== -1\n        || up.indexOf('-' + t + '-') !== -1\n        || up.indexOf('-' + t + '.') !== -1\n        || up.startsWith(t + '_') || up.startsWith(t + '-')\n        || up.endsWith('_' + t)   || up.endsWith('-' + t);\n  });\n}\n\n// \u2500\u2500 Extract QT sources from Pinecone chunks \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nconst qtChunksAll = $input.all();\nconst seenQt = {};\nconst qtSourcesRaw = [];\n\nfor (const chunk of qtChunksAll) {\n  const meta = chunk.json?.document?.metadata ?? {};\n  const fileName = meta.file_name || '';\n  const dedupeKey = fileName || meta.doc_id || meta.source || '';\n  if (!dedupeKey) continue;\n  if (!seenQt[dedupeKey]) {\n    seenQt[dedupeKey] = true;\n    const fileUrl =\n      meta.file_url ||\n      meta.webContentLink ||\n      meta.webViewLink ||\n      (meta.file_id ? 'https://drive.google.com/uc?id=' + meta.file_id + '&export=download' : '') ||\n      (meta.id      ? 'https://drive.google.com/uc?id=' + meta.id      + '&export=download' : '') ||\n      '';\n    const docId = fileName.replace(/\\.(pdf|txt|docx?)$/i, '') || meta.doc_id || fileName || '';\n    qtSourcesRaw.push({ doc_id: docId, title: fileName || docId, file_url: fileUrl, type: 'quotation' });\n  }\n}\n\n// \u2500\u2500 Gas filter for QT: keep only files whose name matches the queried gas \u2500\u2500\nlet qtSources = gasTerms.length > 0\n  ? qtSourcesRaw.filter(s => fileNameMatchesGas(s.title, gasTerms))\n  : qtSourcesRaw;\n\n// Fallback: if filter eliminated everything but we have raw results, log partial\nconst qtFilteredOut = gasTerms.length > 0 && qtSourcesRaw.length > 0 && qtSources.length === 0;\n\n// Only take best 1 quotation document\nqtSources = qtSources.slice(0, 1);\n\n// \u2500\u2500 Intent metadata \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nconst intentsList = $('downstream node').first().json.intents || [];\nconst confidence  = $('downstream node').first().json.confidence ?? null;\n\n// \u2500\u2500 Merge sources \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nconst allSources = [...dsSources, ...qtSources];\n\n// \u2500\u2500 Build response message \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\nconst gasStr = gasName ? ' for ' + gasName : '';\nconst parts = [];\nif (dsSources.length > 0) {\n  parts.push('Product data sheet' + (dsSources.length > 1 ? 's' : '') + ': ' + dsSources.map(s => s.title).join(', ') + '.');\n} else {\n  parts.push('No product data sheet was found for this query.');\n}\nif (qtSources.length > 0) {\n  parts.push('Quotation document: ' + qtSources.map(s => s.title).join(', ') + '.');\n} else if (qtFilteredOut) {\n  parts.push('Quotation documents were found but none matched ' + (gasName || 'the requested product') + ' specifically.');\n} else {\n  parts.push('No quotation document was found for this query.');\n}\n\nconst responseMessage = (allSources.length > 0\n  ? 'Here are the requested documents' + gasStr + '. '\n  : 'I was unable to find the requested documents' + gasStr + '. ')\n  + parts.join(' ');\n\nreturn {\n  result: {\n    response_message: responseMessage,\n    sources: allSources,\n    meta: {\n      confidence: confidence,\n      sources_used: allSources.length,\n      intents: intentsList\n    }\n  }\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        688,
-        -3552
+        -416,
+        864
       ],
-      "id": "300865ae-006e-4c13-9ae5-2c80746f4d28",
+      "id": "1368464f-8a1e-4ce8-af6b-2220c3291e4a",
       "name": "Build Multi Response"
     },
     {
@@ -2010,13 +2014,13 @@
         },
         "options": {}
       },
-      "id": "9178259f-9f7c-4a14-ac6f-07296174798e",
+      "id": "8aac3c33-1961-48b9-9e87-7d4b65456068",
       "name": "Validate Appt Fields",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        -64,
-        -1920
+        -1168,
+        2496
       ]
     },
     {
@@ -2025,13 +2029,13 @@
         "responseBody": "={{ (() => {\n  const raw = $('Calendar Agent').first().json?.output || '';\n  let data = {};\n  try { data = typeof raw === 'string' ? JSON.parse(raw) : raw; } catch {}\n\n  const missing = Array.isArray(data.missing_fields) ? data.missing_fields : ['email', 'date', 'time'];\n\n  const defaultMessages = {\n    email:    'your email address (so we can send a calendar invite)',\n    date:     'your preferred meeting date (e.g. 10 March 2026)',\n    time:     'your preferred time (e.g. 14:30 CET)',\n    subject:  'meeting topic or agenda',\n  };\n\n  const bulletList = missing.map(f => '- ' + (defaultMessages[f] || f)).join('\\n');\n  const clarMsg = data.clarification_message ||\n    'To schedule your call with a Linde sales representative, I need a few more details. Please provide:\\n' + bulletList;\n\n  const prefill = data.prefill || {};\n\n  return JSON.stringify({\n    response_message: clarMsg,\n    sources: [{ doc_id: '', title: '', file_url: '', type: 'appointment' }],\n    ui: {\n      mode: 'clarification',\n      missing_fields: missing,\n      prefill: Object.assign({ subject: '', duration_min: 60, platform: 'Google Meet' }, prefill)\n    }\n  });\n})() }}",
         "options": {}
       },
-      "id": "cd3da81a-311c-4287-a6e4-e65aef4f2431",
+      "id": "b5827a96-e7e0-40df-96a2-0f30ee6eaadc",
       "name": "Respond Appt Clarification",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
       "position": [
-        208,
-        -1744
+        -896,
+        2672
       ]
     }
   ],
@@ -2343,7 +2347,7 @@
         ]
       ]
     },
-    "When clicking ‘Test workflow’": {
+    "When clicking \u2018Test workflow\u2019": {
       "main": [
         [
           {
@@ -2629,7 +2633,7 @@
         ]
       ]
     },
-    "Delivery Orders Lookup": {
+    "Google Sheets": {
       "ai_tool": [
         [
           {

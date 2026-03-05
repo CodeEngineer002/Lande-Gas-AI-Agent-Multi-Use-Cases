@@ -152,7 +152,7 @@ export default function Page() {
   }, [clear, initWelcome, settings.confirmBeforeClear]);
 
   const hasUserMessages = state.messages.some(m => m.role === 'user');
-  const hasResponded = state.messages.filter(m => m.role === 'assistant').length > 1;
+  const hasResponded = state.messages.filter(m => m.role === 'assistant').length >= 1;
 
   return (
     <>

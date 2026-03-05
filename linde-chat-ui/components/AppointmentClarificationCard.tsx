@@ -69,7 +69,7 @@ function Field({
 }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-      <label style={{
+      <label className="acc-field-label" style={{
         fontSize: 10.5,
         fontWeight: 700,
         textTransform: 'uppercase',
@@ -155,6 +155,7 @@ export default function AppointmentClarificationCard({ data, onSend }: Props) {
 
   return (
     <motion.div
+      className="acc-root"
       initial={{ opacity: 0, y: 16, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
@@ -170,7 +171,7 @@ export default function AppointmentClarificationCard({ data, onSend }: Props) {
       }}
     >
       {/* Top bar */}
-      <div style={{
+      <div className="acc-accent-bar" style={{
         height: 3,
         background: 'linear-gradient(90deg, #006FBF, #00c6a7, #006FBF)',
         backgroundSize: '200% 100%',
@@ -178,14 +179,14 @@ export default function AppointmentClarificationCard({ data, onSend }: Props) {
       }} />
 
       {/* ── HEADER ───────────────────────────────── */}
-      <div style={{
+      <div className="acc-header" style={{
         padding: '18px 20px 14px',
         display: 'flex',
         alignItems: 'center',
         gap: 14,
         borderBottom: '1px solid rgba(0,111,191,0.1)',
       }}>
-        <div style={{
+        <div className="acc-header-icon" style={{
           width: 42, height: 42,
           borderRadius: 12,
           background: 'linear-gradient(145deg, rgba(0,111,191,0.3), rgba(0,80,150,0.2))',
@@ -198,7 +199,7 @@ export default function AppointmentClarificationCard({ data, onSend }: Props) {
           <PhoneIcon />
         </div>
         <div style={{ flex: 1 }}>
-          <div style={{
+          <div className="acc-title" style={{
             fontSize: 15.5,
             fontWeight: 800,
             color: '#e0f0ff',
@@ -207,7 +208,7 @@ export default function AppointmentClarificationCard({ data, onSend }: Props) {
           }}>
             Book a Sales Call
           </div>
-          <div style={{
+          <div className="acc-subtitle" style={{
             fontSize: 12,
             color: 'rgba(120,175,225,0.55)',
             marginTop: 3,
@@ -217,7 +218,7 @@ export default function AppointmentClarificationCard({ data, onSend }: Props) {
         </div>
         {/* Required badge */}
         {missing_fields.length > 0 && (
-          <div style={{
+          <div className="acc-required-badge" style={{
             padding: '3px 9px',
             borderRadius: 20,
             background: 'rgba(248,113,113,0.12)',
@@ -296,7 +297,7 @@ export default function AppointmentClarificationCard({ data, onSend }: Props) {
 
         {/* Duration pills */}
         <div style={{ marginBottom: 20 }}>
-          <label style={{
+          <label className="acc-field-label" style={{
             display: 'flex',
             alignItems: 'center',
             gap: 5,
@@ -318,6 +319,7 @@ export default function AppointmentClarificationCard({ data, onSend }: Props) {
               const active = duration === opt.value;
               return (
                 <motion.button
+                  className={`acc-duration-pill${active ? ' acc-duration-active' : ''}`}
                   key={opt.value}
                   type="button"
                   onClick={() => setDuration(opt.value)}
@@ -350,6 +352,7 @@ export default function AppointmentClarificationCard({ data, onSend }: Props) {
 
         {/* Submit */}
         <motion.button
+          className="acc-submit-btn"
           type="submit"
           disabled={!canSubmit}
           animate={canSubmit
@@ -392,7 +395,7 @@ export default function AppointmentClarificationCard({ data, onSend }: Props) {
         </motion.button>
 
         {/* Footer note */}
-        <div style={{
+        <div className="acc-footer" style={{
           marginTop: 12,
           display: 'flex',
           alignItems: 'center',
@@ -404,7 +407,7 @@ export default function AppointmentClarificationCard({ data, onSend }: Props) {
           <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
           </svg>
-          Google Meet · Calendar invite sent to your email
+          Linde Gas · Google Meet · Calendar invite to your email
         </div>
       </form>
     </motion.div>

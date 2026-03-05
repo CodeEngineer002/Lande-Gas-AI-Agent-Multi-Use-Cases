@@ -79,7 +79,7 @@ const DEFAULTS: AppSettings = {
   enableSound         : false,
   confirmBeforeClear  : false,
 
-  lindeBranding       : false,
+  lindeBranding       : true,
 };
 
 const STORAGE_KEY = 'linde_settings_v1';

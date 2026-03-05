@@ -90,7 +90,7 @@ function DatabaseIcon() {
 
 function PdfIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#ef4444' }}>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{ color: 'var(--brand)' }}>
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 1.5L18.5 8H14V3.5zM9.5 14.5h-1v-4h1c1.1 0 1.5.5 1.5 1.5v1c0 1-.4 1.5-1.5 1.5zm0-3.5h-.3v3h.3c.6 0 .7-.3.7-1v-1c0-.7-.1-1-.7-1zM12 14.5v-4h1.75c.75 0 1.25.4 1.25 1.25v.25c0 .55-.3.9-.8 1 .6.1.8.45.8 1v.5h-.75v-.55c0-.55-.2-.7-.6-.7H12.7v1.25H12zm.7-3.5v1.15h.85c.35 0 .45-.2.45-.6s-.1-.55-.45-.55H12.7zm4.05 3.5v-4h2v.7h-1.25v1h1.15v.7h-1.15v1h1.25v.7H16.75z"/>
     </svg>
   );
@@ -98,7 +98,7 @@ function PdfIcon() {
 
 function DocxIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#3b82f6' }}>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#3b82f6' }}>
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm0 1.5L18.5 8H14V3.5zM8 17l1.5-5 1.5 3.5 1-2.5 1.5 4H8z"/>
     </svg>
   );
@@ -106,7 +106,7 @@ function DocxIcon() {
 
 function GenericDocIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
       <path d="M6 2h7l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm7 1.5V8h4.5L13 3.5z"/>
     </svg>
   );
@@ -222,9 +222,9 @@ export default function LeftSidebarEnterprise({
                 <div className="sidebar-username">{USER_NAME}</div>
                 <div className="sidebar-userrole">{USER_ROLE}</div>
               </div>
-              <div className="sidebar-user-status">
+              {/* <div className="sidebar-user-status">
                 <span className="status-dot" />
-              </div>
+              </div> */}
             </motion.div>
 
             {/* ── Agent Insights ── */}

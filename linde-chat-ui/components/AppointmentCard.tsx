@@ -63,7 +63,7 @@ function MailIconSm() {
 /* ─── Reusable row item ─── */
 function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
-    <div style={{
+    <div className="ac-info-row" style={{
       display: 'flex',
       alignItems: 'center',
       gap: 12,
@@ -72,7 +72,7 @@ function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string;
       background: 'rgba(0,111,191,0.07)',
       border: '1px solid rgba(0,111,191,0.13)',
     }}>
-      <div style={{
+      <div className="ac-info-icon" style={{
         width: 32, height: 32,
         borderRadius: 9,
         background: 'rgba(0,111,191,0.15)',
@@ -84,10 +84,10 @@ function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string;
         {icon}
       </div>
       <div>
-        <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.8px', color: 'rgba(100,160,220,0.55)', marginBottom: 2 }}>
+        <div className="ac-info-label" style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.8px', color: 'rgba(100,160,220,0.55)', marginBottom: 2 }}>
           {label}
         </div>
-        <div style={{ fontSize: 13, fontWeight: 700, color: '#cde4f8', lineHeight: 1.35 }}>
+        <div className="ac-info-value" style={{ fontSize: 13, fontWeight: 700, color: '#cde4f8', lineHeight: 1.35 }}>
           {value}
         </div>
       </div>
@@ -101,6 +101,7 @@ export default function AppointmentCard({ data }: AppointmentCardProps) {
 
   return (
     <motion.div
+      className="ac-root"
       initial={{ opacity: 0, y: 20, scale: 0.93 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -117,9 +118,9 @@ export default function AppointmentCard({ data }: AppointmentCardProps) {
       }}
     >
       {/* Top gradient accent bar */}
-      <div style={{
+      <div className="ac-accent-bar" style={{
         height: 3,
-        background: 'linear-gradient(90deg, #006FBF, #00c6a7, #00a8ff, #006FBF)',
+        background: 'linear-gradient(90deg, #006FBF, #00b5e2, #0047ab, #006FBF)',
         backgroundSize: '300% 100%',
         animation: 'gradientShift 4s ease infinite',
       }} />
@@ -184,6 +185,16 @@ export default function AppointmentCard({ data }: AppointmentCardProps) {
         {/* Text */}
         <div style={{ zIndex: 1 }}>
           <div style={{
+            fontSize: 9.5,
+            fontWeight: 800,
+            textTransform: 'uppercase',
+            letterSpacing: '1.2px',
+            color: '#00b5e2',
+            marginBottom: 4,
+          }}>
+            LINDE GAS
+          </div>
+          <div className="ac-title" style={{
             fontSize: 18,
             fontWeight: 800,
             color: '#e8f4ff',
@@ -192,7 +203,7 @@ export default function AppointmentCard({ data }: AppointmentCardProps) {
           }}>
             Meeting Confirmed
           </div>
-          <div style={{
+          <div className="ac-subtitle" style={{
             fontSize: 12,
             color: 'rgba(150,200,240,0.55)',
             marginTop: 4,
@@ -207,18 +218,18 @@ export default function AppointmentCard({ data }: AppointmentCardProps) {
                 display: 'inline-block',
                 width: 6, height: 6,
                 borderRadius: '50%',
-                background: '#00c47a',
-                boxShadow: '0 0 8px #00c47a',
+                background: '#00b5e2',
+                boxShadow: '0 0 8px #00b5e2',
                 flexShrink: 0,
               }}
             />
-            Invite sent · Google Meet link ready
+            Invite sent · Meeting link ready
           </div>
         </div>
       </div>
 
       {/* ── SEPARATOR ────────────────────────────── */}
-      <div style={{
+      <div className="ac-separator" style={{
         height: 1,
         margin: '0 22px',
         background: 'linear-gradient(90deg, transparent, rgba(0,111,200,0.22), transparent)',
@@ -226,7 +237,7 @@ export default function AppointmentCard({ data }: AppointmentCardProps) {
 
       {/* ── TITLE ─────────────────────────────────── */}
       <div style={{ padding: '14px 22px 4px' }}>
-        <div style={{
+        <div className="ac-meeting-title" style={{
           fontSize: 13.5,
           fontWeight: 700,
           color: '#b8d8f5',
@@ -258,7 +269,7 @@ export default function AppointmentCard({ data }: AppointmentCardProps) {
             display: 'flex',
             flexDirection: 'column',
           }}>
-            <div style={{
+            <div className="ac-day-header" style={{
               padding: '6px 0',
               background: 'linear-gradient(135deg, #006FBF, #0056A0)',
               textAlign: 'center',
@@ -270,7 +281,7 @@ export default function AppointmentCard({ data }: AppointmentCardProps) {
             }}>
               {dayShort}
             </div>
-            <div style={{
+            <div className="ac-day-body" style={{
               flex: 1,
               display: 'flex',
               flexDirection: 'column',
@@ -279,10 +290,10 @@ export default function AppointmentCard({ data }: AppointmentCardProps) {
               padding: '8px 4px 10px',
               background: 'rgba(0,111,191,0.08)',
             }}>
-              <div style={{ fontSize: 28, fontWeight: 900, color: '#e8f4ff', letterSpacing: '-1.5px', lineHeight: 1 }}>
+              <div className="ac-day-num" style={{ fontSize: 28, fontWeight: 900, color: '#e8f4ff', letterSpacing: '-1.5px', lineHeight: 1 }}>
                 {dayNum}
               </div>
-              <div style={{ fontSize: 10.5, color: 'rgba(130,185,230,0.6)', marginTop: 3 }}>
+              <div className="ac-day-month" style={{ fontSize: 10.5, color: 'rgba(130,185,230,0.6)', marginTop: 3 }}>
                 {monthShort}
               </div>
             </div>
@@ -324,7 +335,7 @@ export default function AppointmentCard({ data }: AppointmentCardProps) {
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.44, duration: 0.3, ease: 'backOut' }}
-            whileHover={{ scale: 1.015, boxShadow: '0 10px 30px rgba(66,133,244,0.5)' }}
+            whileHover={{ scale: 1.015, boxShadow: '0 10px 30px rgba(0,111,191,0.5)' }}
             whileTap={{ scale: 0.97 }}
             style={{
               display: 'flex',
@@ -333,18 +344,18 @@ export default function AppointmentCard({ data }: AppointmentCardProps) {
               gap: 10,
               padding: '13px 20px',
               borderRadius: 12,
-              background: 'linear-gradient(135deg, #4285f4 0%, #34a853 100%)',
+              background: 'linear-gradient(135deg, #006FBF 0%, #0047ab 100%)',
               color: '#fff',
               fontWeight: 700,
               fontSize: 14,
               textDecoration: 'none',
               letterSpacing: '0.05px',
-              boxShadow: '0 4px 20px rgba(66,133,244,0.32)',
+              boxShadow: '0 4px 20px rgba(0,111,191,0.35)',
               transition: 'box-shadow 0.2s ease',
             }}
           >
             <MeetIcon />
-            Join Google Meet
+            Join Meeting
           </motion.a>
         )}
 
@@ -355,6 +366,7 @@ export default function AppointmentCard({ data }: AppointmentCardProps) {
           ].map(({ icon, label }) => (
             <motion.button
               key={label}
+              className="ac-action-btn"
               whileHover={{ background: 'rgba(0,111,191,0.13)', borderColor: 'rgba(0,111,191,0.32)' }}
               whileTap={{ scale: 0.96 }}
               style={{
@@ -382,7 +394,7 @@ export default function AppointmentCard({ data }: AppointmentCardProps) {
       </div>
 
       {/* ── FOOTER ───────────────────────────────── */}
-      <div style={{
+      <div className="ac-footer" style={{
         padding: '10px 22px 14px',
         borderTop: '1px solid rgba(0,111,191,0.1)',
         display: 'flex',
@@ -391,7 +403,7 @@ export default function AppointmentCard({ data }: AppointmentCardProps) {
         fontSize: 11,
         color: 'rgba(80,130,180,0.45)',
       }}>
-        <span>🔒&nbsp;Linde Gas AI Assistant</span>
+        <span>🔒&nbsp;Linde Gas · Confidential</span>
         <span>Google Calendar</span>
       </div>
     </motion.div>

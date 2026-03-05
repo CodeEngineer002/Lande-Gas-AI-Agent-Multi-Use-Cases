@@ -5,7 +5,7 @@ const SUGGESTIONS = [
   { label: 'Oxygen datasheet', text: 'Provide product data sheet for Oxygen', emoji: '📄' },
   { label: 'Delivery status', text: 'What is the delivery status of my order LG-240001?', emoji: '🚚' },
   { label: 'Schedule a call', text: 'Can you setup a call with a Linde sales rep?', emoji: '📅' },
-  { label: 'Nitrogen melting point', text: 'Provide Melting point of Nitrogen', emoji: '🔬' },
+  { label: 'O₂ Quotation', text: 'Provide quotation for O2', emoji: '💰' },
   { label: 'CO₂ summary', text: 'Display full detailed summary for CO2 line by line', emoji: '🌿' },
 ] as const;
 

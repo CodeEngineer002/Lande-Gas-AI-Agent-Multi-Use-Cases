@@ -63,13 +63,14 @@ const QUICK_PROMPTS = [
   },
   {
     color: '#00b5e2',
-    category: 'Science',
-    title: 'Nitrogen Properties',
-    description: 'Look up the melting point and physical properties of N₂.',
-    text: 'Provide Melting point of Nitrogen',
+    category: 'Quotation',
+    title: 'O₂ Quotation',
+    description: 'Get a price quotation for Oxygen gas.',
+    text: 'Provide quotation for O2',
     icon: (
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18"/>
+        <line x1="12" y1="1" x2="12" y2="23"/>
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
       </svg>
     ),
   },
@@ -429,7 +430,14 @@ export default function RightPanelContextSources({
           )}
           {meta && (
             <motion.div key="meta" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-              {settings.confidenceDisplay && <ConfidenceBar value={meta.confidence ?? 0} />}
+              {meta.confidence !== null ? (
+                <ConfidenceBar value={meta.confidence} />
+              ) : (
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 0 8px' }}>
+                  <span className="right-panel-sublabel">AI Confidence</span>
+                  <span style={{ fontSize: 14, color: 'var(--muted)', fontStyle: 'italic' }}>—</span>
+                </div>
+              )}
 
               {/* Debug panel — visible only when Debug Mode is ON */}
               {settings.debugMode && (
