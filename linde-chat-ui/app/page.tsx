@@ -108,7 +108,7 @@ export default function Page() {
 
   const pendingInfoToast = useRef<(() => void) | null>(null);
 
-  const { start: startDownload } = useDownload({
+  const { start: startDownload, startEmailAll } = useDownload({
     onSuccess: (title, docId) => {
       pendingInfoToast.current?.(); pendingInfoToast.current = null;
       showToast('success', 'Successfully downloaded', 1400);
@@ -135,16 +135,28 @@ export default function Page() {
   const handleEmailFirstSource = useCallback(
     (sources: ChatMessage['sources']) => {
       if (!sources.length) { showToast('error', 'No document to email.', 1600); return; }
-      const s = sources[0];
       const lastEmail = typeof window !== 'undefined' ? localStorage.getItem('linde_last_email') || '' : '';
       const addr = window.prompt('Enter recipient email:', lastEmail);
       if (!addr) return;
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(addr)) { showToast('error', 'Invalid email address.', 1600); return; }
       localStorage.setItem('linde_last_email', addr);
       pendingInfoToast.current = showToast('info', 'Sending email…', 0);
-      startDownload({ doc_id: s.doc_id, filename: s.title, file_url: s.file_url, email: addr });
+
+      if (sources.length === 1) {
+        // Single file: use existing flow (downloads PDF via Google Drive + Gmail attachment)
+        const s = sources[0];
+        startDownload({ doc_id: s.doc_id, filename: s.title, file_url: s.file_url, email: addr });
+      } else {
+        // Multiple files: send all file info for a single email with all download links
+        startEmailAll({
+          email: addr,
+          files: sources
+            .filter(s => s.file_url && s.file_url.trim() !== '')
+            .map(s => ({ doc_id: s.doc_id, filename: s.title, file_url: s.file_url })),
+        });
+      }
     },
-    [startDownload, showToast]
+    [startDownload, startEmailAll, showToast]
   );
 
   const handleEmailDelivery = useCallback(

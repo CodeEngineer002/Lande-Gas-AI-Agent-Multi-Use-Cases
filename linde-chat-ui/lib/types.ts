@@ -120,3 +120,9 @@ export interface DownloadPayload {
   email?: string;
 }
 
+/** Payload for emailing multiple documents at once */
+export interface EmailAllPayload {
+  email: string;
+  files: Array<{ doc_id: string; filename: string; file_url: string }>;
+}
+

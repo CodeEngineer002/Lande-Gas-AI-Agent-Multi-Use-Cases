@@ -1,6 +1,6 @@
 'use client';
 import { useState, useCallback } from 'react';
-import type { DownloadPayload } from '@/lib/types';
+import type { DownloadPayload, EmailAllPayload } from '@/lib/types';
 import { filenameFromCD } from '@/lib/utils';
 
 export type DownloadStatus = 'idle' | 'loading';
@@ -67,5 +67,30 @@ export function useDownload({ onSuccess, onError, onEmailSuccess }: UseDownloadO
     [onSuccess, onError, onEmailSuccess]
   );
 
-  return { status, start };
+  const startEmailAll = useCallback(
+    async (payload: EmailAllPayload) => {
+      setStatus('loading');
+      try {
+        const res = await fetch('/api/download', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) {
+          const j = await res.json().catch(() => ({})) as Record<string, unknown>;
+          onError((j.error as string) || 'Email failed. Please try again.');
+          return;
+        }
+        onEmailSuccess();
+      } catch (err) {
+        console.error('[useDownload] emailAll', err);
+        onError('Email failed. Please try again.');
+      } finally {
+        setStatus('idle');
+      }
+    },
+    [onError, onEmailSuccess]
+  );
+
+  return { status, start, startEmailAll };
 }

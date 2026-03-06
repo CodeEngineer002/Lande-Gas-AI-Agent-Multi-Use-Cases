@@ -3,6 +3,12 @@ import { NextRequest, NextResponse } from 'next/server';
 const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL || 'https://n8n.acngva.com';
 const DOWNLOAD_PATH = '/webhook/download-linde-pdf-api';
 
+interface FileEntry {
+  doc_id?: string;
+  filename?: string;
+  file_url?: string;
+}
+
 export async function POST(req: NextRequest) {
   let body: {
     doc_id?: string;
@@ -10,6 +16,7 @@ export async function POST(req: NextRequest) {
     file_url?: string;
     email?: string;
     sessionId?: string;
+    files?: FileEntry[];
   };
 
   try {
@@ -19,7 +26,40 @@ export async function POST(req: NextRequest) {
   }
 
   const isEmail = !!body.email;
+  const isMultiFile = isEmail && Array.isArray(body.files) && body.files.length > 0;
 
+  // ── Multi-file email mode ─────────────────────────────────────────────
+  if (isMultiFile) {
+    let n8nResponse: Response;
+    try {
+      n8nResponse = await fetch(`${N8N_WEBHOOK_URL}${DOWNLOAD_PATH}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: body.email,
+          files: body.files,
+        }),
+        signal: AbortSignal.timeout(90000),
+      });
+    } catch (err: unknown) {
+      const isTimeout = err instanceof Error && err.name === 'TimeoutError';
+      console.error('[Linde Download API] multi-file fetch error:', err);
+      return NextResponse.json(
+        { error: isTimeout ? 'Request timed out.' : 'Could not reach download service.' },
+        { status: 503 }
+      );
+    }
+
+    if (!n8nResponse.ok) {
+      const text = await n8nResponse.text().catch(() => '');
+      console.error('[Linde Download API] n8n multi-file returned', n8nResponse.status, text);
+      return NextResponse.json({ error: 'Email service error.' }, { status: 502 });
+    }
+
+    return NextResponse.json({ ok: true });
+  }
+
+  // ── Single-file mode (download or single-file email) ──────────────────
   // Guard: can't download without a file URL
   if (!isEmail && (!body.file_url || body.file_url.trim() === '')) {
     return NextResponse.json(
