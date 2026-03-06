@@ -166,23 +166,31 @@ export default function DeliveryTracking({ data }: DeliveryTrackingProps) {
       {/* ── Progress track ── */}
       <div className="dc-progress-wrap">
         <div className="dc-track">
-          <motion.div
-            className="dc-fill"
-            style={{ '--fill-color': cfg.color, '--fill-glow': cfg.glow } as React.CSSProperties}
-            initial={{ width: '0%' }}
-            animate={{ width: `${cfg.progress}%` }}
-            transition={{ duration: 1.4, ease: [0.34, 1.26, 0.64, 1], delay: 0.3 }}
-          />
-          {isMoving && (
-            <motion.div
-              className="dc-truck"
-              initial={{ left: '0%' }}
-              animate={{ left: `calc(${cfg.progress}% - 18px)` }}
-              transition={{ duration: 1.4, ease: [0.34, 1.26, 0.64, 1], delay: 0.3 }}
-            >
-              🚚
-            </motion.div>
-          )}
+          {(() => {
+            const stepPct = (cfg.step - 1) / (STEPS.length - 1) * 100;
+            // isMoving statuses (In Transit / Out for Delivery): bar matches truck position
+            // All other statuses: use cfg.progress for correct visual fill
+            const barPct = isMoving ? stepPct : cfg.progress;
+            return (<>
+              <motion.div
+                className="dc-fill"
+                style={{ '--fill-color': cfg.color, '--fill-glow': cfg.glow } as React.CSSProperties}
+                initial={{ width: '0%' }}
+                animate={{ width: `${barPct}%` }}
+                transition={{ duration: 1.4, ease: [0.34, 1.26, 0.64, 1], delay: 0.3 }}
+              />
+              {isMoving && (
+                <motion.div
+                  className="dc-truck"
+                  initial={{ left: '0%' }}
+                  animate={{ left: `calc(${stepPct}% - 18px)` }}
+                  transition={{ duration: 1.4, ease: [0.34, 1.26, 0.64, 1], delay: 0.3 }}
+                >
+                  <span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>🚚</span>
+                </motion.div>
+              )}
+            </>);
+          })()}
         </div>
 
         {/* Step nodes */}
