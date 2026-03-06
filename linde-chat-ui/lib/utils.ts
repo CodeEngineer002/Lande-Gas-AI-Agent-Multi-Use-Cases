@@ -66,8 +66,8 @@ export function extractDeliveryData(text: string): DeliveryData {
     || text.match(/([A-Z]{2}-\d+)/);
   if (orderMatch) d.order_id = (orderMatch[1] || orderMatch[0]).trim();
 
-  const statusMatch = text.match(/Current\s*Status[:\s]*([^\n.]+)/i)
-    || text.match(/Status[:\s]*([^\n.]+)/i)
+  const statusMatch = text.match(/Current\s*Status\s*:\s*([^\n.]+)/i)
+    || text.match(/Status\s*:\s*([^\n.]+)/i)
     || text.match(/-?\s*\*\*Current Status\*\*[:\s]*([^\n]+)/i);
   if (statusMatch) d.current_status = statusMatch[1].trim().replace(/\*\*/g, '');
 

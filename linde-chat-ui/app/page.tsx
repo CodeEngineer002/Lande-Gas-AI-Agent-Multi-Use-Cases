@@ -106,19 +106,29 @@ export default function Page() {
     };
   }, [showToast]);
 
+  const pendingInfoToast = useRef<(() => void) | null>(null);
+
   const { start: startDownload } = useDownload({
     onSuccess: (title, docId) => {
+      pendingInfoToast.current?.(); pendingInfoToast.current = null;
       showToast('success', 'Successfully downloaded', 1400);
       pushDlHistory({ title, doc_id: docId });
     },
-    onError: (msg) => showToast('error', msg, 1800),
+    onError: (msg) => {
+      pendingInfoToast.current?.(); pendingInfoToast.current = null;
+      showToast('error', msg, 1800);
+    },
     onEmailSuccess: () => {
+      pendingInfoToast.current?.(); pendingInfoToast.current = null;
       showToast('success', 'Email sent successfully', 1400);
     },
   });
 
   const handleDownload = useCallback(
-    (payload: DownloadPayload) => { showToast('info', 'Downloading the PDF now…', 0); startDownload(payload); },
+    (payload: DownloadPayload) => {
+      pendingInfoToast.current = showToast('info', 'Downloading the PDF now…', 0);
+      startDownload(payload);
+    },
     [startDownload, showToast]
   );
 
@@ -131,7 +141,7 @@ export default function Page() {
       if (!addr) return;
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(addr)) { showToast('error', 'Invalid email address.', 1600); return; }
       localStorage.setItem('linde_last_email', addr);
-      showToast('info', 'Sending email…', 0);
+      pendingInfoToast.current = showToast('info', 'Sending email…', 0);
       startDownload({ doc_id: s.doc_id, filename: s.title, file_url: s.file_url, email: addr });
     },
     [startDownload, showToast]

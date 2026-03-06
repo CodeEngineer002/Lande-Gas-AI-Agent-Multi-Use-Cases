@@ -195,8 +195,19 @@ export function useChat() {
       // Only show the DeliveryTracking card when actual order data was found.
       // If the agent is asking for an order number, rawDelivery fields will be
       // empty — in that case we suppress the widget.
+      const ASKING_FOR_ORDER = [
+        'please provide your order',
+        'provide your order number',
+        'please share your order',
+        'what is your order number',
+        'could you provide your order',
+        'can you provide your order',
+        'share your order number',
+        'need your order number',
+      ];
+      const isAskingForOrder = ASKING_FOR_ORDER.some(p => lowerAnswer.includes(p));
       const deliveryData =
-        rawDelivery && (rawDelivery.current_status || rawDelivery.order_id)
+        !isAskingForOrder && rawDelivery && (rawDelivery.current_status || rawDelivery.order_id)
           ? rawDelivery
           : null;
       // Appointment: clarification mode vs real booking confirmation

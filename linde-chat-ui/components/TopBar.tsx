@@ -68,7 +68,7 @@ export default function TopBar({
               className="topbar-linde-img"
             />
           </div>
-          <span className="topbar-brand-name">Linde Gas AI</span>
+          <span className="topbar-brand-name"></span>
         </div>
       </div>
 
