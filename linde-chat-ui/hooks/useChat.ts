@@ -60,7 +60,7 @@ export function useChat() {
     isTyping: false,
     lastSources: [],
     lastMeta: null,
-    sessionId: typeof crypto !== 'undefined' ? crypto.randomUUID() : uuidv4(),
+    sessionId: (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') ? crypto.randomUUID() : uuidv4(),
   });
 
   const sessionIdRef = useRef(state.sessionId);

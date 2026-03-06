@@ -2035,6 +2035,63 @@
         -128,
         2800
       ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "email-tracking-snapshot",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "a543e6af-a8c5-46c3-a34f-3469188e9a19",
+      "name": "order tracking snapshot",
+      "type": "n8n-nodes-base.webhook",
+      "position": [
+        -2464,
+        256
+      ],
+      "webhookId": "454eb4ea-e460-4196-b31c-284abf234fc3",
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.body.email }}",
+        "subject": "=Order Tracking Update — {{ $json.body.tracking_data.order_id || 'Your Order' }} ({{ $json.body.tracking_data.current_status || 'Status Update' }})",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n</head>\n<body style=\"margin:0;padding:0;background-color:#E8EAED;font-family:'Segoe UI',Arial,sans-serif;\">\n\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#E8EAED;padding:48px 16px;\">\n  <tr><td align=\"center\">\n    <table width=\"640\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:640px;width:100%;\">\n\n      <!-- BRAND BAR -->\n      <tr>\n        <td style=\"background:#003057;padding:16px 44px;border-radius:14px 14px 0 0;\">\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n            <td style=\"font-size:13px;font-weight:700;letter-spacing:3px;color:#4A90B8;text-transform:uppercase;\">Linde Gas</td>\n            <td align=\"right\" style=\"font-size:11px;color:#1E4A6B;letter-spacing:1px;text-transform:uppercase;\">AI Logistics Assistant</td>\n          </tr></table>\n        </td>\n      </tr>\n\n      <!-- HERO -->\n      <tr>\n        <td style=\"background:#003057;padding:44px 44px 40px;\">\n          <div style=\"display:inline-block;background:rgba(0,160,210,0.12);border:1px solid rgba(0,160,210,0.3);border-radius:100px;padding:5px 16px;margin-bottom:24px;\">\n            <span style=\"font-size:10px;font-weight:700;letter-spacing:2px;color:#00A0D2;text-transform:uppercase;\">Order Tracking Update</span>\n          </div>\n          <h1 style=\"margin:0 0 14px;font-size:32px;font-weight:300;color:#FFFFFF;line-height:1.2;\">\n            Your order<br><strong style=\"font-weight:700;\">tracking snapshot.</strong>\n          </h1>\n          <p style=\"margin:0;font-size:14px;color:#5A8BAA;line-height:1.7;max-width:440px;\">\n            Here is the latest status for order <strong style=\"color:#ffffff;\">{{ $json.body.tracking_data.order_id || '—' }}</strong>.\n          </p>\n        </td>\n      </tr>\n\n      <!-- ACCENT LINE -->\n      <tr>\n        <td style=\"background:#FFFFFF;padding:0 44px;\">\n          <div style=\"height:3px;background:linear-gradient(90deg,#003057,#00A0D2,#00C8E6,transparent);\"></div>\n        </td>\n      </tr>\n\n      <!-- STATUS BADGE -->\n      <tr>\n        <td style=\"background:#FFFFFF;padding:28px 44px 8px;\">\n          <table cellpadding=\"0\" cellspacing=\"0\"><tr>\n            <td style=\"background:#E8F4FB;border:1px solid #00A0D2;border-radius:100px;padding:6px 20px;\">\n              <span style=\"font-size:13px;font-weight:700;color:#003057;letter-spacing:1px;\">{{ $json.body.tracking_data.current_status || 'Unknown' }}</span>\n            </td>\n          </tr></table>\n          {{ $json.body.tracking_data.status_detail ? '<p style=\"margin:10px 0 0;font-size:13px;color:#5A8BAA;\">ℹ️ ' + $json.body.tracking_data.status_detail + '</p>' : '' }}\n        </td>\n      </tr>\n\n      <!-- DETAILS TABLE -->\n      <tr>\n        <td style=\"background:#FFFFFF;padding:24px 44px 32px;\">\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#F4F7FA;border:1px solid #DDE6ED;border-radius:12px;border-collapse:collapse;\">\n            {{ $json.body.tracking_data.order_id ? '<tr><td style=\"padding:12px 20px;border-bottom:1px solid #DDE6ED;width:40%;\"><span style=\"font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8FA8B8;\">Order ID</span></td><td style=\"padding:12px 20px;border-bottom:1px solid #DDE6ED;\"><span style=\"font-size:13px;font-weight:600;color:#003057;\">' + $json.body.tracking_data.order_id + '</span></td></tr>' : '' }}\n            {{ $json.body.tracking_data.carrier ? '<tr><td style=\"padding:12px 20px;border-bottom:1px solid #DDE6ED;\"><span style=\"font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8FA8B8;\">Carrier</span></td><td style=\"padding:12px 20px;border-bottom:1px solid #DDE6ED;\"><span style=\"font-size:13px;font-weight:600;color:#003057;\">' + $json.body.tracking_data.carrier + '</span></td></tr>' : '' }}\n            {{ $json.body.tracking_data.tracking_number ? '<tr><td style=\"padding:12px 20px;border-bottom:1px solid #DDE6ED;\"><span style=\"font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8FA8B8;\">Tracking #</span></td><td style=\"padding:12px 20px;border-bottom:1px solid #DDE6ED;\"><span style=\"font-size:13px;font-weight:600;color:#00A0D2;\">' + $json.body.tracking_data.tracking_number + '</span></td></tr>' : '' }}\n            {{ $json.body.tracking_data.customer_name ? '<tr><td style=\"padding:12px 20px;border-bottom:1px solid #DDE6ED;\"><span style=\"font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8FA8B8;\">Customer</span></td><td style=\"padding:12px 20px;border-bottom:1px solid #DDE6ED;\"><span style=\"font-size:13px;font-weight:600;color:#003057;\">' + $json.body.tracking_data.customer_name + '</span></td></tr>' : '' }}\n            {{ $json.body.tracking_data.product ? '<tr><td style=\"padding:12px 20px;border-bottom:1px solid #DDE6ED;\"><span style=\"font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8FA8B8;\">Product</span></td><td style=\"padding:12px 20px;border-bottom:1px solid #DDE6ED;\"><span style=\"font-size:13px;font-weight:600;color:#003057;\">' + $json.body.tracking_data.product + '</span></td></tr>' : '' }}\n            {{ ($json.body.tracking_data.ship_to_city || $json.body.tracking_data.country) ? '<tr><td style=\"padding:12px 20px;border-bottom:1px solid #DDE6ED;\"><span style=\"font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8FA8B8;\">Destination</span></td><td style=\"padding:12px 20px;border-bottom:1px solid #DDE6ED;\"><span style=\"font-size:13px;font-weight:600;color:#003057;\">' + [$json.body.tracking_data.ship_to_city, $json.body.tracking_data.country].filter(Boolean).join(', ') + '</span></td></tr>' : '' }}\n            {{ $json.body.tracking_data.order_date ? '<tr><td style=\"padding:12px 20px;border-bottom:1px solid #DDE6ED;\"><span style=\"font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8FA8B8;\">Order Date</span></td><td style=\"padding:12px 20px;border-bottom:1px solid #DDE6ED;\"><span style=\"font-size:13px;font-weight:600;color:#003057;\">' + $json.body.tracking_data.order_date + '</span></td></tr>' : '' }}\n            {{ $json.body.tracking_data.eta ? '<tr><td style=\"padding:12px 20px;border-bottom:1px solid #DDE6ED;\"><span style=\"font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8FA8B8;\">ETA</span></td><td style=\"padding:12px 20px;border-bottom:1px solid #DDE6ED;\"><span style=\"font-size:13px;font-weight:600;color:#003057;\">' + $json.body.tracking_data.eta + '</span></td></tr>' : '' }}\n            {{ $json.body.tracking_data.delivered_date ? '<tr><td style=\"padding:12px 20px;\"><span style=\"font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8FA8B8;\">Delivered</span></td><td style=\"padding:12px 20px;\"><span style=\"font-size:13px;font-weight:600;color:#10b981;\">' + $json.body.tracking_data.delivered_date + '</span></td></tr>' : '' }}\n          </table>\n        </td>\n      </tr>\n\n      <!-- SIGNATURE -->\n      <tr>\n        <td style=\"background:#FFFFFF;padding:0 44px 40px;\">\n          <table cellpadding=\"0\" cellspacing=\"0\"><tr>\n            <td style=\"width:44px;height:44px;background:#003057;border-radius:50%;text-align:center;vertical-align:middle;\">\n              <span style=\"font-size:18px;color:#00A0D2;font-weight:700;\">L</span>\n            </td>\n            <td style=\"padding-left:14px;vertical-align:middle;\">\n              <p style=\"margin:0;font-size:14px;font-weight:700;color:#003057;\">Linde Gas</p>\n              <p style=\"margin:2px 0 0;font-size:12px;color:#5A8BAA;\">AI-Powered Logistics Assistant</p>\n            </td>\n          </tr></table>\n        </td>\n      </tr>\n\n      <!-- FOOTER -->\n      <tr>\n        <td style=\"background:#003057;padding:22px 44px;border-radius:0 0 14px 14px;\">\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n            <td style=\"font-size:11px;color:#1E4A6B;line-height:1.8;\">\n              <a href=\"https://www.linde.com\" style=\"color:#4A90B8;text-decoration:none;\">linde.com</a>\n              &nbsp;·&nbsp;\n              <a href=\"mailto:support@linde.com\" style=\"color:#4A90B8;text-decoration:none;\">support@linde.com</a>\n            </td>\n            <td align=\"right\" style=\"font-size:10px;color:#1E4A6B;\">Automated · Do not reply directly</td>\n          </tr></table>\n        </td>\n      </tr>\n\n    </table>\n  </td></tr>\n</table>\n\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Linde's AI Assistant"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -2144,
+        256
+      ],
+      "id": "b7e3f921-4dc2-4a8b-9f3d-1a2c3d4e5f6a",
+      "name": "Send Tracking Email",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "EKPzxPTrRoLGYUYU",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"ok\": true }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -1824,
+        256
+      ],
+      "id": "c8f4a032-5ed3-4b9c-8e1f-2b3c4d5e6f7b",
+      "name": "Respond Tracking Email OK"
     }
   ],
   "connections": {
@@ -2881,6 +2938,28 @@
         [
           {
             "node": "Respond Appt Clarification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "order tracking snapshot": {
+      "main": [
+        [
+          {
+            "node": "Send Tracking Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Tracking Email": {
+      "main": [
+        [
+          {
+            "node": "Respond Tracking Email OK",
             "type": "main",
             "index": 0
           }

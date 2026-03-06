@@ -3,6 +3,34 @@ import type { DeliveryData, AppointmentData, Source } from './types';
 /** Timestamp string */
 export const ts = () => new Date().toLocaleString();
 
+/**
+ * Safe clipboard copy — uses navigator.clipboard when available (HTTPS / modern mobile).
+ * Falls back to document.execCommand('copy') for HTTP or older iOS Safari.
+ */
+export async function copyToClipboard(text: string): Promise<void> {
+  if (
+    typeof navigator !== 'undefined' &&
+    navigator.clipboard &&
+    typeof navigator.clipboard.writeText === 'function'
+  ) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  // Fallback: create a temporary textarea and use execCommand
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;';
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  try {
+    const ok = document.execCommand('copy');
+    if (!ok) throw new Error('execCommand copy failed');
+  } finally {
+    document.body.removeChild(textarea);
+  }
+}
+
 /** Escape HTML */
 export const esc = (s: unknown) =>
   String(s ?? '')

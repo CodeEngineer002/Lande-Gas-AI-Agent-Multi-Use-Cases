@@ -2,7 +2,7 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import type { ChatMessage, DownloadPayload, Source } from '@/lib/types';
-import { mdLite } from '@/lib/utils';
+import { mdLite, copyToClipboard } from '@/lib/utils';
 import SourceChips from '@/components/SourceChips';
 import DeliveryTracking from '@/components/DeliveryTracking';
 import AppointmentCard from '@/components/AppointmentCard';
@@ -16,6 +16,7 @@ export interface MessageBubbleProps {
   message: ChatMessage;
   onDownload: (payload: DownloadPayload) => void;
   onEmailFirstSource: (sources: Source[]) => void;
+  onEmailDelivery?: (deliveryData: ChatMessage['deliveryData']) => void;
   onSend?: (text: string) => void;
   isTyping?: boolean;
   index?: number;
@@ -49,7 +50,7 @@ function ts(d: Date) {
   return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
-export default function MessageBubble({ message, onDownload, onEmailFirstSource, onSend, isTyping, index = 0 }: MessageBubbleProps) {
+export default function MessageBubble({ message, onDownload, onEmailFirstSource, onEmailDelivery, onSend, isTyping, index = 0 }: MessageBubbleProps) {
   const isUser = message.role === 'user';
   const bodyHtml = useMemo(() => mdLite(message.text), [message.text]);
   const [copied, setCopied] = useState(false);
@@ -68,9 +69,11 @@ export default function MessageBubble({ message, onDownload, onEmailFirstSource,
   const initials = USER_NAME.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(message.text).then(() => {
+    copyToClipboard(message.text).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
+    }).catch(() => {
+      // silently fail — don't crash on unsupported browsers
     });
   };
 
@@ -150,11 +153,17 @@ export default function MessageBubble({ message, onDownload, onEmailFirstSource,
               >
                 {copied ? <CheckIcon /> : <CopyIcon />}
               </motion.button>
-              {!isUser && message.sources.length > 0 && (
+              {!isUser && (message.sources.length > 0 || (message.responseType === 'delivery_status' && !!message.deliveryData)) && (
                 <motion.button
                   className="bubble-action"
-                  title="Email document"
-                  onClick={() => onEmailFirstSource(message.sources)}
+                  title={message.responseType === 'delivery_status' && message.deliveryData ? 'Email tracking snapshot' : 'Email document'}
+                  onClick={() => {
+                    if (message.responseType === 'delivery_status' && message.deliveryData) {
+                      onEmailDelivery?.(message.deliveryData);
+                    } else {
+                      onEmailFirstSource(message.sources);
+                    }
+                  }}
                   whileTap={{ scale: 0.88 }}
                   whileHover={{ scale: 1.1 }}
                 >

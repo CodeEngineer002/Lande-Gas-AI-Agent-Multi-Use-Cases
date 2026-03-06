@@ -147,6 +147,33 @@ export default function Page() {
     [startDownload, showToast]
   );
 
+  const handleEmailDelivery = useCallback(
+    (deliveryData: ChatMessage['deliveryData']) => {
+      if (!deliveryData) { showToast('error', 'No tracking data to email.', 1600); return; }
+      const lastEmail = typeof window !== 'undefined' ? localStorage.getItem('linde_last_email') || '' : '';
+      const addr = window.prompt('Enter recipient email:', lastEmail);
+      if (!addr) return;
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(addr)) { showToast('error', 'Invalid email address.', 1600); return; }
+      localStorage.setItem('linde_last_email', addr);
+      const dismiss = showToast('info', 'Sending tracking snapshot…', 0);
+      fetch('/api/email-tracking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: addr, tracking_data: deliveryData }),
+      })
+        .then(async (res) => {
+          dismiss();
+          if (res.ok) { showToast('success', 'Tracking snapshot sent!', 1600); }
+          else {
+            const j = await res.json().catch(() => ({})) as { error?: string };
+            showToast('error', j.error || 'Email failed. Please try again.', 2000);
+          }
+        })
+        .catch(() => { dismiss(); showToast('error', 'Email failed. Please try again.', 2000); });
+    },
+    [showToast]
+  );
+
   const handleDownloadLast = useCallback(() => {
     if (!state.lastSources.length) return;
     const s = state.lastSources[0];
@@ -213,6 +240,7 @@ export default function Page() {
               isTyping={state.isTyping}
               onDownload={handleDownload}
               onEmailFirstSource={handleEmailFirstSource}
+              onEmailDelivery={handleEmailDelivery}
               onSend={send}
               searchQuery={searchQuery}
               conversationTitle={conversationTitle}

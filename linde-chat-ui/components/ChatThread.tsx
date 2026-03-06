@@ -9,6 +9,7 @@ interface ChatThreadProps {
   isTyping: boolean;
   onDownload: (payload: DownloadPayload) => void;
   onEmailFirstSource: (sources: ChatMessage['sources']) => void;
+  onEmailDelivery?: (deliveryData: ChatMessage['deliveryData']) => void;
   onSend?: (text: string) => void;
   searchQuery?: string;
   conversationTitle?: string;
@@ -124,7 +125,7 @@ function EmptyState() {
 }
 
 export default function ChatThread({
-  messages, isTyping, onDownload, onEmailFirstSource, onSend, searchQuery, conversationTitle,
+  messages, isTyping, onDownload, onEmailFirstSource, onEmailDelivery, onSend, searchQuery, conversationTitle,
 }: ChatThreadProps) {
   const threadRef = useRef<HTMLDivElement>(null);
   const [showToBottom, setShowToBottom] = useState(false);
@@ -244,6 +245,7 @@ export default function ChatThread({
                   message={msg}
                   onDownload={onDownload}
                   onEmailFirstSource={onEmailFirstSource}
+                  onEmailDelivery={onEmailDelivery}
                   onSend={onSend}
                   isTyping={isTyping}
                   index={i}

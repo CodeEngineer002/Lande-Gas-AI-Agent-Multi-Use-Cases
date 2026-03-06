@@ -3075,6 +3075,9 @@ button:focus:not(:focus-visible) { outline: none; }
   .chat-title-bar {
     padding: 6px 10px 8px;
   }
+  .composer-attach-btn {
+    display: none !important;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -4071,7 +4074,9 @@ button:focus:not(:focus-visible) { outline: none; }
 /* Mobile: scale logo down on smaller screens */
 @media (max-width: 768px) {
   [data-linde-branding="true"] .topbar-root {
-    height: 52px;
+    height: 56px;
+    padding: 0 14px;
+    gap: 8px;
   }
   [data-linde-branding="true"] .topbar-brand-logo {
     height: 60px;
@@ -4083,21 +4088,61 @@ button:focus:not(:focus-visible) { outline: none; }
   .topbar-brand-name {
     display: none;
   }
+  /* Hide the n8n badge — too wide for mobile header */
+  [data-linde-branding="true"] .n8n-badge-btn {
+    display: none !important;
+  }
+  /* Hide vertical dividers */
+  [data-linde-branding="true"] .topbar-divider {
+    display: none !important;
+  }
+  /* Tighten right-side icons */
+  [data-linde-branding="true"] .topbar-right {
+    gap: 4px;
+  }
+  [data-linde-branding="true"] .topbar-icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+  }
+  /* Smaller avatar */
+  [data-linde-branding="true"] .topbar-avatar {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 11px !important;
+  }
+  [data-linde-branding="true"] .topbar-user-info {
+    display: none;
+  }
 }
 @media (max-width: 480px) {
   [data-linde-branding="true"] .topbar-root {
-    height: 40px;
+    height: 52px;
     padding: 0 10px;
+    gap: 6px;
   }
   [data-linde-branding="true"] .topbar-brand-logo {
-    height: 48px;
-    margin: 0 4px 0 -10px;
+    height: 52px;
+    margin: 0 4px 0 -8px;
   }
   .topbar-linde-img {
-    height: 48px;
+    height: 52px;
   }
   .topbar-brand-name {
     display: none;
+  }
+  [data-linde-branding="true"] .topbar-icon-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+  }
+  [data-linde-branding="true"] .topbar-avatar {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 10px !important;
+  }
+  [data-linde-branding="true"] .topbar-right {
+    gap: 3px;
   }
 }
 [data-linde-branding="true"] .topbar-brand-icon { display: none; }

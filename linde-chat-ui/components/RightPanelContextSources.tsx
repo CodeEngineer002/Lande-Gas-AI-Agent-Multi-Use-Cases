@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ResponseMeta, Source, DownloadPayload, ChatMessage } from '@/lib/types';
 import { useSettings } from '@/lib/settingsContext';
+import { copyToClipboard } from '@/lib/utils';
 
 interface RightPanelContextSourcesProps {
   meta: ResponseMeta | null;
@@ -251,7 +252,7 @@ function ContextualActions({
       .join('\n\n');
   };
 
-  const handleEmailSummary = () => {
+  const handleEmailSummary = async () => {
     try {
       const lastAssistant = [...messages].reverse().find(m => m.role === 'assistant');
       if (!lastAssistant) {
@@ -259,9 +260,8 @@ function ContextualActions({
         return;
       }
       const summary = `Linde Gas AI – Conversation Summary\n\n${lastAssistant.text}\n\nGenerated: ${new Date().toLocaleString()}`;
-      navigator.clipboard.writeText(summary).then(() => {
-        onShowToast?.('success', 'Summary copied! Connect email workflow to enable sending.', 2800);
-      });
+      await copyToClipboard(summary);
+      onShowToast?.('success', 'Summary copied! Connect email workflow to enable sending.', 2800);
     } catch {
       onShowToast?.('error', 'Could not copy summary.', 1800);
     }
