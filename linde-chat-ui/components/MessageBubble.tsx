@@ -10,7 +10,7 @@ import AppointmentClarificationCard from '@/components/AppointmentClarificationC
 import { useSettings } from '@/lib/settingsContext';
 
 const APP_NAME = 'Linde Gas AI Assistant';
-const USER_NAME = 'John Doe';
+const USER_NAME = 'Prateek Bais';
 
 export interface MessageBubbleProps {
   message: ChatMessage;

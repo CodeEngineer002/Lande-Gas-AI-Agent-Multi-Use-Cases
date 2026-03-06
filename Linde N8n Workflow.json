@@ -7,12 +7,12 @@
         "width": 1086.039382705461,
         "color": 7
       },
-      "id": "7a1abb96-ba73-41b1-8fff-9a6f1417dc02",
+      "id": "b9867d30-3c39-4713-96c5-a126dbe3bf87",
       "name": "Sticky Note",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -944,
-        -4880
+        -1280,
+        -352
       ],
       "typeVersion": 1
     },
@@ -23,12 +23,12 @@
         "width": 1690,
         "color": 7
       },
-      "id": "f53439c7-1355-48b5-9bd5-6505b9394bd4",
+      "id": "e78a1559-f866-4d7a-b1c3-b669631c5006",
       "name": "Sticky Note1",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -448,
-        -3104
+        -784,
+        1440
       ],
       "typeVersion": 1
     },
@@ -39,12 +39,12 @@
         "width": 179.58883583572606,
         "color": 7
       },
-      "id": "b193d615-417b-403e-8046-602df533b169",
+      "id": "c0f4790e-f9a7-41b1-b8a5-2cdc809349bf",
       "name": "Sticky Note4",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -912,
-        -4784
+        -1248,
+        -256
       ],
       "typeVersion": 1
     },
@@ -59,12 +59,12 @@
         },
         "options": {}
       },
-      "id": "930e3c81-676c-4662-839a-86d1411f4101",
+      "id": "b8060d73-d705-47d2-b2f6-482c38d18169",
       "name": "Pinecone Vector Store",
       "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
       "position": [
-        -208,
-        -4704
+        -544,
+        -176
       ],
       "typeVersion": 1,
       "credentials": {
@@ -82,18 +82,18 @@
               "id": "dc7a70e3-9b04-404b-8892-ba0fcc4274c2",
               "name": "file_url",
               "type": "string",
-              "value": "https://drive.google.com/file/d/1AZFfp8saag128NdylGK_42lB0ZJOHFtU/view?usp=drive_link"
+              "value": "https://drive.google.com/file/d/1dSHgmP01_Khm7JIdtgRV4RRX-ZPlCz9z/view?usp=drive_link"
             }
           ]
         },
         "options": {}
       },
-      "id": "1d8e3f1c-0473-490c-8325-60a630a6e787",
+      "id": "045e6ed5-25cd-4d06-93ab-ecf5ce4f5550",
       "name": "Set file URL in Google Drive",
       "type": "n8n-nodes-base.set",
       "position": [
-        -880,
-        -4384
+        -1216,
+        160
       ],
       "typeVersion": 3.4
     },
@@ -107,12 +107,12 @@
         },
         "options": {}
       },
-      "id": "5278938f-b16e-4db7-b063-87a5856b7e62",
+      "id": "6245694a-e52b-4fd6-9cf9-02c223707de6",
       "name": "Download file",
       "type": "n8n-nodes-base.googleDrive",
       "position": [
-        -416,
-        -4704
+        -752,
+        -176
       ],
       "typeVersion": 3,
       "credentials": {
@@ -141,12 +141,12 @@
           }
         }
       },
-      "id": "feda4f8c-3687-4333-8a7b-7cb021396622",
+      "id": "c01ed9e1-3ba4-4c17-bdf4-2c3cc296b1e3",
       "name": "Default Data Loader",
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "position": [
-        -112,
-        -4464
+        -448,
+        80
       ],
       "typeVersion": 1
     },
@@ -156,12 +156,12 @@
         "chunkOverlap": 200,
         "options": {}
       },
-      "id": "1ef9c1c1-4f41-4bcc-bba4-cc13887e9457",
+      "id": "fb0754ec-20b1-475e-b527-1a4fe70338af",
       "name": "Recursive Character Text Splitter",
       "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
       "position": [
-        -32,
-        -4304
+        -368,
+        240
       ],
       "typeVersion": 1
     },
@@ -180,12 +180,12 @@
         "includeOtherFields": true,
         "options": {}
       },
-      "id": "503f83b2-e11e-437c-a168-750134ca2c61",
+      "id": "09c6ed38-54a0-4a73-a619-4108cec3d868",
       "name": "Set max chunks to send to model",
       "type": "n8n-nodes-base.set",
       "position": [
-        -304,
-        -2976
+        -640,
+        1568
       ],
       "typeVersion": 3.4
     },
@@ -202,12 +202,12 @@
         "topK": "={{ $json.chunks }}",
         "options": {}
       },
-      "id": "98c5c06f-ee6b-4331-99ef-33dedec6c7d8",
+      "id": "b071655f-504f-40f4-9aef-ef8611ac9f52",
       "name": "Get top chunks matching query",
       "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
       "position": [
-        -80,
-        -2976
+        -416,
+        1568
       ],
       "typeVersion": 1,
       "credentials": {
@@ -221,12 +221,12 @@
       "parameters": {
         "jsCode": "let out = \"\"\nfor (const i in $input.all()) {\n  let itemText = \"--- CHUNK \" + i + \" ---\\n\"\n  itemText += $input.all()[i].json.document.pageContent + \"\\n\"\n  itemText += \"\\n\"\n  out += itemText\n}\n\nreturn {\n  'context': out\n};"
       },
-      "id": "80cfd3a3-bfbd-41b3-bfda-5ac9cde2e961",
+      "id": "76b082f1-eba9-4c88-8be1-3d175a276ea0",
       "name": "Prepare chunks",
       "type": "n8n-nodes-base.code",
       "position": [
-        224,
-        -2976
+        -112,
+        1568
       ],
       "typeVersion": 2
     },
@@ -239,12 +239,12 @@
           "systemPromptTemplate": "=Role & Purpose\nYou are the Linde Gas AI Assistant. Your primary function is to help users find, understand, and extract information strictly from the provided Product Data Sheets (PDS) and Safety Data Sheets (SDS). Treat the provided passages as your entire knowledge base. Never use outside knowledge.\n\nCore Behavior & Tone\n\nPrimary Tone: Helpful, professional, and conversational. Be a friendly and knowledgeable expert.\n\nInteraction Style: Respond in an interactive and natural way. Mirror the user's language (English or neutral Hinglish) while maintaining technical clarity.\n\nGrounding Rule: Answer only from the provided context. Do not guess, hallucinate, or use pre-trained knowledge. Preserve all data (numbers, units, names) exactly as written.\n\nInteraction Guidelines\n1. Greeting & Initial Interaction\nWhen a conversation starts, greet the user in a warm, interactive way to build a natural rapport. Your opening should be brief and set clear expectations.\n\nExample Greeting:\n\"Hello! I'm your Linde Gas Assistant, here to help you get instant answers from our Product and Safety Data Sheets. Just let me know what you're looking for – like a product name, UN number, or a specific property – and I'll find the verified details for you.\"\n\n2. Responding to \"Can you help me?\" or Similar Queries\nIf a user asks about your capabilities, respond interactively to explain what you can do, encouraging them to proceed.\n\nExample Response:\n\"Absolutely, I'm here to help! I can search through Linde's Data Sheets to provide you with precise information on things like safety hazards, transport details, physical properties, and more. What specific product or information do you need help with today?\"\n\n3. Providing Data & Answering Specific Queries\nFor all factual queries, provide the answer in a clear, humanly interactive way. Start with a direct, conversational answer before listing the precise data.\n\nStructure your answers as:\n\nAcknowledge & Conclude: Start with a brief, conversational sentence that answers the question.\n\nPresent Data: Follow with the key data in crisp bullets or a short table.\n\nEmphasize Safety: If the data includes critical warnings, surface them clearly.\n\nCite Source: Always end with the source.\n\nExample for a specific query (UN Number):\n\nUser: \"What's the UN number for Oxygen?\"\n\nYour Response:\n\"Of course. For Oxygen, compressed, the UN number is 1072.\"\n\nUN Number: 1072\n\nProper Shipping Name: Oxygen, compressed\nSource: Product_Data_Sheet_O2_10021701EN.pdf\n\n4. Handling Missing Information or Refusals\nIf the requested information is not in the provided context, be transparent and helpful.\n\nExample Response:\n\"I've looked through the data sheets, but I couldn't find the specific details you're asking for. To help me search again, could you provide the product name, grade, or point me to a specific section (e.g., 'Transport Section')?\"\n\n5. Final Guardrails\n\nDo NOT state or imply anything not present in the provided passages.\n\nDo NOT provide medical advice or emergency procedures beyond what is written. Politely decline and redirect to the PDS/SDS content.\n\nDo NOT merge data from different products unless the document explicitly does so.\n\nAlways cite your source at the end of every answer: Source: <filename>"
         }
       },
-      "id": "9ad6dce2-e9e0-4866-ad04-d4dd8ae9623d",
+      "id": "3b15e8a2-6860-4c08-b44a-e310b6a473e0",
       "name": "Answer the query based on chunks",
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "position": [
-        448,
-        -2976
+        112,
+        1568
       ],
       "typeVersion": 1
     },
@@ -262,12 +262,12 @@
         },
         "options": {}
       },
-      "id": "47c8bbd0-91ab-4e72-bff2-65e62f3156fc",
+      "id": "0be16db7-1b25-440e-9d52-ab15b93367cb",
       "name": "Compose citations",
       "type": "n8n-nodes-base.set",
       "position": [
-        832,
-        -2976
+        496,
+        1568
       ],
       "typeVersion": 3.4
     },
@@ -285,12 +285,12 @@
         },
         "options": {}
       },
-      "id": "913b6df8-cca6-4f24-ac02-7c5b2fe05a61",
+      "id": "e3d12210-ff8b-4860-bdd8-0eeef3338eb9",
       "name": "Generate response",
       "type": "n8n-nodes-base.set",
       "position": [
-        1040,
-        -2976
+        704,
+        1568
       ],
       "typeVersion": 3.4
     },
@@ -302,10 +302,10 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -224,
-        -4464
+        -560,
+        80
       ],
-      "id": "932becda-99b6-401c-8998-6fc314cba006",
+      "id": "863f8473-36ca-485d-9a42-fc78bf28bde4",
       "name": "Embeddings Azure OpenAI",
       "credentials": {
         "azureOpenAiApi": {
@@ -322,10 +322,10 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -64,
-        -2800
+        -400,
+        1744
       ],
-      "id": "e3854870-360d-44f5-8eff-8bfed331de11",
+      "id": "45e349d8-f50e-4ef9-9872-930f07e7f0d8",
       "name": "Embeddings Azure OpenAI1",
       "credentials": {
         "azureOpenAiApi": {
@@ -342,10 +342,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        464,
-        -2800
+        128,
+        1744
       ],
-      "id": "e1ff4add-380a-47f8-9a50-4ee0db298a18",
+      "id": "11739a14-c918-46d8-9ddf-46c473f6e68d",
       "name": "Azure OpenAI Chat Model",
       "credentials": {
         "azureOpenAiApi": {
@@ -361,12 +361,12 @@
         "responseMode": "responseNode",
         "options": {}
       },
-      "id": "43d9d21c-63df-4ecc-bf5e-21ba074e317e",
+      "id": "0babb96f-fc9a-42bd-af04-2fede403fea8",
       "name": "On GET request1",
       "type": "n8n-nodes-base.webhook",
       "position": [
-        -2560,
-        -3056
+        -2896,
+        1488
       ],
       "webhookId": "454eb4ea-e460-4196-b31c-284abf234fc3",
       "typeVersion": 1
@@ -379,12 +379,12 @@
           "responseCode": 200
         }
       },
-      "id": "7bb323be-6fee-4963-95b7-6378b7e1df7e",
+      "id": "9c5b0563-ac28-4713-a230-151f4a7a6529",
       "name": "Respond with attachment1",
       "type": "n8n-nodes-base.respondToWebhook",
       "position": [
-        1296,
-        -2976
+        960,
+        1568
       ],
       "typeVersion": 1
     },
@@ -395,12 +395,12 @@
         "responseMode": "responseNode",
         "options": {}
       },
-      "id": "baa4c1f3-137f-47ba-8b2e-e8b561c7b908",
+      "id": "08804152-1c5b-45f9-b1ee-d222991e3068",
       "name": "Download Document API",
       "type": "n8n-nodes-base.webhook",
       "position": [
-        -2112,
-        -4704
+        -2448,
+        -176
       ],
       "webhookId": "454eb4ea-e460-4196-b31c-284abf234fc3",
       "typeVersion": 1
@@ -419,11 +419,11 @@
       "name": "Google Drive For Stored PDF",
       "type": "n8n-nodes-base.googleDrive",
       "position": [
-        -1872,
-        -4704
+        -2208,
+        -176
       ],
       "typeVersion": 1,
-      "id": "d671cbdb-8fc5-4685-8606-4ae8855f0ad3",
+      "id": "e74537d9-0c25-4c53-903c-40fc1457a683",
       "credentials": {
         "googleDriveOAuth2Api": {
           "id": "W43GDm2segtxgxAV",
@@ -458,12 +458,12 @@
           }
         }
       },
-      "id": "c5e46f5f-c2be-41e8-99df-c20fc6a957e1",
+      "id": "def69282-d147-45a0-8ac0-cbeff8ceb8f2",
       "name": "Respond with attachment PDF",
       "type": "n8n-nodes-base.respondToWebhook",
       "position": [
-        -1552,
-        -4704
+        -1888,
+        -176
       ],
       "typeVersion": 1
     },
@@ -485,10 +485,10 @@
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.2,
       "position": [
-        -1072,
-        -4704
+        -1408,
+        -176
       ],
-      "id": "3d1abeaa-bb18-4841-9dae-b54c1f473d71",
+      "id": "9efb372b-bc8b-4952-b29a-d008be50eb72",
       "name": "Upload Product Data Sheet",
       "webhookId": "44364e76-8140-4c53-b4d8-04ede91fd93c",
       "disabled": true
@@ -511,12 +511,12 @@
         },
         "options": {}
       },
-      "id": "3c6f6bcf-541c-4b35-8b36-3f21562b2e14",
+      "id": "c5cc3c05-74db-40ca-a4e3-7ceb001432b9",
       "name": "Upload File",
       "type": "n8n-nodes-base.googleDrive",
       "position": [
-        -608,
-        -4704
+        -944,
+        -176
       ],
       "typeVersion": 3,
       "credentials": {
@@ -537,10 +537,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -2432,
-        -2848
+        -2768,
+        1696
       ],
-      "id": "167920ca-2cd7-4b2f-95a9-ebf4b001b9ef",
+      "id": "b5a91fed-9e03-4f04-b412-0e6c27146e5c",
       "name": "Azure OpenAI Chat Model2",
       "credentials": {
         "azureOpenAiApi": {
@@ -556,10 +556,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -2064,
-        -3056
+        -2400,
+        1488
       ],
-      "id": "761327cb-a94f-494b-91a6-7ae126cd8456",
+      "id": "ed02b981-f8c5-4c5d-971a-b53e7494ab70",
       "name": "downstream node"
     },
     {
@@ -747,10 +747,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -880,
-        -2960
+        -1216,
+        1584
       ],
-      "id": "d61aa130-631d-4d99-9062-9ad8118e1f52",
+      "id": "9ff02665-240c-40ff-861d-af3bd9d7974a",
       "name": "Switch"
     },
     {
@@ -778,12 +778,12 @@
         },
         "options": {}
       },
-      "id": "5f68d776-9fe8-41b1-8d38-901384af9d0e",
+      "id": "6c3b1af9-d3e4-464a-8b68-3450e0d7c19c",
       "name": "Confidence Gate",
       "type": "n8n-nodes-base.if",
       "position": [
-        -1872,
-        -3056
+        -2208,
+        1488
       ],
       "typeVersion": 2.2
     },
@@ -795,12 +795,12 @@
           "responseCode": 200
         }
       },
-      "id": "d1c42c5f-ef36-4a06-bdf7-66a5032a3106",
+      "id": "6899d953-b174-4a50-95fe-ec843499f4c1",
       "name": "Respond Clarification",
       "type": "n8n-nodes-base.respondToWebhook",
       "position": [
-        -1280,
-        -2704
+        -1616,
+        1840
       ],
       "typeVersion": 1.2
     },
@@ -815,10 +815,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        -2368,
-        -3056
+        -2704,
+        1488
       ],
-      "id": "7a299138-b5af-4a3e-b217-967966e67a05",
+      "id": "3ce3d2f9-deb5-4dec-8d5c-7aaf7c0e7fd0",
       "name": "Intent Agent"
     },
     {
@@ -826,10 +826,10 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        432,
-        -4704
+        -1456,
+        176
       ],
-      "id": "9d1cc11b-62d7-4a00-864c-076ccb068f92",
+      "id": "4b7b0d74-0d21-42c1-9ce2-6d3927167188",
       "name": "When clicking ‘Test workflow’"
     },
     {
@@ -842,12 +842,12 @@
         },
         "options": {}
       },
-      "id": "02e6357a-cd78-413b-8695-429bc0a9fab6",
+      "id": "14e09e4e-b7ce-4153-935c-2fd2907beffe",
       "name": "Download file2",
       "type": "n8n-nodes-base.googleDrive",
       "position": [
-        -672,
-        -4384
+        -1008,
+        160
       ],
       "typeVersion": 3,
       "credentials": {
@@ -868,10 +868,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        -384,
-        -720
+        -720,
+        3824
       ],
-      "id": "5ee3b653-6e4c-4f76-9799-5099eed382d5",
+      "id": "de7664e9-06a1-47fc-9e3d-4b212bf6d5d5",
       "name": "Greeting Agent"
     },
     {
@@ -884,10 +884,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -368,
-        -512
+        -704,
+        4032
       ],
-      "id": "3d6edf93-ebd7-4fa2-9b2c-bd5abd2991f2",
+      "id": "21d1efd5-dd6e-4150-9a06-15567d4145b6",
       "name": "Azure OpenAI Chat Model3",
       "credentials": {
         "azureOpenAiApi": {
@@ -905,10 +905,10 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.2,
       "position": [
-        -32,
-        -720
+        -368,
+        3824
       ],
-      "id": "dad67f07-a2e8-4959-961e-8eb647272ac6",
+      "id": "d840589b-0099-471a-9e05-adbbfe47bf65",
       "name": "Respond to Webhook"
     },
     {
@@ -921,10 +921,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -208,
-        -2288
+        -544,
+        2256
       ],
-      "id": "451ef8fc-9f0c-4e17-b4c7-17c10d2a762d",
+      "id": "1ed51057-b3cc-4eac-86d7-9c1610128400",
       "name": "Azure OpenAI Chat Model4",
       "credentials": {
         "azureOpenAiApi": {
@@ -944,10 +944,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        -128,
-        -2528
+        -464,
+        2016
       ],
-      "id": "216ac871-77c9-4e7f-ac7a-18945fb803c9",
+      "id": "7e43f376-09a1-4502-bdd6-bcb70f4f904c",
       "name": "Quotation Agent"
     },
     {
@@ -959,10 +959,10 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.2,
       "position": [
-        1792,
-        -2528
+        1456,
+        2016
       ],
-      "id": "e87374df-22c1-4c92-b0e9-76edf5528eee",
+      "id": "3596f8ba-4cbd-483b-b98d-7e7e09a9210f",
       "name": "Respond to Webhook Quotation"
     },
     {
@@ -980,12 +980,12 @@
         "includeOtherFields": true,
         "options": {}
       },
-      "id": "8ba1ba34-813a-4624-9f05-ba9cd43e854a",
+      "id": "af535bd8-7544-425f-a47d-ba82c0df8c21",
       "name": "Set max chunks to send to model1",
       "type": "n8n-nodes-base.set",
       "position": [
-        208,
-        -2528
+        -128,
+        2016
       ],
       "typeVersion": 3.4
     },
@@ -1002,12 +1002,12 @@
         "topK": "={{ $json.chunks }}",
         "options": {}
       },
-      "id": "9b410b1b-e2d7-4ec4-aeb1-54a1467dd13d",
+      "id": "dc4a07d8-a78f-4ff1-9b3a-374d55c38dee",
       "name": "Get top chunks matching query1",
       "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
       "position": [
-        416,
-        -2528
+        80,
+        2016
       ],
       "typeVersion": 1,
       "credentials": {
@@ -1021,12 +1021,12 @@
       "parameters": {
         "jsCode": "let out = \"\"\nfor (const i in $input.all()) {\n  let itemText = \"--- CHUNK \" + i + \" ---\\n\"\n  itemText += $input.all()[i].json.document.pageContent + \"\\n\"\n  itemText += \"\\n\"\n  out += itemText\n}\n\nreturn {\n  'context': out\n};"
       },
-      "id": "09ca654e-2e6e-4510-9a0e-9e09101befcd",
+      "id": "5c381fcd-8c20-495b-bfb0-ee26fa5df5c2",
       "name": "Prepare chunks1",
       "type": "n8n-nodes-base.code",
       "position": [
-        800,
-        -2528
+        464,
+        2016
       ],
       "typeVersion": 2
     },
@@ -1039,12 +1039,12 @@
           "systemPromptTemplate": "=You are a polite, precise Quotation Agent for industrial gases (Linde Gas).\n\nPURPOSE\n- Handle quotation requests from existing or new customers.\n- Use retrieved documents (price lists, discount tiers, account pricing, freight zones, lead times, taxes).\n- If an “account_no” is provided, honor account agreements; otherwise use public price lists.\n\nINPUT SIGNALS (may come from upstream intent/entity extractor):\n- gas, grade/purity, quantity, uom, location/zone, account_no, email, phone, preferred_date/time, notes.\n\nPOLICY\n- Compute unit price = base list price (+ grade add-on) – eligible discounts (volume tier + loyalty + account-specific), applying caps if policy states.\n- Add packaging, rental (if cylinder), freight by nearest zone, and mention surcharges/taxes as applicable.\n- Quote validity 30 days unless doc states otherwise.\n- Provide realistic lead time per product/package from the docs.\n- If data is missing, ask ONE crisp follow-up within the answer (“Please confirm quantity and delivery location to finalize.”) but still give an indicative price/lead time range.\n\nTONE & FORMAT\n- Keep the main answer under ~10 lines: a short paragraph + bulleted key figures.\n- No JSON. No markdown headings. Plain text with simple bullets is okay.\n- Always cite the basis in natural language (e.g., “based on Cylinder Price List 2025Q4 and Freight Zone B”).\n\nSAFETY\n- If request is outside supported gases or unusually hazardous, respond with a safe refusal and ask to connect to sales.\n\nOUTPUT (TEXT ONLY; the workflow will wrap it into JSON):\n- A clear mini-quote mentioning: product/grade, unit price, any discount, freight/zone, lead time, validity, and delivery location.\n"
         }
       },
-      "id": "975d885b-bc0e-48cc-887c-a144f37d76cf",
+      "id": "2874a4b8-69c4-4302-aee4-572eb27a494d",
       "name": "Answer the query based on chunks1",
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "position": [
-        992,
-        -2528
+        656,
+        2016
       ],
       "typeVersion": 1
     },
@@ -1062,12 +1062,12 @@
         },
         "options": {}
       },
-      "id": "0e72c916-620e-4ae4-9064-0a92575c659a",
+      "id": "52c9672b-b8fa-43a6-a3be-fd375168b8b1",
       "name": "Compose citations1",
       "type": "n8n-nodes-base.set",
       "position": [
-        1360,
-        -2528
+        1024,
+        2016
       ],
       "typeVersion": 3.4
     },
@@ -1085,12 +1085,12 @@
         },
         "options": {}
       },
-      "id": "9d2c6d1a-b805-4cc8-9d5a-9432af5c9eea",
+      "id": "d8475304-ed7a-4208-9b41-060b5b08ad20",
       "name": "Generate response1",
       "type": "n8n-nodes-base.set",
       "position": [
-        1552,
-        -2528
+        1216,
+        2016
       ],
       "typeVersion": 3.4
     },
@@ -1102,10 +1102,10 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        416,
-        -2304
+        80,
+        2240
       ],
-      "id": "0c65f910-1115-42ab-978d-b76739d75d86",
+      "id": "fc816dc9-9126-4c24-9fcf-620b2be9f951",
       "name": "Embeddings Azure OpenAI2",
       "credentials": {
         "azureOpenAiApi": {
@@ -1122,10 +1122,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        992,
-        -2304
+        656,
+        2240
       ],
-      "id": "ffda2298-90f7-4a6f-85ab-8a140313b9cb",
+      "id": "61760569-5fea-434c-9dfd-96b7ee569b5c",
       "name": "Azure OpenAI Chat Model5",
       "credentials": {
         "azureOpenAiApi": {
@@ -1141,12 +1141,12 @@
         "width": 1086.039382705461,
         "color": 7
       },
-      "id": "2b5e7800-cf61-4cfa-9bf0-a6765a3c7ea9",
+      "id": "8c01c0d1-f562-410a-b4df-398435ee47bf",
       "name": "Sticky Note2",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        736,
-        -4896
+        400,
+        -368
       ],
       "typeVersion": 1
     },
@@ -1157,12 +1157,12 @@
         "width": 179.58883583572606,
         "color": 7
       },
-      "id": "0b560396-7175-4c87-9f80-a86dba2b3ad6",
+      "id": "c8331e6b-2651-4d5b-8b5c-2dbe1797e3e8",
       "name": "Sticky Note5",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        752,
-        -4800
+        416,
+        -272
       ],
       "typeVersion": 1
     },
@@ -1177,12 +1177,12 @@
         },
         "options": {}
       },
-      "id": "3329783b-a0ed-465f-b244-8160443896c3",
+      "id": "57afa727-6cae-4789-8069-374a402c6564",
       "name": "Pinecone Vector Store1",
       "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
       "position": [
-        1456,
-        -4720
+        1120,
+        -192
       ],
       "typeVersion": 1,
       "credentials": {
@@ -1206,12 +1206,12 @@
         },
         "options": {}
       },
-      "id": "1cb7d0a7-5fd0-4a18-a870-36553bfe7729",
+      "id": "7e44106e-3d6a-466e-aab3-290d37d425d2",
       "name": "Set file URL in Google Drive1",
       "type": "n8n-nodes-base.set",
       "position": [
-        816,
-        -4720
+        480,
+        -192
       ],
       "typeVersion": 3.4
     },
@@ -1233,12 +1233,12 @@
           }
         }
       },
-      "id": "c059a0ee-4cc9-4829-930d-57a505604511",
+      "id": "f020fc02-b35b-49fd-9bb3-0499f18fcc15",
       "name": "Default Data Loader1",
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "position": [
-        1552,
-        -4480
+        1216,
+        64
       ],
       "typeVersion": 1
     },
@@ -1248,12 +1248,12 @@
         "chunkOverlap": 200,
         "options": {}
       },
-      "id": "f7af5f38-479f-4ab0-b2fa-f17af7cff225",
+      "id": "207ab2ba-31b0-47bd-a9ac-c46ef28275ec",
       "name": "Recursive Character Text Splitter1",
       "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
       "position": [
-        1648,
-        -4320
+        1312,
+        224
       ],
       "typeVersion": 1
     },
@@ -1265,10 +1265,10 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        1424,
-        -4464
+        1088,
+        80
       ],
-      "id": "b2ab5c3d-a528-4356-ae93-2b6144a884be",
+      "id": "a83300de-efbb-4b6a-8aab-109d30cbe3f6",
       "name": "Embeddings Azure OpenAI3",
       "credentials": {
         "azureOpenAiApi": {
@@ -1287,12 +1287,12 @@
         },
         "options": {}
       },
-      "id": "11eb7279-af8c-44e1-b3b9-259588e31536",
+      "id": "27b0ba63-714d-4f05-853a-08457b62c8d1",
       "name": "Download file3",
       "type": "n8n-nodes-base.googleDrive",
       "position": [
-        1136,
-        -4720
+        800,
+        -192
       ],
       "typeVersion": 3,
       "credentials": {
@@ -1314,10 +1314,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        -400,
-        -1920
+        -736,
+        2624
       ],
-      "id": "2e494b31-08d7-41a6-ac2d-d610e3b2ed48",
+      "id": "1b8a4d15-bdec-45d7-8098-7e62c024f3fb",
       "name": "Calendar Agent"
     },
     {
@@ -1333,10 +1333,10 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        864,
-        -1936
+        528,
+        2608
       ],
-      "id": "3c0d2760-a0a0-4fc9-8bfa-b6b98fd280ed",
+      "id": "8ef34fdf-3eb1-4574-921c-844d9697b042",
       "name": "Send Confirmation Email",
       "webhookId": "26c93eda-2b74-4640-befb-730cfb0dca5e",
       "executeOnce": true,
@@ -1355,10 +1355,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -400,
-        -1664
+        -736,
+        2880
       ],
-      "id": "ae28a7d2-76d2-4202-988a-ad80cf716b00",
+      "id": "816fefc3-84a7-4a54-a85b-aee4e8b84a9b",
       "name": "Azure OpenAI Chat Model6",
       "credentials": {
         "azureOpenAiApi": {
@@ -1371,22 +1371,24 @@
       "parameters": {
         "sendTo": "={{ $json.body.email || $json.email }}",
         "subject": "Linde PDF Document",
-        "message": "=Your Download is Ready({{ $json.body.filename || $json.filename }}). \n\nplease download document from here -> \n{{ $json.body.file_url || $json.file_url }}",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n</head>\n<body style=\"margin:0;padding:0;background-color:#E8EAED;font-family:'Segoe UI',Arial,sans-serif;\">\n\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#E8EAED;padding:48px 16px;\">\n  <tr><td align=\"center\">\n    <table width=\"640\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:640px;width:100%;\">\n\n      <!-- BRAND BAR -->\n      <tr>\n        <td style=\"background:#003057;padding:16px 44px;border-radius:14px 14px 0 0;\">\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n            <td style=\"font-size:13px;font-weight:700;letter-spacing:3px;color:#4A90B8;text-transform:uppercase;\">\n              Linde Gas\n            </td>\n            <td align=\"right\" style=\"font-size:11px;color:#1E4A6B;letter-spacing:1px;text-transform:uppercase;\">\n              AI Scheduling Assistant\n            </td>\n          </tr></table>\n        </td>\n      </tr>\n\n      <!-- HERO -->\n      <tr>\n        <td style=\"background:#003057;padding:44px 44px 40px;\">\n          <div style=\"display:inline-block;background:rgba(0,160,210,0.12);border:1px solid rgba(0,160,210,0.3);border-radius:100px;padding:5px 16px;margin-bottom:24px;\">\n            <span style=\"font-size:10px;font-weight:700;letter-spacing:2px;color:#00A0D2;text-transform:uppercase;\">Document Ready</span>\n          </div>\n          <h1 style=\"margin:0 0 14px;font-size:32px;font-weight:300;color:#FFFFFF;line-height:1.2;letter-spacing:-0.3px;\">\n            Your document<br><strong style=\"font-weight:700;\">is ready to download.</strong>\n          </h1>\n          <p style=\"margin:0;font-size:14px;color:#5A8BAA;line-height:1.7;max-width:440px;\">\n            Your requested file has been processed and is available for download. Please use the link below to access your document securely.\n          </p>\n        </td>\n      </tr>\n\n      <!-- ACCENT LINE -->\n      <tr>\n        <td style=\"background:#FFFFFF;padding:0 44px;\">\n          <div style=\"height:3px;background:linear-gradient(90deg,#003057,#00A0D2,#00C8E6,transparent);\"></div>\n        </td>\n      </tr>\n\n      <!-- DOCUMENT DETAILS -->\n      <tr>\n        <td style=\"background:#FFFFFF;padding:36px 44px 32px;\">\n\n          <!-- File info card -->\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-bottom:28px;background:#F4F7FA;border:1px solid #DDE6ED;border-radius:12px;\">\n            <tr>\n              <td style=\"padding:20px 24px;\">\n                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n                  <!-- PDF icon -->\n                  <td style=\"width:48px;vertical-align:middle;\">\n                    <div style=\"width:44px;height:44px;background:#003057;border-radius:10px;text-align:center;line-height:44px;font-size:18px;\">\n                      📄\n                    </div>\n                  </td>\n                  <td style=\"padding-left:16px;vertical-align:middle;\">\n                    <p style=\"margin:0 0 3px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8FA8B8;\">File Name</p>\n                    <p style=\"margin:0;font-size:15px;font-weight:600;color:#003057;\">{{ $json.body.filename || $json.filename || 'Document' }}</p>\n                  </td>\n                  <td align=\"right\" style=\"vertical-align:middle;\">\n                    <div style=\"background:rgba(0,160,210,0.1);border:1px solid rgba(0,160,210,0.25);border-radius:100px;padding:4px 14px;\">\n                      <span style=\"font-size:10px;font-weight:700;color:#00A0D2;letter-spacing:1px;\">PDF</span>\n                    </div>\n                  </td>\n                </tr></table>\n              </td>\n            </tr>\n          </table>\n\n          <!-- Download button -->\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-bottom:14px;\">\n            <tr>\n              <td>\n                <a href=\"{{ $json.body.file_url || $json.file_url }}\"\n                   style=\"display:block;background:#003057;color:#ffffff;text-decoration:none;padding:18px 32px;border-radius:10px;font-size:14px;font-weight:700;letter-spacing:0.8px;text-align:center;border-bottom:3px solid #00A0D2;\">\n                  ⬇️ &nbsp;Download Document &nbsp;→\n                </a>\n              </td>\n            </tr>\n          </table>\n\n          <!-- Copy link -->\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-bottom:36px;\">\n            <tr>\n              <td style=\"background:#F4F7FA;border:1px solid #DDE6ED;border-radius:8px;padding:12px 18px;\">\n                <p style=\"margin:0 0 3px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8FA8B8;\">Direct Link</p>\n                <a href=\"{{ $json.body.file_url || $json.file_url }}\" style=\"font-size:12px;color:#00A0D2;text-decoration:none;word-break:break-all;\">\n                  {{ $json.body.file_url || $json.file_url }}\n                </a>\n              </td>\n            </tr>\n          </table>\n\n          <!-- Info checklist -->\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-bottom:36px;\">\n            <tr>\n              <td style=\"border-top:1px solid #EBF0F4;padding-top:32px;\">\n                <p style=\"margin:0 0 18px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8FA8B8;\">Important Notes</p>\n                <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n                  <tr><td style=\"padding:11px 0;border-bottom:1px solid #F4F7FA;\">\n                    <table cellpadding=\"0\" cellspacing=\"0\"><tr>\n                      <td style=\"width:26px;vertical-align:top;\">\n                        <div style=\"width:20px;height:20px;background:#E8F4FB;border-radius:50%;text-align:center;line-height:20px;font-size:9px;color:#00A0D2;font-weight:700;\">01</div>\n                      </td>\n                      <td style=\"font-size:13px;color:#4A6070;line-height:1.5;padding-left:10px;\">This link provides access to your document on Google Drive. Ensure you are signed in to view it.</td>\n                    </tr></table>\n                  </td></tr>\n                  <tr><td style=\"padding:11px 0;border-bottom:1px solid #F4F7FA;\">\n                    <table cellpadding=\"0\" cellspacing=\"0\"><tr>\n                      <td style=\"width:26px;vertical-align:top;\">\n                        <div style=\"width:20px;height:20px;background:#E8F4FB;border-radius:50%;text-align:center;line-height:20px;font-size:9px;color:#00A0D2;font-weight:700;\">02</div>\n                      </td>\n                      <td style=\"font-size:13px;color:#4A6070;line-height:1.5;padding-left:10px;\">Do not share this link with unauthorized parties. It is intended for your use only.</td>\n                    </tr></table>\n                  </td></tr>\n                  <tr><td style=\"padding:11px 0;\">\n                    <table cellpadding=\"0\" cellspacing=\"0\"><tr>\n                      <td style=\"width:26px;vertical-align:top;\">\n                        <div style=\"width:20px;height:20px;background:#E8F4FB;border-radius:50%;text-align:center;line-height:20px;font-size:9px;color:#00A0D2;font-weight:700;\">03</div>\n                      </td>\n                      <td style=\"font-size:13px;color:#4A6070;line-height:1.5;padding-left:10px;\">If you experience any issues accessing the document, please contact your Linde Gas representative.</td>\n                    </tr></table>\n                  </td></tr>\n                </table>\n              </td>\n            </tr>\n          </table>\n\n          <!-- Warning note -->\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-bottom:36px;\">\n            <tr>\n              <td style=\"background:#FFF8E6;border:1px solid #F0D060;border-left:4px solid #F0B020;border-radius:0 8px 8px 0;padding:14px 20px;\">\n                <p style=\"margin:0;font-size:12px;color:#7A5A00;line-height:1.6;\">\n                  <strong>Confidential:</strong> This document contains proprietary information belonging to Linde Gas. Unauthorized distribution is strictly prohibited.\n                </p>\n              </td>\n            </tr>\n          </table>\n\n        </td>\n      </tr>\n\n      <!-- SIGNATURE -->\n      <tr>\n        <td style=\"background:#FFFFFF;padding:0 44px 40px;\">\n          <table cellpadding=\"0\" cellspacing=\"0\"><tr>\n            <td style=\"width:44px;height:44px;background:#003057;border-radius:50%;text-align:center;vertical-align:middle;\">\n              <span style=\"font-size:18px;color:#00A0D2;font-weight:700;\">L</span>\n            </td>\n            <td style=\"padding-left:14px;vertical-align:middle;\">\n              <p style=\"margin:0;font-size:14px;font-weight:700;color:#003057;\">Linde Gas</p>\n              <p style=\"margin:2px 0 0;font-size:12px;color:#5A8BAA;\">AI-Powered Document Assistant</p>\n            </td>\n          </tr></table>\n        </td>\n      </tr>\n\n      <!-- FOOTER -->\n      <tr>\n        <td style=\"background:#003057;padding:22px 44px;border-radius:0 0 14px 14px;\">\n          <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n            <td style=\"font-size:11px;color:#1E4A6B;line-height:1.8;\">\n              <a href=\"https://www.linde.com\" style=\"color:#4A90B8;text-decoration:none;\">linde.com</a>\n              &nbsp;·&nbsp;\n              <a href=\"mailto:support@linde.com\" style=\"color:#4A90B8;text-decoration:none;\">support@linde.com</a>\n            </td>\n            <td align=\"right\" style=\"font-size:10px;color:#1E4A6B;\">Automated · Do not reply directly</td>\n          </tr></table>\n        </td>\n      </tr>\n\n    </table>\n  </td></tr>\n</table>\n\n</body>\n</html>",
         "options": {
+          "appendAttribution": false,
           "attachmentsUi": {
             "attachmentsBinary": [
               {}
             ]
-          }
+          },
+          "senderName": "Linde's AI Assistant"
         }
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        -1552,
-        -4464
+        -1888,
+        80
       ],
-      "id": "1353fd6f-c1e8-415b-935d-293a7a69b3f6",
+      "id": "96ca362a-90b0-4515-b0ec-17bef78aca00",
       "name": "Send Document in Gmail",
       "webhookId": "a9c12f3d-51de-4e36-a1c5-4f5bf8fdb918",
       "credentials": {
@@ -1405,10 +1407,10 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.2,
       "position": [
-        1104,
-        -1936
+        768,
+        2608
       ],
-      "id": "8ed6832b-c206-4738-9521-06e221ad3117",
+      "id": "8697f2a1-cebd-4c4f-a5dd-cb0492727e9b",
       "name": "Respond to Webhook1"
     },
     {
@@ -1436,10 +1438,10 @@
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.3,
       "position": [
-        480,
-        -1936
+        144,
+        2608
       ],
-      "id": "d0d70d70-de05-431f-838a-e15f4f1ab0b9",
+      "id": "f6c12263-2293-4a1a-b793-1dd5a071f451",
       "name": "Google Calendar",
       "credentials": {
         "googleCalendarOAuth2Api": {
@@ -1455,10 +1457,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        672,
-        -1936
+        336,
+        2608
       ],
-      "id": "f7bbe729-3b19-4a55-88ba-b4a9bce19d75",
+      "id": "fef8fedd-fae5-49d1-9e30-b14505d67b25",
       "name": "Code1"
     },
     {
@@ -1469,10 +1471,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -432,
-        -1152
+        -768,
+        3392
       ],
-      "id": "0ec269e7-8e2c-4a30-aa93-1c403214454d",
+      "id": "eb224ce0-a3a7-489c-9733-c1c13d328a1e",
       "name": "Azure OpenAI Chat Model7",
       "credentials": {
         "azureOpenAiApi": {
@@ -1492,10 +1494,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        -432,
-        -1408
+        -768,
+        3136
       ],
-      "id": "d1e93b17-baa2-4461-ad37-9fa24e8272be",
+      "id": "33f67def-accd-4d82-92c1-1dc50acc6124",
       "name": "Delivery Status Agent"
     },
     {
@@ -1519,10 +1521,10 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.5,
       "position": [
-        -96,
-        -1152
+        -432,
+        3392
       ],
-      "id": "031610cc-bca3-4f97-b74a-01eb81ff585f",
+      "id": "61a95b28-a087-4038-9502-acf591698e0e",
       "name": "Delivery Orders Lookup",
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -1540,10 +1542,10 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.2,
       "position": [
-        -48,
-        -1408
+        -384,
+        3136
       ],
-      "id": "9b63aae6-426a-4d73-a16b-4a83f7ecd4e0",
+      "id": "1c1dc203-94c8-46cc-a7b2-6a4e606d92ed",
       "name": "Respond to Webhook2"
     },
     {
@@ -1556,10 +1558,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -384,
-        -32
+        -720,
+        4512
       ],
-      "id": "64f097a8-3e78-4010-810f-97f51cc86618",
+      "id": "2ab2ae02-d708-4566-9681-0492ca69beb1",
       "name": "Azure OpenAI Chat Model8",
       "credentials": {
         "azureOpenAiApi": {
@@ -1577,10 +1579,10 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.2,
       "position": [
-        -48,
-        -240
+        -384,
+        4304
       ],
-      "id": "0a02fda0-f9cb-4007-b31d-875ac6835afb",
+      "id": "cd0e371a-e5d1-43a0-ab82-d1be1b17ba70",
       "name": "Respond to Webhook3"
     },
     {
@@ -1594,10 +1596,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        -400,
-        -240
+        -736,
+        4304
       ],
-      "id": "2a2fc095-7492-48c7-ae50-1314591a967c",
+      "id": "2c81ee1a-1ee4-471b-afad-56016ec64115",
       "name": "General Agent"
     },
     {
@@ -1611,10 +1613,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        -432,
-        144
+        -768,
+        4688
       ],
-      "id": "195fceb6-39a7-457f-a99e-1f7436482af8",
+      "id": "40f7c525-921c-4111-847a-0d5ba32f3c74",
       "name": "Availability Agent"
     },
     {
@@ -1627,10 +1629,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -432,
-        368
+        -768,
+        4912
       ],
-      "id": "8ac18c27-da1a-4206-ade9-e05c8b7f22c6",
+      "id": "fa6c36bc-a9f1-4a06-9901-fea677bc8a0b",
       "name": "Azure OpenAI Chat Model Availability",
       "credentials": {
         "azureOpenAiApi": {
@@ -1658,10 +1660,10 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.5,
       "position": [
-        -80,
-        368
+        -416,
+        4912
       ],
-      "id": "e9ce10cd-5c8a-4c87-ae57-e4c73a98538e",
+      "id": "bc0398df-79f2-4069-ad69-e11a24207504",
       "name": "Availability Master Sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -1679,10 +1681,10 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.2,
       "position": [
-        -48,
-        144
+        -384,
+        4688
       ],
-      "id": "ffcad412-cb5d-46eb-8afa-2bcc4c8bcee7",
+      "id": "5b3adbdc-2248-4dde-86fe-f8903a52f37f",
       "name": "Respond to Webhook Availability"
     },
     {
@@ -1694,10 +1696,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -2256,
-        -2848
+        -2592,
+        1696
       ],
-      "id": "a6867e14-9c97-46b3-96a1-2f5deb53bd09",
+      "id": "ccdfd0ac-6a2c-4645-8ef7-610814ceff5f",
       "name": "Memory - Intent Agent"
     },
     {
@@ -1709,10 +1711,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -192,
-        -528
+        -528,
+        4016
       ],
-      "id": "fb2f514b-845e-43ba-9961-d9737b057061",
+      "id": "5f601502-eaff-4a66-bc56-2203adfe5cbe",
       "name": "Memory - Greeting Agent"
     },
     {
@@ -1724,10 +1726,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -16,
-        -2288
+        -352,
+        2256
       ],
-      "id": "2a29063c-d601-40b9-bdd6-be575b68e2c7",
+      "id": "83456a76-886b-4dfb-bd23-ec488cc4d532",
       "name": "Memory - Quotation Agent"
     },
     {
@@ -1739,10 +1741,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -224,
-        -1648
+        -560,
+        2896
       ],
-      "id": "9857038d-0062-4809-bc1a-2918d23d2929",
+      "id": "3d55b7ef-9280-49a4-9de5-5fb96c916f2e",
       "name": "Memory - Calendar Agent"
     },
     {
@@ -1754,10 +1756,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -256,
-        -1152
+        -592,
+        3392
       ],
-      "id": "cd96e17e-2b18-4434-8976-049f69c44251",
+      "id": "940132c9-adf8-4bd3-9a98-8aba53e9a039",
       "name": "Memory - Delivery Status Agent"
     },
     {
@@ -1769,10 +1771,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -208,
-        -48
+        -544,
+        4496
       ],
-      "id": "968c62d2-e904-4c58-8090-f025dcef1084",
+      "id": "c6dc36aa-2afe-42c2-80eb-9be09287f1fc",
       "name": "Memory - General Agent"
     },
     {
@@ -1784,10 +1786,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -256,
-        368
+        -592,
+        4912
       ],
-      "id": "649e5669-287e-4686-868f-0fe9be62ac10",
+      "id": "a0fc6071-7ac0-4c32-97f8-d5870a10ce48",
       "name": "Memory - Availability Agent"
     },
     {
@@ -1815,12 +1817,12 @@
         },
         "options": {}
       },
-      "id": "674d12ba-f6cc-40ca-9346-c3a943860e56",
+      "id": "3e284a49-6276-4890-ae34-b758903d03df",
       "name": "Multi-Intent Check",
       "type": "n8n-nodes-base.if",
       "position": [
-        -1296,
-        -3072
+        -1632,
+        1472
       ],
       "typeVersion": 2.2
     },
@@ -1833,10 +1835,10 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.2,
       "position": [
-        912,
-        -3552
+        576,
+        992
       ],
-      "id": "fc04bc37-ca35-4c2b-afed-761e9dd6d89e",
+      "id": "eb80b0e1-9ea9-4ea6-b116-a134f059a8b6",
       "name": "Respond Multi-Intent"
     },
     {
@@ -1857,10 +1859,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -848,
-        -3552
+        -1184,
+        992
       ],
-      "id": "92dab8c9-43dd-47e5-914a-e7419079ec75",
+      "id": "86e86b75-d739-43e3-be03-8083ba798c0c",
       "name": "Set Chunks Multi"
     },
     {
@@ -1879,10 +1881,10 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
       "typeVersion": 1,
       "position": [
-        -208,
-        -3552
+        -544,
+        992
       ],
-      "id": "835c61e2-cb07-491f-abd7-51b086fb0c4c",
+      "id": "c6bc0f3e-46c6-45dc-9c08-901a9d26c473",
       "name": "Get DS Chunks Multi",
       "credentials": {
         "pineconeApi": {
@@ -1899,10 +1901,10 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        -208,
-        -3360
+        -544,
+        1184
       ],
-      "id": "eda96bba-6d0b-4624-8273-29d0a4782cd7",
+      "id": "a1ff90d6-c59a-4a82-ac6f-350db56321df",
       "name": "Embeddings DS Multi",
       "credentials": {
         "azureOpenAiApi": {
@@ -1918,10 +1920,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        112,
-        -3552
+        -224,
+        992
       ],
-      "id": "4777bf82-e3a4-4ba8-92b5-c65d32a85f34",
+      "id": "6ba6963b-c455-4ac6-8bbe-cf289d829d97",
       "name": "Extract DS Sources"
     },
     {
@@ -1940,10 +1942,10 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
       "typeVersion": 1,
       "position": [
-        336,
-        -3552
+        0,
+        992
       ],
-      "id": "62e658f0-d840-4876-810d-b2038387e241",
+      "id": "8dbcf149-0b99-46fc-b1a2-98e8052a9912",
       "name": "Get QT Chunks Multi",
       "credentials": {
         "pineconeApi": {
@@ -1960,10 +1962,10 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsAzureOpenAi",
       "typeVersion": 1,
       "position": [
-        336,
-        -3360
+        0,
+        1184
       ],
-      "id": "2ef13408-dd5e-44d8-9e1b-d50c102e87b8",
+      "id": "4b63fb67-3185-43d4-a21b-dae117122d98",
       "name": "Embeddings QT Multi",
       "credentials": {
         "azureOpenAiApi": {
@@ -1979,10 +1981,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        688,
-        -3552
+        352,
+        992
       ],
-      "id": "300865ae-006e-4c13-9ae5-2c80746f4d28",
+      "id": "1c37ed74-50a9-4f9d-bdaf-ad9f90f54632",
       "name": "Build Multi Response"
     },
     {
@@ -2010,13 +2012,13 @@
         },
         "options": {}
       },
-      "id": "9178259f-9f7c-4a14-ac6f-07296174798e",
+      "id": "3d34e025-baa3-4f01-83c0-4462bcaa40ff",
       "name": "Validate Appt Fields",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        -64,
-        -1920
+        -400,
+        2624
       ]
     },
     {
@@ -2025,13 +2027,13 @@
         "responseBody": "={{ (() => {\n  const raw = $('Calendar Agent').first().json?.output || '';\n  let data = {};\n  try { data = typeof raw === 'string' ? JSON.parse(raw) : raw; } catch {}\n\n  const missing = Array.isArray(data.missing_fields) ? data.missing_fields : ['email', 'date', 'time'];\n\n  const defaultMessages = {\n    email:    'your email address (so we can send a calendar invite)',\n    date:     'your preferred meeting date (e.g. 10 March 2026)',\n    time:     'your preferred time (e.g. 14:30 CET)',\n    subject:  'meeting topic or agenda',\n  };\n\n  const bulletList = missing.map(f => '- ' + (defaultMessages[f] || f)).join('\\n');\n  const clarMsg = data.clarification_message ||\n    'To schedule your call with a Linde sales representative, I need a few more details. Please provide:\\n' + bulletList;\n\n  const prefill = data.prefill || {};\n\n  return JSON.stringify({\n    response_message: clarMsg,\n    sources: [{ doc_id: '', title: '', file_url: '', type: 'appointment' }],\n    ui: {\n      mode: 'clarification',\n      missing_fields: missing,\n      prefill: Object.assign({ subject: '', duration_min: 60, platform: 'Google Meet' }, prefill)\n    }\n  });\n})() }}",
         "options": {}
       },
-      "id": "cd3da81a-311c-4287-a6e4-e65aef4f2431",
+      "id": "78d440c0-db65-40aa-b241-6b21e6347152",
       "name": "Respond Appt Clarification",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
       "position": [
-        208,
-        -1744
+        -128,
+        2800
       ]
     }
   ],
@@ -2347,7 +2349,7 @@
       "main": [
         [
           {
-            "node": "Set file URL in Google Drive1",
+            "node": "Set file URL in Google Drive",
             "type": "main",
             "index": 0
           }

@@ -1,11 +1,10 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from './ThemeProvider';
-import LindeLogo from './LindeLogo';
 
-const USER_NAME = 'John Doe';
-const USER_INITIALS = 'JG';
+const USER_NAME = 'Prateek Bais';
+const USER_INITIALS = 'PB';
 
 interface TopBarProps {
   onToggleSidebar?: () => void;
@@ -45,6 +44,10 @@ export default function TopBar({
   const { theme, toggle } = useTheme();
   const [notifOpen, setNotifOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  // Defer theme icon to client-only to avoid SSR/localStorage hydration mismatch
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const resolvedTheme = mounted ? theme : 'dark';
 
   return (
     <motion.header
@@ -59,7 +62,11 @@ export default function TopBar({
           {/* Both variants always rendered; CSS toggles visibility via [data-linde-branding] */}
           <div className="topbar-brand-icon">LG</div>
           <div className="topbar-brand-logo">
-            <LindeLogo width={95} color="#fff" showTriangle={true} />
+            <img
+              src="/branding/linde/linde-logo.png"
+              alt="Linde"
+              className="topbar-linde-img"
+            />
           </div>
           <span className="topbar-brand-name">Linde Gas AI</span>
         </div>
@@ -156,19 +163,19 @@ export default function TopBar({
           className="topbar-icon-btn"
           onClick={toggle}
           whileTap={{ scale: 0.88 }}
-          title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          title={`Switch to ${resolvedTheme === 'dark' ? 'light' : 'dark'} mode`}
           aria-label="Toggle theme"
         >
           <AnimatePresence mode="wait" initial={false}>
             <motion.span
-              key={theme}
+              key={resolvedTheme}
               initial={{ rotate: -90, opacity: 0, scale: 0.6 }}
               animate={{ rotate: 0, opacity: 1, scale: 1 }}
               exit={{ rotate: 90, opacity: 0, scale: 0.6 }}
               transition={{ duration: 0.22, ease: 'backOut' }}
               style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
-              {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+              {resolvedTheme === 'dark' ? <SunIcon /> : <MoonIcon />}
             </motion.span>
           </AnimatePresence>
         </motion.button>

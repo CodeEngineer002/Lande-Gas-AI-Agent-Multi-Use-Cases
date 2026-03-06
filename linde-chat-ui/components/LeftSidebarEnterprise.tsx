@@ -1,10 +1,12 @@
 'use client';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { DownloadHistoryEntry, Source, DownloadPayload } from '@/lib/types';
 import LindeLogo from './LindeLogo';
+import { useSettings } from '@/lib/settingsContext';
 
-const USER_NAME = 'John Doe';
-const USER_INITIALS = 'JG';
+const USER_NAME = 'Prateek Bais';
+const USER_INITIALS = 'PB';
 const USER_ROLE = 'Administrator';
 
 interface LeftSidebarEnterpriseProps {
@@ -139,6 +141,18 @@ const NAV_ITEMS = [
   { icon: <SettingsIcon />, label: 'Settings',  page: 'settings'  },
 ];
 
+function BrandingIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="13.5" cy="6.5" r="2.5"/>
+      <circle cx="17.5" cy="10.5" r="2.5"/>
+      <circle cx="8.5" cy="7.5" r="2.5"/>
+      <circle cx="6.5" cy="12.5" r="2.5"/>
+      <path d="M12 22c-4 0-7-2-7-5 0-1.5 1-3 3-4l1.5 1c-.5.5-1 1.2-1 2 0 1.5 1.5 2.5 3.5 2.5.8 0 1.5-.2 2-.5L15 19c-.8.7-1.8 1-3 1z"/>
+    </svg>
+  );
+}
+
 function CollapseIcon({ open }: { open: boolean }) {
   return open ? (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -165,6 +179,11 @@ export default function LeftSidebarEnterprise({
   sidebarOpen = true,
 }: LeftSidebarEnterpriseProps) {
   const canDownload = lastSources.length > 0;
+  const { settings, update } = useSettings();
+  // Defer localStorage-dependent className to client to avoid SSR hydration mismatch
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const brandingActive = mounted ? settings.lindeBranding : true;
 
   return (
     <div className="sidebar-enterprise-wrap">
@@ -184,6 +203,20 @@ export default function LeftSidebarEnterprise({
             {icon}
           </motion.button>
         ))}
+
+        {/* ── Branding toggle ── */}
+        <div style={{ width: '100%', height: 1, background: 'rgba(255,255,255,0.08)', margin: '4px 0' }} />
+        <motion.button
+          className={`rail-btn${brandingActive ? ' active' : ''}`}
+          onClick={() => update('lindeBranding', !settings.lindeBranding)}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          title={brandingActive ? 'Branding ON — click to disable' : 'Branding OFF — click to enable'}
+          aria-label="Toggle Linde branding"
+          aria-pressed={brandingActive}
+        >
+          <BrandingIcon />
+        </motion.button>
 
         {/* ── Sidebar toggle pinned to bottom ── */}
         <motion.button

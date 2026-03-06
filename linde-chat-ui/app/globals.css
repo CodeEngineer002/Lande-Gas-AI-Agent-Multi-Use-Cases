@@ -480,7 +480,7 @@ html, body {
   gap: 8px;
 }
 
-/* User meta row: John Doe  17:23  [JD] — right-aligned mirror */
+/* User meta row: Prateeksingh Bais  17:23  [PB] — right-aligned mirror */
 .chat-user-meta {
   display: flex;
   align-items: center;
@@ -3978,11 +3978,28 @@ button:focus:not(:focus-visible) { outline: none; }
   --glow-brand:  none;
 }
 
-/* ── 2. BACKGROUND: Linde branded bokeh photo ── */
+/* ── 2. BACKGROUND: Linde branded bokeh (pure CSS — no image file needed) ── */
 [data-linde-branding="true"] .bg-root {
-  background:
-    url('/branding/linde/chat-bg.jpg') center center / cover no-repeat fixed !important;
+  background: #0077c8 !important;
   position: relative;
+}
+/* Bokeh layer — blurred radial circles mimicking the photo */
+[data-linde-branding="true"] .bg-root::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 28% 28% at 32% 18%,  rgba(160, 220, 255, 0.95) 0%, transparent 70%),
+    radial-gradient(ellipse 22% 22% at 30% 20%,  rgba(255, 255, 255, 0.9)  0%, transparent 50%),
+    radial-gradient(ellipse 38% 38% at 78% 18%,  rgba(140, 210, 255, 0.85) 0%, transparent 65%),
+    radial-gradient(ellipse 30% 30% at 90% 28%,  rgba(200, 235, 255, 0.9)  0%, transparent 55%),
+    radial-gradient(ellipse 42% 42% at 80% 70%,  rgba(120, 195, 255, 0.8)  0%, transparent 65%),
+    radial-gradient(ellipse 28% 28% at 72% 80%,  rgba(200, 235, 255, 0.85) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 55% at 30% 65%,  rgba(0, 111, 191,  0.55)  0%, transparent 65%),
+    radial-gradient(ellipse 70% 70% at 55% 45%,  rgba(0,  80, 160,  0.65)  0%, transparent 75%);
+  filter: blur(28px);
 }
 /* Frosted white overlay so UI stays readable */
 [data-linde-branding="true"] .bg-root::after {
@@ -3991,9 +4008,9 @@ button:focus:not(:focus-visible) { outline: none; }
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.68);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 /* Hide world-map and orbs for clean corporate look */
 [data-linde-branding="true"] .bg-img-layer {
@@ -4014,6 +4031,9 @@ button:focus:not(:focus-visible) { outline: none; }
   box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
   position: relative;
   z-index: 10;
+  height: 68px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 [data-linde-branding="true"] .topbar-root::after {
   content: '';
@@ -4030,10 +4050,55 @@ button:focus:not(:focus-visible) { outline: none; }
 .topbar-brand-logo { display: none; }
 [data-linde-branding="true"] .topbar-brand-logo {
   display: flex;
+  align-self: stretch;
   align-items: center;
-  justify-content: center;
-  height: 38px;
   flex-shrink: 0;
+  height: 80px;
+  padding: 0;
+  margin: 0 8px 0 -16px;
+  overflow: visible;
+}
+.topbar-linde-img {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0;
+  padding: 0;
+  vertical-align: top;
+}
+
+/* Mobile: scale logo down on smaller screens */
+@media (max-width: 768px) {
+  [data-linde-branding="true"] .topbar-root {
+    height: 52px;
+  }
+  [data-linde-branding="true"] .topbar-brand-logo {
+    height: 60px;
+    margin: 0 6px 0 -10px;
+  }
+  .topbar-linde-img {
+    height: 60px;
+  }
+  .topbar-brand-name {
+    display: none;
+  }
+}
+@media (max-width: 480px) {
+  [data-linde-branding="true"] .topbar-root {
+    height: 40px;
+    padding: 0 10px;
+  }
+  [data-linde-branding="true"] .topbar-brand-logo {
+    height: 48px;
+    margin: 0 4px 0 -10px;
+  }
+  .topbar-linde-img {
+    height: 48px;
+  }
+  .topbar-brand-name {
+    display: none;
+  }
 }
 [data-linde-branding="true"] .topbar-brand-icon { display: none; }
 [data-linde-branding="true"] .topbar-brand-name {

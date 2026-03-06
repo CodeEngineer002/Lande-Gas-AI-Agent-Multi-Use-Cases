@@ -37,12 +37,25 @@ export default function LindeLogo({
       style={style}
       aria-label="Linde"
     >
-      {/* Blue triangle / swoosh element (Linde brand mark) */}
+      {/* Linde "L" script mark */}
       {showTriangle && (
         <path
-          d="M0 95 L55 0 L110 95 Z"
+          d="
+            M 20,4
+            C 16,3 11,10 10,20
+            C 8,32 9,46 10,60
+            C 11,71 11,80 9,87
+            C 7,93 2,97 6,99
+            C 14,99 34,94 50,84
+            C 60,77 63,67 58,63
+            C 54,60 43,64 33,69
+            C 24,73 20,75 17,73
+            C 15,68 15,54 16,40
+            C 17,24 21,10 26,5
+            C 28,1 24,2 20,4 Z
+          "
           fill={color}
-          opacity={0.18}
+          opacity={0.88}
         />
       )}
       {/* "Linde" wordmark — italic serif */}
