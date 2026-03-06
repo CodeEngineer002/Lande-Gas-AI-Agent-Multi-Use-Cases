@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import './linde-branding.css';
 import { SettingsProvider } from '@/lib/settingsContext';
 
 export const metadata: Metadata = {
