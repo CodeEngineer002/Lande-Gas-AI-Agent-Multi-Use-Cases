@@ -1,6 +1,7 @@
 'use client';
 import { useState, useCallback } from 'react';
-import type { DownloadPayload, EmailAllPayload } from '@/lib/types';
+import JSZip from 'jszip';
+import type { DownloadPayload, EmailAllPayload, Source } from '@/lib/types';
 import { filenameFromCD } from '@/lib/utils';
 
 export type DownloadStatus = 'idle' | 'loading';
@@ -9,10 +10,12 @@ interface UseDownloadOptions {
   onSuccess: (title: string, docId: string) => void;
   onError: (msg: string) => void;
   onEmailSuccess: () => void;
+  onZipSuccess?: () => void;
 }
 
-export function useDownload({ onSuccess, onError, onEmailSuccess }: UseDownloadOptions) {
+export function useDownload({ onSuccess, onError, onEmailSuccess, onZipSuccess }: UseDownloadOptions) {
   const [status, setStatus] = useState<DownloadStatus>('idle');
+  const [zipProgress, setZipProgress] = useState<{ current: number; total: number } | null>(null);
 
   const start = useCallback(
     async (payload: DownloadPayload) => {
@@ -92,5 +95,92 @@ export function useDownload({ onSuccess, onError, onEmailSuccess }: UseDownloadO
     [onError, onEmailSuccess]
   );
 
-  return { status, start, startEmailAll };
+  /** Download all sources as a single ZIP file */
+  const startDownloadAll = useCallback(
+    async (sources: Source[]) => {
+      if (!sources.length) return;
+      setStatus('loading');
+      setZipProgress({ current: 0, total: sources.length });
+
+      try {
+        const zip = new JSZip();
+        let succeeded = 0;
+
+        // Fetch each file in parallel (limited concurrency)
+        const results = await Promise.allSettled(
+          sources.map(async (src, idx) => {
+            const payload: DownloadPayload = {
+              doc_id: src.doc_id,
+              filename: src.title || `document_${idx + 1}.pdf`,
+              file_url: src.file_url,
+            };
+            const res = await fetch('/api/download', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload),
+            });
+            if (!res.ok) throw new Error(`Failed to download ${payload.filename}`);
+
+            const fname =
+              filenameFromCD(res.headers.get('Content-Disposition')) ||
+              payload.filename ||
+              `document_${idx + 1}.pdf`;
+            const blob = await res.blob();
+            return { fname, blob };
+          })
+        );
+
+        // Add successful downloads to zip
+        const usedNames = new Set<string>();
+        for (const result of results) {
+          if (result.status === 'fulfilled') {
+            let name = result.value.fname;
+            // Deduplicate file names
+            while (usedNames.has(name)) {
+              const dotIdx = name.lastIndexOf('.');
+              if (dotIdx > 0) {
+                name = `${name.slice(0, dotIdx)}_copy${name.slice(dotIdx)}`;
+              } else {
+                name = `${name}_copy`;
+              }
+            }
+            usedNames.add(name);
+            zip.file(name, result.value.blob);
+            succeeded++;
+            setZipProgress({ current: succeeded, total: sources.length });
+          }
+        }
+
+        if (succeeded === 0) {
+          onError('Could not download any files.');
+          return;
+        }
+
+        // Generate zip and trigger browser download
+        const zipBlob = await zip.generateAsync({ type: 'blob' });
+        const href = URL.createObjectURL(zipBlob);
+        const a = document.createElement('a');
+        a.href = href;
+        a.download = 'Linde_Documents.zip';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(href);
+
+        if (succeeded < sources.length) {
+          onError(`Downloaded ${succeeded} of ${sources.length} files.`);
+        }
+        onZipSuccess?.();
+      } catch (err) {
+        console.error('[useDownload] downloadAll', err);
+        onError('ZIP download failed. Please try again.');
+      } finally {
+        setStatus('idle');
+        setZipProgress(null);
+      }
+    },
+    [onError, onZipSuccess]
+  );
+
+  return { status, zipProgress, start, startEmailAll, startDownloadAll };
 }

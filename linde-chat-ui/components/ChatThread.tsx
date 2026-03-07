@@ -1,13 +1,14 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { ChatMessage, DownloadPayload } from '@/lib/types';
+import type { ChatMessage, DownloadPayload, Source } from '@/lib/types';
 import MessageBubble from './MessageBubble';
 
 interface ChatThreadProps {
   messages: ChatMessage[];
   isTyping: boolean;
   onDownload: (payload: DownloadPayload) => void;
+  onDownloadAll: (sources: Source[]) => void;
   onEmailFirstSource: (sources: ChatMessage['sources']) => void;
   onEmailDelivery?: (deliveryData: ChatMessage['deliveryData']) => void;
   onSend?: (text: string) => void;
@@ -125,7 +126,7 @@ function EmptyState() {
 }
 
 export default function ChatThread({
-  messages, isTyping, onDownload, onEmailFirstSource, onEmailDelivery, onSend, searchQuery, conversationTitle,
+  messages, isTyping, onDownload, onDownloadAll, onEmailFirstSource, onEmailDelivery, onSend, searchQuery, conversationTitle,
 }: ChatThreadProps) {
   const threadRef = useRef<HTMLDivElement>(null);
   const [showToBottom, setShowToBottom] = useState(false);
@@ -244,6 +245,7 @@ export default function ChatThread({
                 <MessageBubble
                   message={msg}
                   onDownload={onDownload}
+                  onDownloadAll={onDownloadAll}
                   onEmailFirstSource={onEmailFirstSource}
                   onEmailDelivery={onEmailDelivery}
                   onSend={onSend}

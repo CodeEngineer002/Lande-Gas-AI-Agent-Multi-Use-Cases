@@ -15,6 +15,7 @@ const USER_NAME = 'Prateek Bais';
 export interface MessageBubbleProps {
   message: ChatMessage;
   onDownload: (payload: DownloadPayload) => void;
+  onDownloadAll: (sources: Source[]) => void;
   onEmailFirstSource: (sources: Source[]) => void;
   onEmailDelivery?: (deliveryData: ChatMessage['deliveryData']) => void;
   onSend?: (text: string) => void;
@@ -46,11 +47,19 @@ function CheckIcon() {
   );
 }
 
+function DownloadAllIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm-1 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V9l-6-4zm4 16H8V7h6v4h5v10zM12 13v4.17l1.59-1.58L15 17l-3 3-3-3 1.41-1.41L12 17.17V13h0z"/>
+    </svg>
+  );
+}
+
 function ts(d: Date) {
   return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
-export default function MessageBubble({ message, onDownload, onEmailFirstSource, onEmailDelivery, onSend, isTyping, index = 0 }: MessageBubbleProps) {
+export default function MessageBubble({ message, onDownload, onDownloadAll, onEmailFirstSource, onEmailDelivery, onSend, isTyping, index = 0 }: MessageBubbleProps) {
   const isUser = message.role === 'user';
   const bodyHtml = useMemo(() => mdLite(message.text), [message.text]);
   const [copied, setCopied] = useState(false);
@@ -168,6 +177,18 @@ export default function MessageBubble({ message, onDownload, onEmailFirstSource,
                   whileHover={{ scale: 1.1 }}
                 >
                   <EmailIcon />
+                </motion.button>
+              )}
+              {!isUser && message.sources.length > 1 && !['greeting', 'delivery_status', 'appointment'].includes(message.responseType || '') && (
+                <motion.button
+                  className="bubble-action download-all-action"
+                  title={`Download all ${message.sources.length} files as ZIP`}
+                  onClick={() => onDownloadAll(message.sources)}
+                  whileTap={{ scale: 0.88 }}
+                  whileHover={{ scale: 1.1 }}
+                >
+                  <DownloadAllIcon />
+                  <span className="download-all-label">Download All</span>
                 </motion.button>
               )}
             </div>

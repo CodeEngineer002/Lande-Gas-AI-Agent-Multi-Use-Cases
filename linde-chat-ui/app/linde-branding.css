@@ -1006,6 +1006,15 @@
   background: #e4eaf0;
   color: #002d54;
 }
+[data-linde-branding="true"] .download-all-action {
+  background: #e8f0f8;
+  border-color: #c8d8e8;
+}
+[data-linde-branding="true"] .download-all-action:hover {
+  background: #d0e0f0;
+  border-color: #002d54;
+  color: #002d54;
+}
 
 /* ── 18. TYPING INDICATOR ── */
 [data-linde-branding="true"] .typing-dot {

@@ -108,7 +108,7 @@ export default function Page() {
 
   const pendingInfoToast = useRef<(() => void) | null>(null);
 
-  const { start: startDownload, startEmailAll } = useDownload({
+  const { start: startDownload, startEmailAll, startDownloadAll, status: dlStatus, zipProgress } = useDownload({
     onSuccess: (title, docId) => {
       pendingInfoToast.current?.(); pendingInfoToast.current = null;
       showToast('success', 'Successfully downloaded', 1400);
@@ -122,6 +122,10 @@ export default function Page() {
       pendingInfoToast.current?.(); pendingInfoToast.current = null;
       showToast('success', 'Email sent successfully', 1400);
     },
+    onZipSuccess: () => {
+      pendingInfoToast.current?.(); pendingInfoToast.current = null;
+      showToast('success', 'ZIP downloaded successfully', 1400);
+    },
   });
 
   const handleDownload = useCallback(
@@ -130,6 +134,15 @@ export default function Page() {
       startDownload(payload);
     },
     [startDownload, showToast]
+  );
+
+  const handleDownloadAll = useCallback(
+    (sources: ChatMessage['sources']) => {
+      if (!sources.length) return;
+      pendingInfoToast.current = showToast('info', `Preparing ZIP with ${sources.length} files…`, 0);
+      startDownloadAll(sources);
+    },
+    [startDownloadAll, showToast]
   );
 
   const handleEmailFirstSource = useCallback(
@@ -251,6 +264,7 @@ export default function Page() {
               messages={state.messages}
               isTyping={state.isTyping}
               onDownload={handleDownload}
+              onDownloadAll={handleDownloadAll}
               onEmailFirstSource={handleEmailFirstSource}
               onEmailDelivery={handleEmailDelivery}
               onSend={send}

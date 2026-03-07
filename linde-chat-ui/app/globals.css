@@ -693,6 +693,35 @@ html, body {
   transform: scale(1.12);
   box-shadow: 0 3px 10px rgba(0,111,191,0.18);
 }
+
+/* "Download All" ZIP button — wider variant of bubble-action */
+.download-all-action {
+  width: auto;
+  padding: 0 10px;
+  gap: 5px;
+  display: inline-flex;
+  align-items: center;
+  border-color: rgba(0,111,191,0.22);
+  background: rgba(0,111,191,0.06);
+}
+.download-all-action:hover {
+  background: linear-gradient(135deg, rgba(0,111,191,0.16), rgba(0,181,226,0.14));
+  border-color: rgba(0,181,226,0.5);
+}
+.download-all-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+[data-theme="dark"] .download-all-action {
+  border-color: rgba(0,181,226,0.25);
+  background: rgba(0,181,226,0.1);
+}
+[data-theme="dark"] .download-all-action:hover {
+  background: linear-gradient(135deg, rgba(0,181,226,0.2), rgba(0,111,191,0.18));
+  border-color: rgba(0,181,226,0.45);
+}
 [data-theme="dark"] .bubble-action {
   border-color: rgba(0,181,226,0.15);
   background: rgba(0,181,226,0.07);
