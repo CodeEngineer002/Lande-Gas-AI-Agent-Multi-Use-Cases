@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linde AI Assistant — Feature Tour</title>
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   LINDE AI ASSISTANT – INTERACTIVE FEATURE TOUR
+   Pixel-perfect CSS mockups of the real app with animated callouts
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Reset ──────────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0a1628;color:#e2e8f0;-webkit-font-smoothing:antialiased}
+
+:root{
+  --navy:#002d54;--dark:#0a1628;--sky:#00b5e2;--sky15:rgba(0,181,226,.15);--sky40:rgba(0,181,226,.4);
+  --blue:#006fbf;--green:#10b981;--violet:#8b5cf6;--amber:#f59e0b;--red:#ef4444;
+  --glass:rgba(255,255,255,.04);--glass-b:rgba(255,255,255,.08);
+  --txt:#e2e8f0;--muted:#8aa0b8;--white:#fff;
+  --slide-t:.7s cubic-bezier(.22,1,.36,1);
+}
+
+/* ── BG ─────────────────────────────────────────────────────────── */
+.bg{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 80% 60% at 20% 10%,rgba(0,45,84,.5)0%,transparent 60%),
+  radial-gradient(ellipse 60% 50% at 80% 90%,rgba(0,181,226,.12)0%,transparent 60%),
+  linear-gradient(160deg,#0a1628 0%,#0f2035 50%,#0a1628 100%)}
+
+/* ── Deck & Slides ──────────────────────────────────────────────── */
+.deck{position:relative;width:100vw;height:100vh;overflow:hidden;z-index:1}
+.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:30px 40px 70px;
+  opacity:0;visibility:hidden;transform:translateX(50px);pointer-events:none;
+  transition:opacity var(--slide-t),transform var(--slide-t),visibility 0s .7s;z-index:1}
+.slide.active{opacity:1;visibility:visible;transform:translateX(0)!important;pointer-events:auto;z-index:2;transition:opacity var(--slide-t),transform var(--slide-t),visibility 0s 0s}
+.slide.prev{transform:translateX(-50px)}
+
+/* ── Slide inner layout ─────────────────────────────────────────── */
+.slide-inner{display:flex;gap:40px;align-items:center;width:100%;max-width:1280px;height:100%}
+.slide-info{flex:0 0 320px;display:flex;flex-direction:column;gap:14px}
+.slide-screen{flex:1;min-width:0;height:100%;display:flex;align-items:center;justify-content:center;position:relative}
+
+/* Centered layout (no split) */
+.slide-center{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:20px;max-width:900px;margin:0 auto}
+
+/* ── Info panel text ────────────────────────────────────────────── */
+.s-num{font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--sky);opacity:.7}
+.s-title{font-size:clamp(22px,2.8vw,34px);font-weight:800;line-height:1.2;
+  background:linear-gradient(135deg,#fff 30%,var(--sky));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.s-desc{font-size:14px;line-height:1.7;color:var(--muted)}
+.s-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:700;
+  background:var(--sky15);color:var(--sky);border:1px solid rgba(0,181,226,.2);width:fit-content}
+
+/* ═══════════════════════════════════════════════════════════════════
+   APP MOCKUP — Pixel-perfect recreation of the real Linde Chat UI
+   ═══════════════════════════════════════════════════════════════════ */
+.app-frame{
+  width:100%;max-width:920px;height:clamp(400px,72vh,560px);
+  background:#0d1a2d;border:1px solid rgba(255,255,255,.08);border-radius:16px;
+  overflow:hidden;display:flex;flex-direction:column;position:relative;
+  box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.03)}
+
+/* -- Topbar -- */
+.app-top{height:44px;display:flex;align-items:center;gap:10px;padding:0 16px;
+  background:rgba(0,45,84,.25);border-bottom:1px solid var(--glass-b);flex-shrink:0}
+.app-top-logo{font-size:12px;font-weight:800;color:var(--white);letter-spacing:1px}
+.app-top-divider{width:1px;height:18px;background:rgba(255,255,255,.1)}
+.app-top-title{font-size:11px;color:var(--muted);flex:1}
+.app-top-dots{display:flex;gap:6px}
+.app-top-dots span{width:10px;height:10px;border-radius:50%;display:block}
+.app-top-dots span:nth-child(1){background:#ef4444}.app-top-dots span:nth-child(2){background:#fbbf24}.app-top-dots span:nth-child(3){background:#22c55e}
+
+/* -- App body -- */
+.app-body{flex:1;display:flex;overflow:hidden}
+
+/* -- Left sidebar -- */
+.app-sidebar{width:52px;background:rgba(0,20,40,.6);border-right:1px solid var(--glass-b);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:6px;flex-shrink:0}
+.sb-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:var(--muted);font-size:14px;cursor:default;transition:all .2s}
+.sb-icon.active{background:var(--sky15);color:var(--sky)}
+.sb-icon:hover{background:rgba(255,255,255,.06)}
+.sb-spacer{flex:1}
+.sb-avatar{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--sky));color:#fff;font-size:10px;font-weight:800;display:grid;place-items:center}
+
+/* -- Chat area -- */
+.app-chat{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative}
+.chat-scroll{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:14px}
+
+/* -- Messages -- */
+.msg{display:flex;flex-direction:column;gap:4px}
+.msg.user{align-items:flex-end}
+.msg-meta{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--muted)}
+.msg-meta.user{flex-direction:row-reverse}
+.msg-av{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-size:8px;font-weight:800;flex-shrink:0}
+.msg-av.ai{background:var(--sky15);color:var(--sky)}
+.msg-av.user{background:rgba(255,255,255,.1);color:#fff}
+.msg-name{font-weight:600;color:var(--txt)}
+.msg-bubble{max-width:85%;padding:10px 14px;border-radius:12px;font-size:12px;line-height:1.6;color:var(--txt)}
+.msg-bubble.ai{background:var(--glass);border:1px solid var(--glass-b);border-radius:2px 12px 12px 12px}
+.msg-bubble.user{background:var(--navy);border:1px solid rgba(0,181,226,.15);border-radius:12px 2px 12px 12px}
+
+/* -- Source chips -- */
+.src-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:10px;margin-top:6px;margin-right:6px;
+  background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);font-size:11px;color:var(--txt);cursor:default}
+.src-chip .src-icon{width:24px;height:24px;border-radius:6px;background:rgba(239,68,68,.12);color:#ef4444;display:grid;place-items:center;font-size:7px;font-weight:900}
+.src-chip .src-icon.qt{background:rgba(59,130,246,.12);color:#3b82f6}
+.src-chip .src-name{font-weight:600;font-size:11px}
+.src-chip .src-type{font-size:9px;color:var(--muted)}
+.src-chip .src-dl{width:20px;height:20px;border-radius:5px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--muted);display:grid;place-items:center;font-size:10px}
+
+/* -- Delivery card -- */
+.dc-card{background:linear-gradient(135deg,rgba(0,45,84,.3),rgba(0,181,226,.05));border:1px solid rgba(0,181,226,.12);border-radius:14px;padding:14px;margin-top:8px}
+.dc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.dc-order{font-size:13px;font-weight:700;color:var(--white)}
+.dc-badge{font-size:9px;font-weight:700;padding:3px 10px;border-radius:12px;letter-spacing:.3px}
+.dc-badge.transit{background:rgba(245,158,11,.12);color:#f59e0b;border:1px solid rgba(245,158,11,.2)}
+.dc-badge.delivered{background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.2)}
+
+/* Tracking steps */
+.dc-steps{display:flex;align-items:center;margin-bottom:14px;position:relative;padding:0 4px}
+.dc-line{position:absolute;top:10px;left:18px;right:18px;height:2px;background:rgba(255,255,255,.06);border-radius:1px}
+.dc-line-fill{height:100%;border-radius:1px;background:linear-gradient(90deg,var(--sky),#00d4ff)}
+.dc-step{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;position:relative;z-index:1;font-size:8px;
+  background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);color:var(--muted);flex-shrink:0}
+.dc-steps{justify-content:space-between}
+.dc-step.done{background:var(--sky);border-color:var(--sky);color:#fff;box-shadow:0 0 8px rgba(0,181,226,.3)}
+.dc-step.current{background:rgba(245,158,11,.15);border-color:#f59e0b;color:#f59e0b;animation:pulse-s 2s ease-in-out infinite}
+@keyframes pulse-s{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.3)}50%{box-shadow:0 0 0 6px rgba(245,158,11,0)}}
+.dc-step-label{position:absolute;top:26px;font-size:7px;white-space:nowrap;color:var(--muted);text-align:center}
+
+/* Info tiles */
+.dc-tiles{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.dc-tile{background:rgba(255,255,255,.03);border:1px solid var(--glass-b);border-radius:8px;padding:8px 10px}
+.dc-tile-label{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px}
+.dc-tile-val{font-size:11px;font-weight:600;color:var(--white)}
+
+/* -- Appointment card -- */
+.apt-card{background:linear-gradient(135deg,rgba(0,111,191,.12),rgba(0,181,226,.06));border:1px solid rgba(0,111,191,.18);border-radius:14px;padding:14px;margin-top:8px}
+.apt-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.apt-check{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:grid;place-items:center;color:#fff;font-size:14px}
+.apt-title{font-size:13px;font-weight:700;color:var(--white)}
+.apt-sub{font-size:10px;color:var(--muted)}
+.apt-cal{display:flex;gap:10px;margin-bottom:10px}
+.apt-cal-day{width:48px;background:rgba(0,111,191,.12);border:1px solid rgba(0,111,191,.15);border-radius:10px;text-align:center;padding:6px 0}
+.apt-cal-num{font-size:18px;font-weight:800;color:var(--blue)}
+.apt-cal-month{font-size:8px;color:var(--muted);letter-spacing:.5px}
+.apt-cal-info{flex:1;display:flex;flex-direction:column;gap:4px}
+.apt-info-row{display:flex;align-items:center;gap:6px;padding:4px 8px;background:rgba(0,111,191,.07);border:1px solid rgba(0,111,191,.12);border-radius:6px;font-size:10px;color:var(--txt)}
+.apt-info-icon{color:var(--blue)}
+.apt-meet{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;background:rgba(0,111,191,.1);border:1px solid rgba(0,111,191,.15);font-size:10px;color:var(--sky);margin-top:4px}
+
+/* -- ZIP badge -- */
+.zip-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:8px;margin-top:6px;
+  background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:#22c55e;font-size:10px;font-weight:600}
+
+/* -- Action buttons in bubble -- */
+.bubble-actions{display:flex;gap:4px;margin-top:8px;padding-top:6px;border-top:1px solid var(--glass-b)}
+.b-act{width:24px;height:24px;border-radius:6px;border:1px solid var(--glass-b);background:var(--glass);color:var(--muted);display:grid;place-items:center;font-size:10px;cursor:default}
+.b-act.dl-all{width:auto;padding:0 8px;gap:4px;display:flex;align-items:center;font-size:9px;font-weight:600;color:var(--sky);border-color:rgba(0,181,226,.2);background:rgba(0,181,226,.06)}
+
+/* -- Right panel -- */
+.app-right{width:220px;background:rgba(0,20,40,.4);border-left:1px solid var(--glass-b);padding:12px;overflow-y:auto;flex-shrink:0;display:flex;flex-direction:column;gap:10px}
+.rp-card{background:var(--glass);border:1px solid var(--glass-b);border-radius:12px;padding:12px}
+.rp-card-title{font-size:10px;font-weight:700;color:var(--txt);display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.rp-conf{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.rp-conf-bar{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.06);overflow:hidden}
+.rp-conf-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--sky),#00d4ff)}
+.rp-conf-val{font-size:11px;font-weight:700;color:var(--sky)}
+.rp-src-item{display:flex;align-items:center;gap:6px;padding:6px;border-radius:8px;background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.1);margin-bottom:4px}
+.rp-src-icon{width:22px;height:22px;border-radius:5px;background:rgba(239,68,68,.1);color:#ef4444;display:grid;place-items:center;font-size:7px;font-weight:800}
+.rp-src-icon.qt{background:rgba(59,130,246,.1);color:#3b82f6}
+.rp-src-name{font-size:10px;font-weight:600;color:var(--txt)}
+.rp-src-type{font-size:8px;color:var(--muted)}
+.rp-intent{display:inline-block;padding:3px 8px;border-radius:6px;font-size:9px;font-weight:600;margin-right:4px;margin-bottom:4px}
+
+/* Quick prompts */
+.rp-qp{display:flex;flex-direction:column;gap:4px}
+.rp-qp-item{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid var(--glass-b);cursor:default;transition:all .2s}
+.rp-qp-item:hover{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.12)}
+.rp-qp-badge{width:24px;height:24px;border-radius:6px;display:grid;place-items:center;font-size:10px;flex-shrink:0}
+.rp-qp-text{font-size:9px;font-weight:600;color:var(--txt)}
+.rp-qp-desc{font-size:8px;color:var(--muted);margin-top:1px}
+
+/* -- Composer -- */
+.app-composer{display:flex;align-items:center;gap:8px;padding:10px 16px;border-top:1px solid var(--glass-b);background:rgba(0,20,40,.4)}
+.comp-input{flex:1;height:34px;border-radius:10px;border:1px solid var(--glass-b);background:var(--glass);padding:0 12px;font-size:11px;color:var(--txt);outline:none}
+.comp-send{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--sky));border:none;color:#fff;display:grid;place-items:center;font-size:14px;cursor:default}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CALLOUT ANNOTATIONS — Animated highlight boxes with labels
+   ═══════════════════════════════════════════════════════════════════ */
+.callout{position:absolute;z-index:10;pointer-events:none}
+
+/* Highlight ring */
+.callout-ring{position:absolute;border:2px solid var(--sky);border-radius:12px;
+  box-shadow:0 0 0 4px rgba(0,181,226,.15),0 0 20px rgba(0,181,226,.1);
+  animation:callout-pulse 2.5s ease-in-out infinite}
+@keyframes callout-pulse{0%,100%{box-shadow:0 0 0 4px rgba(0,181,226,.15),0 0 20px rgba(0,181,226,.1)}50%{box-shadow:0 0 0 8px rgba(0,181,226,.08),0 0 30px rgba(0,181,226,.15)}}
+
+/* Label */
+.callout-label{position:absolute;white-space:nowrap;padding:6px 14px;border-radius:8px;font-size:11px;font-weight:700;
+  background:linear-gradient(135deg,var(--sky),#0090b8);color:#fff;
+  box-shadow:0 4px 16px rgba(0,181,226,.35);letter-spacing:.3px}
+.callout-label::before{content:'';position:absolute;width:8px;height:8px;background:var(--sky);transform:rotate(45deg)}
+.callout-label.top::before{bottom:-4px;left:20px}
+.callout-label.bottom::before{top:-4px;left:20px}
+.callout-label.left::before{right:-4px;top:50%;margin-top:-4px}
+.callout-label.right::before{left:-4px;top:50%;margin-top:-4px}
+
+/* Number badge */
+.callout-num{width:22px;height:22px;border-radius:50%;background:var(--sky);color:#fff;font-size:10px;font-weight:800;display:grid;place-items:center;position:absolute;box-shadow:0 2px 8px rgba(0,181,226,.4)}
+
+/* ── Settings mockup ─────────────────────────────────────────── */
+.settings-mock{width:100%;max-width:600px;display:flex;flex-direction:column;gap:10px}
+.sp-mock-card{background:var(--glass);border:1px solid var(--glass-b);border-radius:14px;padding:16px}
+.sp-mock-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--white);margin-bottom:12px}
+.sp-mock-icon{width:28px;height:28px;border-radius:8px;background:var(--sky15);color:var(--sky);display:grid;place-items:center;font-size:13px}
+.sp-mock-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--glass-b)}
+.sp-mock-row:last-child{border-bottom:none}
+.sp-mock-label{font-size:11px;font-weight:600;color:var(--txt)}
+.sp-mock-desc{font-size:9px;color:var(--muted);margin-top:2px}
+.sp-mock-toggle{width:36px;height:20px;border-radius:10px;background:rgba(255,255,255,.12);position:relative;cursor:default}
+.sp-mock-toggle.on{background:var(--navy)}
+.sp-mock-thumb{position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:2px;left:2px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.sp-mock-toggle.on .sp-mock-thumb{left:18px}
+.sp-mock-select{padding:4px 24px 4px 8px;border-radius:8px;border:1px solid var(--glass-b);background:var(--glass);color:var(--txt);font-size:10px;font-weight:600;cursor:default;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%238aa0b8' stroke-width='2.5'%3E%3Cpolyline points='6,9 12,15 18,9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 6px center}
+.sp-mock-colors{display:flex;gap:5px}
+.sp-mock-swatch{width:18px;height:18px;border-radius:5px;border:2px solid transparent;cursor:default}
+.sp-mock-swatch.sel{border-color:var(--white);box-shadow:0 0 0 2px var(--sky)}
+
+/* ── Dashboard mockup ────────────────────────────────────────── */
+.dash-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.dash-metric{background:var(--glass);border:1px solid var(--glass-b);border-radius:10px;padding:10px 12px}
+.dash-metric-label{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}
+.dash-metric-val{font-size:18px;font-weight:800;color:var(--white);margin-top:2px}
+.dash-metric-change{font-size:9px;color:var(--green);margin-top:2px}
+.dash-charts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dash-chart{background:var(--glass);border:1px solid var(--glass-b);border-radius:10px;padding:12px}
+.dash-chart-title{font-size:10px;font-weight:700;color:var(--txt);margin-bottom:8px}
+.dash-chart-bars{display:flex;gap:4px;align-items:flex-end;height:60px}
+.dash-bar{width:100%;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--sky),var(--blue));min-height:4px}
+
+/* ═════════════════════════════════════════════════════════════════
+   NAVIGATION BAR
+   ═════════════════════════════════════════════════════════════════ */
+.nav{position:fixed;bottom:0;left:0;right:0;height:48px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;background:rgba(10,22,40,.9);backdrop-filter:blur(16px);border-top:1px solid var(--glass-b);z-index:100}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-logo{font-size:13px;font-weight:800;color:var(--white);letter-spacing:1px}
+.nav-div{width:1px;height:16px;background:rgba(255,255,255,.1)}
+.nav-label{font-size:11px;color:var(--muted)}
+.nav-dots{display:flex;gap:5px}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.15);cursor:pointer;transition:all .3s}
+.nav-dot.active{background:var(--sky);box-shadow:0 0 6px rgba(0,181,226,.4);transform:scale(1.3)}
+.nav-right{display:flex;align-items:center;gap:6px}
+.nav-btn{width:30px;height:30px;border-radius:6px;border:1px solid var(--glass-b);background:var(--glass);color:var(--muted);display:grid;place-items:center;cursor:pointer;font-size:14px;transition:all .2s}
+.nav-btn:hover{color:var(--white);border-color:rgba(255,255,255,.2)}
+.nav-counter{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;margin:0 3px}
+.nav-auto{font-size:10px;font-weight:600;padding:5px 12px;border-radius:5px;border:1px solid var(--glass-b);background:var(--glass);color:var(--muted);cursor:pointer;transition:all .2s;margin-left:6px}
+.nav-auto.on{background:rgba(0,181,226,.12);border-color:rgba(0,181,226,.3);color:var(--sky)}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media(max-width:900px){
+  .slide-inner{flex-direction:column;gap:16px}
+  .slide-info{flex:0 0 auto}
+  .app-right{display:none}
+  .app-sidebar{width:42px}
+  .slide{padding:20px 16px 60px}
+}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<div class="deck" id="deck">
+
+<!-- ═══════════════════════ SLIDE 0: TITLE ═══════════════════════ -->
+<div class="slide active" data-label="Welcome">
+  <div class="slide-center">
+    <div class="s-num">Interactive Feature Tour</div>
+    <div class="s-title" style="font-size:clamp(30px,5vw,52px)">Linde Gas AI Assistant</div>
+    <div class="s-desc" style="max-width:600px;text-align:center;font-size:16px">
+      Walk through every feature of the real application — pixel-perfect mockups with
+      animated highlights showing exactly what the AI Assistant does and how it looks.
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px">
+      <div class="s-badge">📄 Datasheets</div>
+      <div class="s-badge">💰 Quotations</div>
+      <div class="s-badge">🚚 Delivery Tracking</div>
+      <div class="s-badge">📅 Appointments</div>
+      <div class="s-badge">📦 Download All ZIP</div>
+      <div class="s-badge">⚙️ Settings</div>
+      <div class="s-badge">📊 Dashboard</div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-top:12px">Press <kbd style="padding:2px 6px;border:1px solid rgba(255,255,255,.12);border-radius:4px;font-size:10px;background:rgba(255,255,255,.04)">→</kbd> or click Next to begin</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 1: FULL APP LAYOUT ═══════════════ -->
+<div class="slide" data-label="App Layout">
+  <div class="slide-inner">
+    <div class="slide-info">
+      <div class="s-num">01 / 09</div>
+      <div class="s-title">Full Application Layout</div>
+      <div class="s-desc">
+        The 3-panel enterprise layout: a navigation sidebar on the left, the main chat workspace in the center, and a context/sources panel on the right.
+        <br><br>
+        Everything from the Linde branding in the top bar to the smart composer at the bottom is designed for power users.
+      </div>
+      <div class="s-badge">🖥️ Enterprise-grade SaaS UI</div>
+    </div>
+    <div class="slide-screen">
+      <!-- App mockup: Welcome state with quick prompts -->
+      <div class="app-frame" id="frame1">
+        <div class="app-top">
+          <div class="app-top-dots"><span></span><span></span><span></span></div>
+          <div class="app-top-logo">LINDE</div>
+          <div class="app-top-divider"></div>
+          <div class="app-top-title">AI Assistant — New Conversation</div>
+        </div>
+        <div class="app-body">
+          <div class="app-sidebar">
+            <div class="sb-icon" title="Home">🏠</div>
+            <div class="sb-icon active" title="Chat">💬</div>
+            <div class="sb-icon" title="Documents">📄</div>
+            <div class="sb-icon" title="Settings">⚙️</div>
+            <div class="sb-spacer"></div>
+            <div class="sb-avatar">PB</div>
+          </div>
+          <div class="app-chat">
+            <div class="chat-scroll">
+              <div class="msg">
+                <div class="msg-meta"><div class="msg-av ai">L</div><span class="msg-name">Linde Gas AI Assistant</span></div>
+                <div class="msg-bubble ai">
+                  👋 Welcome! I'm your Linde Gas AI Assistant. I can help with product datasheets, quotations, delivery tracking, availability checks, and appointment scheduling.<br><br>How can I help you today?
+                </div>
+              </div>
+            </div>
+            <div class="app-composer">
+              <div class="comp-input" style="display:flex;align-items:center;color:var(--muted)">Ask about gas products, delivery, pricing...</div>
+              <div class="comp-send">↑</div>
+            </div>
+          </div>
+          <div class="app-right">
+            <div class="rp-card">
+              <div class="rp-card-title">⚡ Quick Prompts</div>
+              <div class="rp-qp">
+                <div class="rp-qp-item"><div class="rp-qp-badge" style="background:rgba(0,111,191,.1);color:#006fbf">📄</div><div><div class="rp-qp-text">Oxygen Datasheet</div><div class="rp-qp-desc">Retrieve PDS for O₂</div></div></div>
+                <div class="rp-qp-item"><div class="rp-qp-badge" style="background:rgba(16,185,129,.1);color:#10b981">🚚</div><div><div class="rp-qp-text">Track Delivery</div><div class="rp-qp-desc">Check order LG-240001</div></div></div>
+                <div class="rp-qp-item"><div class="rp-qp-badge" style="background:rgba(139,92,246,.1);color:#8b5cf6">📅</div><div><div class="rp-qp-text">Book a Sales Call</div><div class="rp-qp-desc">Schedule a meeting</div></div></div>
+                <div class="rp-qp-item"><div class="rp-qp-badge" style="background:rgba(0,181,226,.1);color:#00b5e2">💰</div><div><div class="rp-qp-text">O₂ Quotation</div><div class="rp-qp-desc">Get pricing for Oxygen</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Callouts -->
+      <div class="callout" style="left:-8px;top:72px"><div class="callout-ring" style="width:68px;height:240px;border-radius:14px"></div><div class="callout-label left" style="left:-160px;top:100px">Navigation Sidebar<br><span style="font-weight:400;font-size:9px">Home · Chat · Docs · Settings</span></div></div>
+      <div class="callout" style="right:-8px;top:72px"><div class="callout-ring" style="width:236px;height:240px;border-radius:14px"></div><div class="callout-label right" style="right:-140px;top:100px">Context Panel<br><span style="font-weight:400;font-size:9px">Quick Prompts · Sources · AI Info</span></div></div>
+      <div class="callout" style="left:60px;bottom:42px"><div class="callout-ring" style="width:calc(100% - 290px);height:52px;border-radius:12px"></div><div class="callout-label bottom" style="bottom:-36px;left:40px">Smart Composer — <span style="font-weight:400">Type + Send</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 2: DATASHEET RETRIEVAL ════════════ -->
+<div class="slide" data-label="Datasheets">
+  <div class="slide-inner">
+    <div class="slide-info">
+      <div class="s-num">02 / 09</div>
+      <div class="s-title">Product Datasheet Retrieval</div>
+      <div class="s-desc">
+        Ask for any gas datasheet in natural language. The AI searches the Pinecone vector database and returns matching PDFs with download buttons.
+        <br><br>
+        Each document appears as a <strong style="color:var(--txt)">Source Chip</strong> — showing filename, type, and a download icon.
+      </div>
+      <div class="s-badge">📄 PDS · SDS · MSDS · TDS</div>
+    </div>
+    <div class="slide-screen">
+      <div class="app-frame">
+        <div class="app-top">
+          <div class="app-top-dots"><span></span><span></span><span></span></div>
+          <div class="app-top-logo">LINDE</div>
+          <div class="app-top-divider"></div>
+          <div class="app-top-title">AI Assistant — Oxygen Datasheet</div>
+        </div>
+        <div class="app-body">
+          <div class="app-sidebar">
+            <div class="sb-icon">🏠</div><div class="sb-icon active">💬</div><div class="sb-icon">📄</div><div class="sb-icon">⚙️</div><div class="sb-spacer"></div><div class="sb-avatar">PB</div>
+          </div>
+          <div class="app-chat">
+            <div class="chat-scroll">
+              <div class="msg user">
+                <div class="msg-meta user"><div class="msg-av user">PB</div><span class="msg-name">Prateek Bais</span></div>
+                <div class="msg-bubble user">Send me the datasheet for Oxygen 5.0</div>
+              </div>
+              <div class="msg">
+                <div class="msg-meta"><div class="msg-av ai">L</div><span class="msg-name">Linde Gas AI Assistant</span></div>
+                <div class="msg-bubble ai">
+                  Here is the <strong>Product Data Sheet</strong> for <strong>Oxygen 5.0</strong> (≥99.999% purity). It covers specifications, storage requirements, and safety handling guidelines.
+                  <div style="margin-top:8px">
+                    <div class="src-chip">
+                      <div class="src-icon">PDF</div>
+                      <div><div class="src-name">Oxygen_5.0_PDS.pdf</div><div class="src-type">Product Datasheet</div></div>
+                      <div class="src-dl">↓</div>
+                    </div>
+                  </div>
+                  <div class="bubble-actions">
+                    <div class="b-act">📋</div>
+                    <div class="b-act">✉️</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="app-composer">
+              <div class="comp-input" style="display:flex;align-items:center;color:var(--muted)">Ask about gas products, delivery, pricing...</div>
+              <div class="comp-send">↑</div>
+            </div>
+          </div>
+          <div class="app-right">
+            <div class="rp-card">
+              <div class="rp-card-title">📊 AI Confidence</div>
+              <div class="rp-conf"><div class="rp-conf-bar"><div class="rp-conf-fill" style="width:92%"></div></div><div class="rp-conf-val">92%</div></div>
+              <div style="font-size:9px;color:var(--muted)">High confidence — grounded in indexed document</div>
+            </div>
+            <div class="rp-card">
+              <div class="rp-card-title">📎 Sources</div>
+              <div class="rp-src-item"><div class="rp-src-icon">PDF</div><div><div class="rp-src-name">Oxygen_5.0_PDS.pdf</div><div class="rp-src-type">Product Datasheet</div></div></div>
+            </div>
+            <div class="rp-card">
+              <div class="rp-card-title">🎯 Detected Intent</div>
+              <div class="rp-intent" style="background:rgba(0,111,191,.1);border:1px solid rgba(0,111,191,.15);color:#006fbf">product_datasheet</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Callout on source chip -->
+      <div class="callout" style="left:120px;top:55%"><div class="callout-ring" style="width:260px;height:44px"></div><div class="callout-label top" style="top:-34px;left:10px">Source Chip — <span style="font-weight:400">Click ↓ to download PDF</span></div></div>
+      <!-- Callout on right panel confidence -->
+      <div class="callout" style="right:8px;top:78px"><div class="callout-ring" style="width:222px;height:80px;border-radius:14px"></div><div class="callout-label right" style="right:-120px;top:25px">AI Confidence<br><span style="font-weight:400;font-size:9px">92% — grounded answer</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 3: MULTI-DOC + ZIP ═══════════════ -->
+<div class="slide" data-label="Multi-Doc ZIP">
+  <div class="slide-inner">
+    <div class="slide-info">
+      <div class="s-num">03 / 09</div>
+      <div class="s-title">Multi-Document + Download All</div>
+      <div class="s-desc">
+        Request multiple documents in one message. Each file gets its own Source Chip.
+        <br><br>
+        The <strong style="color:#22c55e">Download All</strong> button bundles everything into a ZIP using JSZip. Or email all docs in one click.
+      </div>
+      <div class="s-badge">📦 JSZip — Client-side ZIP</div>
+    </div>
+    <div class="slide-screen">
+      <div class="app-frame">
+        <div class="app-top">
+          <div class="app-top-dots"><span></span><span></span><span></span></div>
+          <div class="app-top-logo">LINDE</div>
+          <div class="app-top-divider"></div>
+          <div class="app-top-title">AI Assistant — Multi-Document</div>
+        </div>
+        <div class="app-body">
+          <div class="app-sidebar">
+            <div class="sb-icon">🏠</div><div class="sb-icon active">💬</div><div class="sb-icon">📄</div><div class="sb-icon">⚙️</div><div class="sb-spacer"></div><div class="sb-avatar">PB</div>
+          </div>
+          <div class="app-chat">
+            <div class="chat-scroll">
+              <div class="msg user">
+                <div class="msg-meta user"><div class="msg-av user">PB</div><span class="msg-name">Prateek Bais</span></div>
+                <div class="msg-bubble user">I need datasheets for Nitrogen, Argon, and Hydrogen</div>
+              </div>
+              <div class="msg">
+                <div class="msg-meta"><div class="msg-av ai">L</div><span class="msg-name">Linde Gas AI Assistant</span></div>
+                <div class="msg-bubble ai">
+                  Here are the requested Product Data Sheets for all three gases:
+                  <div style="margin-top:8px;display:flex;flex-direction:column;gap:4px">
+                    <div class="src-chip"><div class="src-icon">PDF</div><div><div class="src-name">Nitrogen_5.0_PDS.pdf</div><div class="src-type">Product Datasheet</div></div><div class="src-dl">↓</div></div>
+                    <div class="src-chip" style="background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.15)"><div class="src-icon" style="background:rgba(59,130,246,.12);color:#3b82f6">PDF</div><div><div class="src-name">Argon_5.0_PDS.pdf</div><div class="src-type">Product Datasheet</div></div><div class="src-dl">↓</div></div>
+                    <div class="src-chip" style="background:rgba(168,85,247,.06);border-color:rgba(168,85,247,.15)"><div class="src-icon" style="background:rgba(168,85,247,.12);color:#a855f7">PDF</div><div><div class="src-name">Hydrogen_5.0_PDS.pdf</div><div class="src-type">Product Datasheet</div></div><div class="src-dl">↓</div></div>
+                  </div>
+                  <div class="zip-badge">✓ Download All as ZIP</div>
+                  <div class="bubble-actions">
+                    <div class="b-act">📋</div>
+                    <div class="b-act">✉️</div>
+                    <div class="b-act dl-all">📦 Download All</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="app-composer">
+              <div class="comp-input" style="display:flex;align-items:center;color:var(--muted)">Ask about gas products, delivery, pricing...</div>
+              <div class="comp-send">↑</div>
+            </div>
+          </div>
+          <div class="app-right">
+            <div class="rp-card">
+              <div class="rp-card-title">📊 AI Confidence</div>
+              <div class="rp-conf"><div class="rp-conf-bar"><div class="rp-conf-fill" style="width:88%"></div></div><div class="rp-conf-val">88%</div></div>
+            </div>
+            <div class="rp-card">
+              <div class="rp-card-title">📎 Sources (3)</div>
+              <div class="rp-src-item"><div class="rp-src-icon">PDF</div><div><div class="rp-src-name">Nitrogen_5.0_PDS.pdf</div><div class="rp-src-type">Datasheet</div></div></div>
+              <div class="rp-src-item"><div class="rp-src-icon">PDF</div><div><div class="rp-src-name">Argon_5.0_PDS.pdf</div><div class="rp-src-type">Datasheet</div></div></div>
+              <div class="rp-src-item"><div class="rp-src-icon">PDF</div><div><div class="rp-src-name">Hydrogen_5.0_PDS.pdf</div><div class="rp-src-type">Datasheet</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Callout on Download All -->
+      <div class="callout" style="left:100px;bottom:88px"><div class="callout-ring" style="width:120px;height:28px;border-radius:8px"></div><div class="callout-label bottom" style="bottom:-34px;left:0">📦 Download All ZIP</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 4: DELIVERY TRACKING ═════════════ -->
+<div class="slide" data-label="Delivery">
+  <div class="slide-inner">
+    <div class="slide-info">
+      <div class="s-num">04 / 09</div>
+      <div class="s-title">Real-Time Delivery Tracking</div>
+      <div class="s-desc">
+        Ask about any order by ID and get a beautiful visual tracking card. 5-step animated progress bar with carrier, ETA, destination, and product info.
+        <br><br>
+        Color-coded statuses: <span style="color:#f59e0b">●</span> In Transit, <span style="color:#10b981">●</span> Delivered, <span style="color:#ef4444">●</span> Delayed.
+      </div>
+      <div class="s-badge">🚚 Google Sheets real-time data</div>
+    </div>
+    <div class="slide-screen">
+      <div class="app-frame">
+        <div class="app-top">
+          <div class="app-top-dots"><span></span><span></span><span></span></div>
+          <div class="app-top-logo">LINDE</div>
+          <div class="app-top-divider"></div>
+          <div class="app-top-title">AI Assistant — Delivery Status</div>
+        </div>
+        <div class="app-body">
+          <div class="app-sidebar">
+            <div class="sb-icon">🏠</div><div class="sb-icon active">💬</div><div class="sb-icon">📄</div><div class="sb-icon">⚙️</div><div class="sb-spacer"></div><div class="sb-avatar">PB</div>
+          </div>
+          <div class="app-chat">
+            <div class="chat-scroll">
+              <div class="msg user">
+                <div class="msg-meta user"><div class="msg-av user">PB</div><span class="msg-name">Prateek Bais</span></div>
+                <div class="msg-bubble user">What's the delivery status of order LG-240012?</div>
+              </div>
+              <div class="msg">
+                <div class="msg-meta"><div class="msg-av ai">L</div><span class="msg-name">Linde Gas AI Assistant</span></div>
+                <div class="msg-bubble ai">
+                  Your order <strong>LG-240012</strong> is currently <strong style="color:#f59e0b">In Transit</strong>.
+                  <div class="dc-card">
+                    <div class="dc-header">
+                      <div class="dc-order">Order LG-240012</div>
+                      <div class="dc-badge transit">In Transit</div>
+                    </div>
+                    <div class="dc-steps">
+                      <div class="dc-line"><div class="dc-line-fill" style="width:62%"></div></div>
+                      <div class="dc-step done">✓<span class="dc-step-label">Confirmed</span></div>
+                      <div class="dc-step done">✓<span class="dc-step-label">Packed</span></div>
+                      <div class="dc-step current">🚚<span class="dc-step-label">In Transit</span></div>
+                      <div class="dc-step"><span class="dc-step-label">Out for Dlvry</span></div>
+                      <div class="dc-step"><span class="dc-step-label">Delivered</span></div>
+                    </div>
+                    <div class="dc-tiles">
+                      <div class="dc-tile"><div class="dc-tile-label">Carrier</div><div class="dc-tile-val">DHL Express</div></div>
+                      <div class="dc-tile"><div class="dc-tile-label">ETA</div><div class="dc-tile-val">12 Mar 2026</div></div>
+                      <div class="dc-tile"><div class="dc-tile-label">Destination</div><div class="dc-tile-val">Munich, DE</div></div>
+                      <div class="dc-tile"><div class="dc-tile-label">Product</div><div class="dc-tile-val">Nitrogen 5.0</div></div>
+                    </div>
+                  </div>
+                  <div class="bubble-actions">
+                    <div class="b-act">📋</div>
+                    <div class="b-act">✉️</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="app-composer">
+              <div class="comp-input" style="display:flex;align-items:center;color:var(--muted)">Ask about gas products, delivery, pricing...</div>
+              <div class="comp-send">↑</div>
+            </div>
+          </div>
+          <div class="app-right">
+            <div class="rp-card">
+              <div class="rp-card-title">📊 AI Confidence</div>
+              <div class="rp-conf"><div class="rp-conf-bar"><div class="rp-conf-fill" style="width:95%"></div></div><div class="rp-conf-val">95%</div></div>
+            </div>
+            <div class="rp-card">
+              <div class="rp-card-title">🎯 Detected Intent</div>
+              <div class="rp-intent" style="background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.15);color:#10b981">delivery_status</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Callout on tracking card -->
+      <div class="callout" style="left:90px;top:52%"><div class="callout-ring" style="width:62%;height:180px;border-radius:16px"></div><div class="callout-label top" style="top:-34px;left:20px">🚚 Delivery Tracking Card — <span style="font-weight:400">Animated 5-step progress</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 5: APPOINTMENT ════════════════════ -->
+<div class="slide" data-label="Appointments">
+  <div class="slide-inner">
+    <div class="slide-info">
+      <div class="s-num">05 / 09</div>
+      <div class="s-title">Appointment Scheduling</div>
+      <div class="s-desc">
+        Schedule meetings directly through chat. The AI creates a Google Calendar event with Google Meet link and sends email invitations.
+        <br><br>
+        The confirmation card shows date, time, attendees, and a direct Meet link.
+      </div>
+      <div class="s-badge">📅 Google Calendar + Meet</div>
+    </div>
+    <div class="slide-screen">
+      <div class="app-frame">
+        <div class="app-top">
+          <div class="app-top-dots"><span></span><span></span><span></span></div>
+          <div class="app-top-logo">LINDE</div>
+          <div class="app-top-divider"></div>
+          <div class="app-top-title">AI Assistant — Appointment</div>
+        </div>
+        <div class="app-body">
+          <div class="app-sidebar">
+            <div class="sb-icon">🏠</div><div class="sb-icon active">💬</div><div class="sb-icon">📄</div><div class="sb-icon">⚙️</div><div class="sb-spacer"></div><div class="sb-avatar">PB</div>
+          </div>
+          <div class="app-chat">
+            <div class="chat-scroll">
+              <div class="msg user">
+                <div class="msg-meta user"><div class="msg-av user">PB</div><span class="msg-name">Prateek Bais</span></div>
+                <div class="msg-bubble user">Schedule a call with Sales team tomorrow 2pm for 30 min</div>
+              </div>
+              <div class="msg">
+                <div class="msg-meta"><div class="msg-av ai">L</div><span class="msg-name">Linde Gas AI Assistant</span></div>
+                <div class="msg-bubble ai">
+                  Your appointment has been booked! Here are the details:
+                  <div class="apt-card">
+                    <div class="apt-header">
+                      <div class="apt-check">✓</div>
+                      <div><div class="apt-title">Appointment Confirmed</div><div class="apt-sub">Calendar event created • Invite sent</div></div>
+                    </div>
+                    <div class="apt-cal">
+                      <div class="apt-cal-day">
+                        <div class="apt-cal-num">8</div>
+                        <div class="apt-cal-month">MAR 2026</div>
+                      </div>
+                      <div class="apt-cal-info">
+                        <div class="apt-info-row"><span class="apt-info-icon">📅</span> Saturday, March 8, 2026</div>
+                        <div class="apt-info-row"><span class="apt-info-icon">🕑</span> 2:00 PM – 2:30 PM CET</div>
+                        <div class="apt-info-row"><span class="apt-info-icon">👤</span> Prateek Bais, Sales Team</div>
+                      </div>
+                    </div>
+                    <div class="apt-meet">🎥 Google Meet — <span style="text-decoration:underline;margin-left:4px">meet.google.com/abc-defg-hij</span></div>
+                  </div>
+                  <div class="bubble-actions">
+                    <div class="b-act">📋</div>
+                    <div class="b-act">✉️</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="app-composer">
+              <div class="comp-input" style="display:flex;align-items:center;color:var(--muted)">Ask about gas products, delivery, pricing...</div>
+              <div class="comp-send">↑</div>
+            </div>
+          </div>
+          <div class="app-right">
+            <div class="rp-card">
+              <div class="rp-card-title">📊 AI Confidence</div>
+              <div class="rp-conf"><div class="rp-conf-bar"><div class="rp-conf-fill" style="width:97%"></div></div><div class="rp-conf-val">97%</div></div>
+            </div>
+            <div class="rp-card">
+              <div class="rp-card-title">🎯 Detected Intent</div>
+              <div class="rp-intent" style="background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.15);color:#8b5cf6">appointment</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Callout on appointment card -->
+      <div class="callout" style="left:90px;top:50%"><div class="callout-ring" style="width:58%;height:200px;border-radius:16px"></div><div class="callout-label top" style="top:-34px;left:10px">📅 Appointment Card — <span style="font-weight:400">Calendar + Meet + Email</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 6: MULTI-INTENT ══════════════════ -->
+<div class="slide" data-label="Multi-Intent">
+  <div class="slide-inner">
+    <div class="slide-info">
+      <div class="s-num">06 / 09</div>
+      <div class="s-title">Multi-Intent Queries</div>
+      <div class="s-desc">
+        One message, multiple intents. Ask for datasheets <em>and</em> a quotation simultaneously. The AI routes each intent to its own pipeline and merges the results.
+        <br><br>
+        The "ALL" keyword support retrieves every matching document when requesting generic requests.
+      </div>
+      <div class="s-badge">🧠 n8n Multi-Intent Router</div>
+    </div>
+    <div class="slide-screen">
+      <div class="app-frame">
+        <div class="app-top">
+          <div class="app-top-dots"><span></span><span></span><span></span></div>
+          <div class="app-top-logo">LINDE</div>
+          <div class="app-top-divider"></div>
+          <div class="app-top-title">AI Assistant — Multi-Intent</div>
+        </div>
+        <div class="app-body">
+          <div class="app-sidebar">
+            <div class="sb-icon">🏠</div><div class="sb-icon active">💬</div><div class="sb-icon">📄</div><div class="sb-icon">⚙️</div><div class="sb-spacer"></div><div class="sb-avatar">PB</div>
+          </div>
+          <div class="app-chat">
+            <div class="chat-scroll">
+              <div class="msg user">
+                <div class="msg-meta user"><div class="msg-av user">PB</div><span class="msg-name">Prateek Bais</span></div>
+                <div class="msg-bubble user">Send me all datasheets and a quotation for Hydrogen</div>
+              </div>
+              <div class="msg">
+                <div class="msg-meta"><div class="msg-av ai">L</div><span class="msg-name">Linde Gas AI Assistant</span></div>
+                <div class="msg-bubble ai">
+                  I've retrieved all datasheets along with the Hydrogen quotation:
+                  <div style="margin-top:8px;display:flex;flex-direction:column;gap:4px">
+                    <div class="src-chip"><div class="src-icon">PDF</div><div><div class="src-name">Oxygen_5.0_PDS.pdf</div><div class="src-type">Datasheet</div></div><div class="src-dl">↓</div></div>
+                    <div class="src-chip"><div class="src-icon">PDF</div><div><div class="src-name">Nitrogen_5.0_PDS.pdf</div><div class="src-type">Datasheet</div></div><div class="src-dl">↓</div></div>
+                    <div class="src-chip"><div class="src-icon">PDF</div><div><div class="src-name">Argon_5.0_PDS.pdf</div><div class="src-type">Datasheet</div></div><div class="src-dl">↓</div></div>
+                    <div class="src-chip" style="background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.15)"><div class="src-icon qt">QT</div><div><div class="src-name">Hydrogen_Quotation.pdf</div><div class="src-type">Quotation</div></div><div class="src-dl">↓</div></div>
+                  </div>
+                  <div class="zip-badge">✓ Download All as ZIP</div>
+                  <div class="bubble-actions">
+                    <div class="b-act">📋</div><div class="b-act">✉️</div><div class="b-act dl-all">📦 Download All</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="app-composer">
+              <div class="comp-input" style="display:flex;align-items:center;color:var(--muted)">Ask about gas products, delivery, pricing...</div>
+              <div class="comp-send">↑</div>
+            </div>
+          </div>
+          <div class="app-right">
+            <div class="rp-card">
+              <div class="rp-card-title">🎯 Detected Intents (2)</div>
+              <div class="rp-intent" style="background:rgba(0,111,191,.1);border:1px solid rgba(0,111,191,.15);color:#006fbf">product_datasheet</div>
+              <div class="rp-intent" style="background:rgba(0,181,226,.1);border:1px solid rgba(0,181,226,.15);color:#00b5e2">quotation</div>
+            </div>
+            <div class="rp-card">
+              <div class="rp-card-title">📎 Sources (4)</div>
+              <div class="rp-src-item"><div class="rp-src-icon">PDF</div><div><div class="rp-src-name">Oxygen_5.0_PDS</div><div class="rp-src-type">DS</div></div></div>
+              <div class="rp-src-item"><div class="rp-src-icon">PDF</div><div><div class="rp-src-name">Nitrogen_5.0_PDS</div><div class="rp-src-type">DS</div></div></div>
+              <div class="rp-src-item"><div class="rp-src-icon">PDF</div><div><div class="rp-src-name">Argon_5.0_PDS</div><div class="rp-src-type">DS</div></div></div>
+              <div class="rp-src-item"><div class="rp-src-icon qt">QT</div><div><div class="rp-src-name">Hydrogen_QT</div><div class="rp-src-type">Quote</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Callout on dual intents -->
+      <div class="callout" style="right:8px;top:78px"><div class="callout-ring" style="width:222px;height:66px;border-radius:14px"></div><div class="callout-label right" style="right:-145px;top:16px">2 Intents Detected<br><span style="font-weight:400;font-size:9px">datasheet + quotation</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 7: CONTEXT PANEL ═════════════════ -->
+<div class="slide" data-label="Context Panel">
+  <div class="slide-inner">
+    <div class="slide-info">
+      <div class="s-num">07 / 09</div>
+      <div class="s-title">Context & Sources Panel</div>
+      <div class="s-desc">
+        The right panel provides full transparency into every AI response:
+        <br><br>
+        <strong style="color:var(--txt)">• AI Confidence</strong> — real-time 0–100% bar<br>
+        <strong style="color:var(--txt)">• Source Documents</strong> — every cited file<br>
+        <strong style="color:var(--txt)">• Detected Intents</strong> — classified categories<br>
+        <strong style="color:var(--txt)">• Quick Prompts</strong> — one-click chat starters
+      </div>
+      <div class="s-badge">🔍 Full AI Transparency</div>
+    </div>
+    <div class="slide-screen">
+      <!-- Just the right panel, enlarged -->
+      <div style="width:340px;display:flex;flex-direction:column;gap:12px">
+        <div class="rp-card" style="padding:16px">
+          <div class="rp-card-title" style="font-size:12px">📊 AI Confidence</div>
+          <div class="rp-conf" style="margin-top:4px"><div class="rp-conf-bar" style="height:8px"><div class="rp-conf-fill" style="width:92%"></div></div><div class="rp-conf-val" style="font-size:14px">92%</div></div>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px">High confidence — grounded in indexed documents</div>
+        </div>
+        <div class="rp-card" style="padding:16px">
+          <div class="rp-card-title" style="font-size:12px">📎 Source Documents (2)</div>
+          <div class="rp-src-item" style="padding:8px"><div class="rp-src-icon" style="width:26px;height:26px;font-size:8px">PDF</div><div><div class="rp-src-name" style="font-size:11px">Oxygen_5.0_PDS.pdf</div><div class="rp-src-type" style="font-size:9px">Product Datasheet · Google Drive</div></div></div>
+          <div class="rp-src-item" style="padding:8px"><div class="rp-src-icon qt" style="width:26px;height:26px;font-size:8px">QT</div><div><div class="rp-src-name" style="font-size:11px">Oxygen_Quotation.pdf</div><div class="rp-src-type" style="font-size:9px">Quotation · Google Drive</div></div></div>
+        </div>
+        <div class="rp-card" style="padding:16px">
+          <div class="rp-card-title" style="font-size:12px">🎯 Detected Intents</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px">
+            <div class="rp-intent" style="background:rgba(0,111,191,.1);border:1px solid rgba(0,111,191,.15);color:#006fbf;font-size:10px">product_datasheet</div>
+            <div class="rp-intent" style="background:rgba(0,181,226,.1);border:1px solid rgba(0,181,226,.15);color:#00b5e2;font-size:10px">quotation</div>
+          </div>
+        </div>
+        <div class="rp-card" style="padding:16px">
+          <div class="rp-card-title" style="font-size:12px">⚡ Quick Prompts</div>
+          <div class="rp-qp" style="gap:6px">
+            <div class="rp-qp-item" style="padding:8px"><div class="rp-qp-badge" style="background:rgba(0,111,191,.1);color:#006fbf;width:28px;height:28px">📄</div><div><div class="rp-qp-text" style="font-size:10px">Oxygen Datasheet</div><div class="rp-qp-desc" style="font-size:9px">Retrieve PDS for O₂ gas</div></div></div>
+            <div class="rp-qp-item" style="padding:8px"><div class="rp-qp-badge" style="background:rgba(16,185,129,.1);color:#10b981;width:28px;height:28px">🚚</div><div><div class="rp-qp-text" style="font-size:10px">Track Delivery</div><div class="rp-qp-desc" style="font-size:9px">Check order LG-240001</div></div></div>
+            <div class="rp-qp-item" style="padding:8px"><div class="rp-qp-badge" style="background:rgba(139,92,246,.1);color:#8b5cf6;width:28px;height:28px">📅</div><div><div class="rp-qp-text" style="font-size:10px">Book a Sales Call</div><div class="rp-qp-desc" style="font-size:9px">Schedule meeting with rep</div></div></div>
+          </div>
+        </div>
+      </div>
+      <!-- Callouts -->
+      <div class="callout" style="left:20px;top:10px"><div class="callout-num">1</div><div class="callout-label top" style="top:-30px;left:30px">Confidence Score</div></div>
+      <div class="callout" style="left:20px;top:120px"><div class="callout-num">2</div><div class="callout-label top" style="top:-30px;left:30px">Source Citations</div></div>
+      <div class="callout" style="left:20px;top:250px"><div class="callout-num">3</div><div class="callout-label top" style="top:-30px;left:30px">Intent Detection</div></div>
+      <div class="callout" style="left:20px;top:330px"><div class="callout-num">4</div><div class="callout-label top" style="top:-30px;left:30px">Quick Prompts</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 8: SETTINGS ══════════════════════ -->
+<div class="slide" data-label="Settings">
+  <div class="slide-inner">
+    <div class="slide-info">
+      <div class="s-num">08 / 09</div>
+      <div class="s-title">Settings & Customization</div>
+      <div class="s-desc">
+        Full control over the experience:
+        <br><br>
+        <strong style="color:var(--txt)">• Response format</strong> — Natural / Structured / Both<br>
+        <strong style="color:var(--txt)">• Accent colors</strong> — 8 theme options<br>
+        <strong style="color:var(--txt)">• Sound & Toasts</strong> — Toggle notifications<br>
+        <strong style="color:var(--txt)">• Date format</strong> — US / EU / ISO<br>
+        <strong style="color:var(--txt)">• Auto-focus</strong> — Composer focus after response
+      </div>
+      <div class="s-badge">⚙️ 12+ Configurable Options</div>
+    </div>
+    <div class="slide-screen">
+      <div class="settings-mock">
+        <div class="sp-mock-card">
+          <div class="sp-mock-title"><div class="sp-mock-icon">🎨</div> Appearance</div>
+          <div class="sp-mock-row">
+            <div><div class="sp-mock-label">Linde Branding</div><div class="sp-mock-desc">Apply full Linde corporate theme</div></div>
+            <div class="sp-mock-toggle on"><div class="sp-mock-thumb"></div></div>
+          </div>
+          <div class="sp-mock-row">
+            <div><div class="sp-mock-label">Accent Color</div><div class="sp-mock-desc">Choose your preferred accent</div></div>
+            <div class="sp-mock-colors">
+              <div class="sp-mock-swatch sel" style="background:#006fbf"></div>
+              <div class="sp-mock-swatch" style="background:#00b5e2"></div>
+              <div class="sp-mock-swatch" style="background:#10b981"></div>
+              <div class="sp-mock-swatch" style="background:#6366f1"></div>
+              <div class="sp-mock-swatch" style="background:#8b5cf6"></div>
+              <div class="sp-mock-swatch" style="background:#f59e0b"></div>
+              <div class="sp-mock-swatch" style="background:#ef4444"></div>
+              <div class="sp-mock-swatch" style="background:#ec4899"></div>
+            </div>
+          </div>
+        </div>
+        <div class="sp-mock-card">
+          <div class="sp-mock-title"><div class="sp-mock-icon">💬</div> Chat Behavior</div>
+          <div class="sp-mock-row">
+            <div><div class="sp-mock-label">Response Format</div><div class="sp-mock-desc">How AI responses are displayed</div></div>
+            <div class="sp-mock-select">Both (Natural + Structured)</div>
+          </div>
+          <div class="sp-mock-row">
+            <div><div class="sp-mock-label">Sound Effects</div><div class="sp-mock-desc">Play iPhone chime on response</div></div>
+            <div class="sp-mock-toggle on"><div class="sp-mock-thumb"></div></div>
+          </div>
+          <div class="sp-mock-row">
+            <div><div class="sp-mock-label">Toast Notifications</div><div class="sp-mock-desc">Show popup notifications</div></div>
+            <div class="sp-mock-toggle on"><div class="sp-mock-thumb"></div></div>
+          </div>
+          <div class="sp-mock-row">
+            <div><div class="sp-mock-label">Auto-Focus Input</div><div class="sp-mock-desc">Focus composer after AI responds</div></div>
+            <div class="sp-mock-toggle on"><div class="sp-mock-thumb"></div></div>
+          </div>
+        </div>
+        <div class="sp-mock-card">
+          <div class="sp-mock-title"><div class="sp-mock-icon">📅</div> Date & Region</div>
+          <div class="sp-mock-row">
+            <div><div class="sp-mock-label">Date Format</div><div class="sp-mock-desc">Display format for dates</div></div>
+            <div class="sp-mock-select">DD/MM/YYYY (EU)</div>
+          </div>
+          <div class="sp-mock-row">
+            <div><div class="sp-mock-label">Default Landing</div><div class="sp-mock-desc">Page shown on app load</div></div>
+            <div class="sp-mock-select">Chat</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 9: DASHBOARD ═════════════════════ -->
+<div class="slide" data-label="Dashboard">
+  <div class="slide-inner">
+    <div class="slide-info">
+      <div class="s-num">09 / 09</div>
+      <div class="s-title">Analytics Dashboard</div>
+      <div class="s-desc">
+        The Home page shows an analytics overview with real-time metric cards and trend charts.
+        <br><br>
+        Track total queries, document downloads, active orders, and API response times at a glance.
+      </div>
+      <div class="s-badge">📊 Live Metrics & Charts</div>
+    </div>
+    <div class="slide-screen">
+      <div class="app-frame">
+        <div class="app-top">
+          <div class="app-top-dots"><span></span><span></span><span></span></div>
+          <div class="app-top-logo">LINDE</div>
+          <div class="app-top-divider"></div>
+          <div class="app-top-title">AI Assistant — Dashboard</div>
+        </div>
+        <div class="app-body">
+          <div class="app-sidebar">
+            <div class="sb-icon active">🏠</div><div class="sb-icon">💬</div><div class="sb-icon">📄</div><div class="sb-icon">⚙️</div><div class="sb-spacer"></div><div class="sb-avatar">PB</div>
+          </div>
+          <div style="flex:1;padding:16px;overflow-y:auto">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+              <div><div style="font-size:16px;font-weight:800;color:var(--white)">Dashboard</div><div style="font-size:10px;color:var(--muted)">Overview of Linde AI Agent activity &amp; order metrics</div></div>
+              <div style="display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.15);font-size:9px;color:#10b981;font-weight:600"><span style="width:6px;height:6px;border-radius:50%;background:#10b981;display:block;animation:pulse-s 2s infinite"></span> Live</div>
+            </div>
+            <div class="dash-metrics">
+              <div class="dash-metric"><div class="dash-metric-label">Total Queries</div><div class="dash-metric-val">1,247</div><div class="dash-metric-change">↑ 12.3% vs last week</div></div>
+              <div class="dash-metric"><div class="dash-metric-label">Downloads</div><div class="dash-metric-val">386</div><div class="dash-metric-change">↑ 8.1% vs last week</div></div>
+              <div class="dash-metric"><div class="dash-metric-label">Active Orders</div><div class="dash-metric-val">42</div><div class="dash-metric-change" style="color:var(--amber)">→ Same as last week</div></div>
+              <div class="dash-metric"><div class="dash-metric-label">Avg Response</div><div class="dash-metric-val">4.2s</div><div class="dash-metric-change">↓ 0.8s improvement</div></div>
+            </div>
+            <div class="dash-charts">
+              <div class="dash-chart">
+                <div class="dash-chart-title">📈 Downloads (7 days)</div>
+                <div class="dash-chart-bars">
+                  <div class="dash-bar" style="height:40%"></div><div class="dash-bar" style="height:55%"></div><div class="dash-bar" style="height:35%"></div>
+                  <div class="dash-bar" style="height:70%"></div><div class="dash-bar" style="height:85%"></div><div class="dash-bar" style="height:60%"></div><div class="dash-bar" style="height:90%"></div>
+                </div>
+              </div>
+              <div class="dash-chart">
+                <div class="dash-chart-title">📦 Orders by Status</div>
+                <div class="dash-chart-bars">
+                  <div class="dash-bar" style="height:30%;background:linear-gradient(180deg,#3b82f6,#2563eb)"></div>
+                  <div class="dash-bar" style="height:65%;background:linear-gradient(180deg,#f59e0b,#d97706)"></div>
+                  <div class="dash-bar" style="height:90%;background:linear-gradient(180deg,#10b981,#059669)"></div>
+                  <div class="dash-bar" style="height:15%;background:linear-gradient(180deg,#ef4444,#dc2626)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Callout on metrics -->
+      <div class="callout" style="left:72px;top:96px"><div class="callout-ring" style="width:calc(100% - 80px);height:72px;border-radius:12px"></div><div class="callout-label top" style="top:-34px;left:20px">📊 Live Metric Cards — <span style="font-weight:400">Real-time KPIs</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 10: CLOSING ═══════════════════════ -->
+<div class="slide" data-label="Get Started">
+  <div class="slide-center">
+    <div class="s-num">Thank You</div>
+    <div class="s-title" style="font-size:clamp(28px,4vw,46px)">The Complete AI-Powered Gas Assistant</div>
+    <div class="s-desc" style="max-width:620px;text-align:center;font-size:15px">
+      7 capabilities. 1 interface. Zero hallucinations.<br>
+      From product datasheets to delivery tracking to appointment scheduling —<br>
+      everything your team needs, right here.
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:16px;text-align:center">
+      <div><div style="font-size:32px;font-weight:800;background:linear-gradient(135deg,var(--sky),#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">7</div><div style="font-size:11px;color:var(--muted)">AI Capabilities</div></div>
+      <div><div style="font-size:32px;font-weight:800;background:linear-gradient(135deg,var(--sky),#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">&lt;5s</div><div style="font-size:11px;color:var(--muted)">Avg Response</div></div>
+      <div><div style="font-size:32px;font-weight:800;background:linear-gradient(135deg,var(--sky),#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">100%</div><div style="font-size:11px;color:var(--muted)">Grounded</div></div>
+      <div><div style="font-size:32px;font-weight:800;background:linear-gradient(135deg,var(--sky),#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">∞</div><div style="font-size:11px;color:var(--muted)">Queries</div></div>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:20px">
+      <button style="padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;background:linear-gradient(135deg,var(--sky),#0090b8);color:#fff;box-shadow:0 4px 16px rgba(0,181,226,.3)">Request a Demo</button>
+      <button style="padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;background:transparent;border:1.5px solid rgba(255,255,255,.15);color:var(--txt)">Contact Sales</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- ── Nav ──────────────────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav-left">
+    <div class="nav-logo">LINDE</div>
+    <div class="nav-div"></div>
+    <div class="nav-label" id="slideLabel">Welcome</div>
+  </div>
+  <div class="nav-dots" id="navDots"></div>
+  <div class="nav-right">
+    <button class="nav-btn" id="prevBtn">‹</button>
+    <span class="nav-counter" id="counter">1 / 11</span>
+    <button class="nav-btn" id="nextBtn">›</button>
+    <button class="nav-auto" id="autoBtn">▶ Auto</button>
+  </div>
+</nav>
+
+<script>
+const deck=document.getElementById('deck'),slides=deck.querySelectorAll('.slide'),
+  prevBtn=document.getElementById('prevBtn'),nextBtn=document.getElementById('nextBtn'),
+  counter=document.getElementById('counter'),slideLabel=document.getElementById('slideLabel'),
+  navDots=document.getElementById('navDots'),autoBtn=document.getElementById('autoBtn');
+let cur=0,autoplay=false,timer=null;const AUTO_MS=7000;
+
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='nav-dot'+(i===0?' active':'');d.addEventListener('click',()=>goTo(i));navDots.appendChild(d)});
+const dots=navDots.querySelectorAll('.nav-dot');
+
+function goTo(idx){
+  if(idx<0||idx>=slides.length||idx===cur)return;
+  const fwd=idx>cur;
+  slides[cur].classList.remove('active');
+  if(fwd)slides[cur].classList.add('prev');
+  else slides[cur].classList.remove('prev');
+  cur=idx;
+  slides.forEach((s,i)=>{s.classList.remove('active','prev');if(i<cur)s.classList.add('prev')});
+  slides[cur].classList.add('active');
+  updUI();resetAuto();
+}
+function next(){goTo(cur+1<slides.length?cur+1:0)}
+function prev(){goTo(cur-1>=0?cur-1:slides.length-1)}
+function updUI(){
+  counter.textContent=`${cur+1} / ${slides.length}`;
+  slideLabel.textContent=slides[cur].dataset.label||'';
+  dots.forEach((d,i)=>d.classList.toggle('active',i===cur));
+}
+function toggleAuto(){
+  autoplay=!autoplay;autoBtn.classList.toggle('on',autoplay);
+  autoBtn.textContent=autoplay?'⏸ Auto':'▶ Auto';
+  autoplay?timer=setInterval(next,AUTO_MS):clearInterval(timer);
+}
+function resetAuto(){if(!autoplay)return;clearInterval(timer);timer=setInterval(next,AUTO_MS)}
+
+prevBtn.addEventListener('click',prev);nextBtn.addEventListener('click',next);autoBtn.addEventListener('click',toggleAuto);
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();next()}
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();prev()}
+  else if(e.key===' '){e.preventDefault();toggleAuto()}
+});
+let tx=0;
+deck.addEventListener('touchstart',e=>{tx=e.changedTouches[0].screenX},{passive:true});
+deck.addEventListener('touchend',e=>{const d=e.changedTouches[0].screenX-tx;if(Math.abs(d)>50){d<0?next():prev()}},{passive:true});
+updUI();
+</script>
+</body>
+</html>

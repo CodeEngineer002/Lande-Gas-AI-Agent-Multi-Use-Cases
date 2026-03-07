@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linde Gas AI Assistant — Product Tour</title>
+<style>
+  /* ── Reset & Base ──────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #0a1628;
+    color: #e2e8f0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── CSS Variables ─────────────────────────────────────── */
+  :root {
+    --linde-navy: #002d54;
+    --linde-dark: #001a33;
+    --linde-sky: #00b5e2;
+    --linde-sky-dim: rgba(0,181,226,0.15);
+    --linde-sky-glow: rgba(0,181,226,0.4);
+    --white: #ffffff;
+    --text-primary: #e2e8f0;
+    --text-muted: #8aa0b8;
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.08);
+    --slide-transition: 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* ── Presentation Container ────────────────────────────── */
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  /* ── Slide Base ────────────────────────────────────────── */
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 80px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(60px);
+    pointer-events: none;
+    transition: opacity var(--slide-transition), transform var(--slide-transition), visibility 0s linear var(--slide-transition);
+    z-index: 1;
+  }
+  .slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0) !important;
+    pointer-events: auto;
+    z-index: 2;
+    transition: opacity var(--slide-transition), transform var(--slide-transition), visibility 0s linear 0s;
+  }
+  .slide.prev {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-60px);
+  }
+
+  /* ── Background Effects ────────────────────────────────── */
+  .bg-gradient {
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,45,84,0.5) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 90%, rgba(0,181,226,0.12) 0%, transparent 60%),
+      linear-gradient(160deg, #0a1628 0%, #0f2035 50%, #0a1628 100%);
+    z-index: -1;
+    pointer-events: none;
+  }
+  .bg-grid {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .bg-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: -1;
+    pointer-events: none;
+    animation: orbFloat 8s ease-in-out infinite alternate;
+  }
+  .bg-orb-1 { width: 400px; height: 400px; top: -100px; left: -100px; background: rgba(0,45,84,0.5); }
+  .bg-orb-2 { width: 300px; height: 300px; bottom: -80px; right: -80px; background: rgba(0,181,226,0.15); animation-delay: -3s; }
+  @keyframes orbFloat {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(30px, 20px) scale(1.1); }
+  }
+
+  /* ── Typography ────────────────────────────────────────── */
+  .slide-tag {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--linde-sky);
+    margin-bottom: 16px;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .slide-title {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 800;
+    line-height: 1.15;
+    text-align: center;
+    max-width: 900px;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #ffffff 30%, var(--linde-sky) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .slide-subtitle {
+    font-size: clamp(16px, 2vw, 20px);
+    font-weight: 400;
+    line-height: 1.6;
+    text-align: center;
+    max-width: 700px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Cards / Feature Blocks ────────────────────────────── */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    margin-top: 10px;
+  }
+  .feature-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 28px 24px;
+    opacity: 1;
+    transform: translateY(0);
+    transition: border-color 0.3s, background 0.3s, transform 0.2s;
+  }
+  .feature-card:hover {
+    border-color: rgba(0,181,226,0.3);
+    background: rgba(0,181,226,0.06);
+    transform: translateY(-2px);
+  }
+  .feature-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 16px;
+    font-size: 20px;
+    background: var(--linde-sky-dim);
+    color: var(--linde-sky);
+  }
+  .feature-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .feature-card p {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+
+  /* ── Demo Chat Mockup ──────────────────────────────────── */
+  .chat-mock {
+    width: 100%;
+    max-width: 680px;
+    background: rgba(10, 22, 40, 0.7);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    padding: 24px;
+    margin-top: 8px;
+    opacity: 1;
+    transform: none;
+  }
+
+  .chat-msg {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    opacity: 1;
+    transform: none;
+  }
+  .chat-msg.user { flex-direction: row-reverse; }
+  .chat-msg.user .chat-msg-text { background: var(--linde-navy); border-color: rgba(0,181,226,0.2); text-align: right; }
+
+  .chat-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .chat-avatar.ai { background: var(--linde-sky-dim); color: var(--linde-sky); }
+  .chat-avatar.user { background: rgba(255,255,255,0.1); color: #fff; }
+
+  .chat-msg-text {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: 1.55;
+    max-width: 480px;
+    color: var(--text-primary);
+  }
+
+  /* ── Document Card (inside chat mock) ──────────────────── */
+  .doc-mock {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(239,68,68,0.06);
+    border: 1px solid rgba(239,68,68,0.15);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    opacity: 1;
+    transform: none;
+  }
+
+  .doc-mock-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: rgba(239,68,68,0.12); color: #ef4444;
+    display: grid; place-items: center; font-size: 11px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .doc-mock-icon.qt { background: rgba(59,130,246,0.12); color: #3b82f6; }
+  .doc-mock-info { flex: 1; min-width: 0; }
+  .doc-mock-name { font-size: 13px; font-weight: 600; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .doc-mock-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .doc-mock-dl {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-muted); display: grid; place-items: center; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .doc-mock-dl:hover { color: var(--linde-sky); border-color: var(--linde-sky-glow); }
+
+  /* ── Delivery Tracking Mock ────────────────────────────── */
+  .tracking-mock {
+    width: 100%;
+    max-width: 580px;
+    background: rgba(10, 22, 40, 0.7);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    padding: 28px;
+    margin-top: 8px;
+    opacity: 1;
+    transform: translateY(20px);
+    transform: none;
+  }
+
+  .tracking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .tracking-order { font-size: 18px; font-weight: 700; color: var(--white); }
+  .tracking-badge {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+    padding: 4px 12px; border-radius: 20px;
+    background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.2);
+  }
+  .tracking-badge.delivered { background: rgba(34,197,94,0.12); color: #22c55e; border-color: rgba(34,197,94,0.2); }
+
+  .tracking-steps {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .tracking-line {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    right: 14px;
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    z-index: 0;
+  }
+  .tracking-line-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--linde-sky), #00d4ff);
+    width: 62%;
+    transition: width 1.2s ease 0.3s;
+  }
+  .tracking-line-fill.delivered-fill { width: 100%; }
+
+  .tracking-step {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.12);
+    display: grid; place-items: center; position: relative; z-index: 1;
+    font-size: 10px; color: var(--text-muted);
+    transition: all 0.3s ease;
+  }
+  .tracking-step.done {
+    background: var(--linde-sky); border-color: var(--linde-sky);
+    color: #fff; box-shadow: 0 0 12px rgba(0,181,226,0.3);
+  }
+  .tracking-step.current {
+    background: rgba(251,191,36,0.15); border-color: #fbbf24;
+    color: #fbbf24; animation: pulse-step 2s ease-in-out infinite;
+  }
+  @keyframes pulse-step {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(251,191,36,0.3); }
+    50% { box-shadow: 0 0 0 8px rgba(251,191,36,0); }
+  }
+  .tracking-step-label {
+    position: absolute;
+    top: 36px;
+    font-size: 10px;
+    white-space: nowrap;
+    color: var(--text-muted);
+  }
+
+  .tracking-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .tracking-tile {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .tracking-tile-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .tracking-tile-value { font-size: 14px; font-weight: 600; color: var(--white); }
+
+  /* ── Architecture Diagram ──────────────────────────────── */
+  .arch-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 8px;
+  }
+  .arch-node {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 18px 22px;
+    text-align: center;
+    min-width: 140px;
+    opacity: 1;
+    transform: none;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .arch-node:hover { border-color: var(--linde-sky-glow); background: rgba(0,181,226,0.06); }
+
+  .arch-node-icon { font-size: 22px; margin-bottom: 6px; }
+  .arch-node-label { font-size: 12px; font-weight: 700; color: var(--white); }
+  .arch-node-sub { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+  .arch-arrow {
+    font-size: 18px; color: var(--linde-sky); margin: 0 4px;
+    opacity: 0.6;
+  }
+
+  /* ── Stats Row ─────────────────────────────────────────── */
+  .stats-row {
+    display: flex;
+    gap: 40px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .stat {
+    text-align: center;
+    opacity: 1;
+    transform: none;
+  }
+  .stat-num {
+    font-size: 40px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--linde-sky), #00d4ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+  }
+  .stat-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+  /* ── Multi-doc / ZIP Demo ──────────────────────────────── */
+  .zip-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.2);
+    border-radius: 10px;
+    padding: 8px 16px;
+    margin-top: 12px;
+    color: #22c55e;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── Slide-specific Layouts ────────────────────────────── */
+  .slide-split {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    width: 100%;
+    max-width: 1100px;
+  }
+  .slide-split-text { flex: 1; }
+  .slide-split-visual { flex: 1; display: flex; justify-content: center; }
+
+  .slide-split-text .slide-tag,
+  .slide-split-text .slide-title,
+  .slide-split-text .slide-subtitle {
+    text-align: left;
+  }
+
+  /* ── Navigation ────────────────────────────────────────── */
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    background: rgba(10, 22, 40, 0.85);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid var(--glass-border);
+    z-index: 100;
+  }
+  .nav-left { display: flex; align-items: center; gap: 12px; }
+  .nav-logo {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: 1px;
+  }
+  .nav-divider { width: 1px; height: 20px; background: rgba(255,255,255,0.12); }
+  .nav-slide-label { font-size: 12px; color: var(--text-muted); }
+
+  .nav-center { display: flex; align-items: center; gap: 6px; }
+  .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .nav-dot.active { background: var(--linde-sky); box-shadow: 0 0 8px rgba(0,181,226,0.4); transform: scale(1.2); }
+  .nav-dot:hover { background: rgba(255,255,255,0.3); }
+
+  .nav-right { display: flex; align-items: center; gap: 8px; }
+  .nav-btn {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass);
+    color: var(--text-muted);
+    display: grid; place-items: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .nav-counter { font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; margin: 0 4px; }
+
+  /* ── Autoplay Toggle ───────────────────────────────────── */
+  .autoplay-btn {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-left: 8px;
+  }
+  .autoplay-btn.on { background: rgba(0,181,226,0.12); border-color: rgba(0,181,226,0.3); color: var(--linde-sky); }
+
+  /* ── End Slide CTA ─────────────────────────────────────── */
+  .cta-row {
+    display: flex; gap: 16px; margin-top: 24px;
+    opacity: 1; transform: none;
+  }
+  .cta-btn {
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+  .cta-primary {
+    background: linear-gradient(135deg, var(--linde-sky), #0090b8);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(0,181,226,0.3);
+  }
+  .cta-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(0,181,226,0.4); }
+  .cta-secondary {
+    background: transparent;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    color: var(--text-primary);
+  }
+  .cta-secondary:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); }
+
+  /* ── Keyboard Hint ─────────────────────────────────────── */
+  .key-hint {
+    position: fixed;
+    bottom: 68px;
+    right: 32px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.2);
+    z-index: 100;
+  }
+  .key-hint kbd {
+    display: inline-block;
+    padding: 2px 6px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 10px;
+    background: rgba(255,255,255,0.04);
+    margin: 0 2px;
+  }
+
+  /* ── Responsive ────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .slide { padding: 40px 24px; }
+    .slide-split { flex-direction: column; gap: 24px; }
+    .feature-grid { grid-template-columns: 1fr 1fr; }
+    .arch-flow { gap: 8px; }
+    .stats-row { gap: 20px; }
+    .nav-bar { padding: 0 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg-gradient"></div>
+<div class="bg-grid"></div>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+
+<div class="deck" id="deck">
+
+  <!-- ═══════════════════════════════════════════════════════
+       SLIDE 0 — TITLE
+       ═══════════════════════════════════════════════════════ -->
+  <div class="slide active" data-label="Welcome">
+    <div class="slide-tag">Product Tour 2026</div>
+    <div class="slide-title">Linde Gas AI Assistant</div>
+    <div class="slide-subtitle">
+      Your intelligent copilot for product datasheets, quotations, delivery tracking,
+      availability checks, and appointment scheduling — all in one conversational interface.
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-num">7</div><div class="stat-label">AI Capabilities</div></div>
+      <div class="stat"><div class="stat-num">&lt;8s</div><div class="stat-label">Response Time</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Grounded Answers</div></div>
+      <div class="stat"><div class="stat-num">0</div><div class="stat-label">Hallucinations</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SLIDE 1 — THE PROBLEM
+       ═══════════════════════════════════════════════════════ -->
+  <div class="slide" data-label="The Problem">
+    <div class="slide-tag">The Problem</div>
+    <div class="slide-title">Too Many Systems. Too Much Friction.</div>
+    <div class="slide-subtitle">
+      Getting a datasheet means emailing a colleague. Checking a delivery means opening a spreadsheet.
+      Requesting a quote means filling out a form. Each request — a different system, a different person, a different wait.
+    </div>
+    <div class="feature-grid" style="max-width:800px;">
+      <div class="feature-card">
+        <div class="feature-icon">📧</div>
+        <h3>Email Chains</h3>
+        <p>"Can you send me the Oxygen SDS?" — then wait 4 hours for a reply.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Manual Lookups</h3>
+        <p>Open the delivery spreadsheet, search for order ID, copy status, paste into email.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <h3>Form Fatigue</h3>
+        <p>Fill out a quotation request form, wait days for a response, then follow up again.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔀</div>
+        <h3>Context Switching</h3>
+        <p>Google Drive, Sheets, Calendar, Gmail — four tools for four tasks, every single day.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SLIDE 2 — ARCHITECTURE
+       ═══════════════════════════════════════════════════════ -->
+  <div class="slide" data-label="Architecture">
+    <div class="slide-tag">How It Works</div>
+    <div class="slide-title">Intelligent Orchestration</div>
+    <div class="slide-subtitle">
+      A single message flows through an AI intent router, retrieves real data from authoritative sources,
+      and returns a grounded response — in seconds.
+    </div>
+    <div class="arch-flow">
+      <div class="arch-node"><div class="arch-node-icon">💬</div><div class="arch-node-label">Chat UI</div><div class="arch-node-sub">Next.js</div></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node"><div class="arch-node-icon">🔀</div><div class="arch-node-label">API Proxy</div><div class="arch-node-sub">Routes</div></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node"><div class="arch-node-icon">🧠</div><div class="arch-node-label">Intent Agent</div><div class="arch-node-sub">GPT-4o-mini</div></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node"><div class="arch-node-icon">⚡</div><div class="arch-node-label">n8n Router</div><div class="arch-node-sub">7 Branches</div></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node"><div class="arch-node-icon">🗄️</div><div class="arch-node-label">Data Sources</div><div class="arch-node-sub">Pinecone · Sheets</div></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node"><div class="arch-node-icon">📦</div><div class="arch-node-label">Response</div><div class="arch-node-sub">JSON Contract</div></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SLIDE 3 — USE CASES
+       ═══════════════════════════════════════════════════════ -->
+  <div class="slide" data-label="Use Cases">
+    <div class="slide-tag">Capabilities</div>
+    <div class="slide-title">7 Core Use Cases</div>
+    <div class="slide-subtitle">Everything your team needs — accessible through natural language.</div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <h3>Product Datasheets</h3>
+        <p>PDS, SDS, MSDS, TDS — retrieved from Pinecone vector search with source citations.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <h3>Price Quotations</h3>
+        <p>Indicative pricing from the quotation index with product, quantity, and location context.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🚚</div>
+        <h3>Delivery Tracking</h3>
+        <p>Real-time order status from Google Sheets with a visual 5-step progress card.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📦</div>
+        <h3>Availability Check</h3>
+        <p>Stock status, lead times, and restock dates from the Availability Master sheet.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <h3>Appointment Scheduling</h3>
+        <p>Google Calendar integration with Meet links, email invites, and slot-filling forms.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧪</div>
+        <h3>Technical Advice</h3>
+        <p>Grounded answers from datasheet content — storage, handling, composition, boiling points.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👋</div>
+        <h3>General Inquiries</h3>
+        <p>Warm greetings, Linde-specific Q&A, and graceful handling of out-of-scope requests.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SLIDE 4 — DATASHEET DEMO
+       ═══════════════════════════════════════════════════════ -->
+  <div class="slide" data-label="Datasheet Demo">
+    <div class="slide-split">
+      <div class="slide-split-text">
+        <div class="slide-tag">Feature Demo</div>
+        <div class="slide-title" style="font-size: clamp(26px, 3.5vw, 40px);">Product Datasheet Retrieval</div>
+        <div class="slide-subtitle">
+          Ask for any gas datasheet in natural language. The AI searches the document
+          index using vector embeddings and returns the matching PDF with a download button.
+          <br><br>
+          The right panel shows AI confidence and the exact source document cited — full transparency.
+        </div>
+      </div>
+      <div class="slide-split-visual">
+        <div class="chat-mock">
+          <div class="chat-msg user">
+            <div class="chat-avatar user">PB</div>
+            <div class="chat-msg-text">Send me the datasheet for Oxygen 5.0</div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar ai">L</div>
+            <div>
+              <div class="chat-msg-text">
+                Here is the Product Data Sheet for Oxygen 5.0 (≥99.999% purity). It covers specifications, storage requirements, and safety handling guidelines.
+              </div>
+              <div class="doc-mock">
+                <div class="doc-mock-icon">PDF</div>
+                <div class="doc-mock-info">
+                  <div class="doc-mock-name">Oxygen_5.0_PDS.pdf</div>
+                  <div class="doc-mock-sub">Product Datasheet</div>
+                </div>
+                <div class="doc-mock-dl">↓</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SLIDE 5 — MULTI-DOC + ZIP
+       ═══════════════════════════════════════════════════════ -->
+  <div class="slide" data-label="Multi-Document">
+    <div class="slide-split">
+      <div class="slide-split-text">
+        <div class="slide-tag">Feature Demo</div>
+        <div class="slide-title" style="font-size: clamp(26px, 3.5vw, 40px);">Multi-Document Responses</div>
+        <div class="slide-subtitle">
+          Request multiple documents in one message. Each appears as its own downloadable card.
+          <br><br>
+          <strong>Download All</strong> bundles everything into a ZIP file. Or email all documents to a colleague in one click.
+        </div>
+      </div>
+      <div class="slide-split-visual">
+        <div class="chat-mock">
+          <div class="chat-msg user">
+            <div class="chat-avatar user">PB</div>
+            <div class="chat-msg-text">I need datasheets for Nitrogen, Argon, and Hydrogen</div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar ai">L</div>
+            <div>
+              <div class="chat-msg-text">Here are the requested Product Data Sheets:</div>
+              <div class="doc-mock">
+                <div class="doc-mock-icon">PDF</div>
+                <div class="doc-mock-info"><div class="doc-mock-name">Nitrogen_5.0_PDS.pdf</div><div class="doc-mock-sub">Product Datasheet</div></div>
+                <div class="doc-mock-dl">↓</div>
+              </div>
+              <div class="doc-mock" style="border-color: rgba(59,130,246,0.15); background: rgba(59,130,246,0.06);">
+                <div class="doc-mock-icon" style="background:rgba(59,130,246,0.12);color:#3b82f6;">PDF</div>
+                <div class="doc-mock-info"><div class="doc-mock-name">Argon_5.0_PDS.pdf</div><div class="doc-mock-sub">Product Datasheet</div></div>
+                <div class="doc-mock-dl">↓</div>
+              </div>
+              <div class="doc-mock" style="border-color: rgba(168,85,247,0.15); background: rgba(168,85,247,0.06);">
+                <div class="doc-mock-icon" style="background:rgba(168,85,247,0.12);color:#a855f7;">PDF</div>
+                <div class="doc-mock-info"><div class="doc-mock-name">Hydrogen_5.0_PDS.pdf</div><div class="doc-mock-sub">Product Datasheet</div></div>
+                <div class="doc-mock-dl">↓</div>
+              </div>
+              <div class="zip-badge">✓ Download All as ZIP — Linde_Documents.zip</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SLIDE 6 — DELIVERY TRACKING
+       ═══════════════════════════════════════════════════════ -->
+  <div class="slide" data-label="Delivery Tracking">
+    <div class="slide-split">
+      <div class="slide-split-text">
+        <div class="slide-tag">Feature Demo</div>
+        <div class="slide-title" style="font-size: clamp(26px, 3.5vw, 40px);">Real-Time Delivery Tracking</div>
+        <div class="slide-subtitle">
+          Ask about any order and get a visual tracking card with a 5-step animated progress bar, carrier info, ETA, and destination.
+          <br><br>
+          Email the tracking snapshot to anyone — formatted, not raw text.
+        </div>
+      </div>
+      <div class="slide-split-visual">
+        <div class="tracking-mock">
+          <div class="tracking-header">
+            <div class="tracking-order">Order LG-240012</div>
+            <div class="tracking-badge">In Transit</div>
+          </div>
+          <div class="tracking-steps">
+            <div class="tracking-line"><div class="tracking-line-fill"></div></div>
+            <div class="tracking-step done">✓<span class="tracking-step-label">Confirmed</span></div>
+            <div class="tracking-step done">✓<span class="tracking-step-label">Packed</span></div>
+            <div class="tracking-step current">🚚<span class="tracking-step-label">In Transit</span></div>
+            <div class="tracking-step"><span class="tracking-step-label">Out for Delivery</span></div>
+            <div class="tracking-step"><span class="tracking-step-label">Delivered</span></div>
+          </div>
+          <div class="tracking-info-grid">
+            <div class="tracking-tile"><div class="tracking-tile-label">Carrier</div><div class="tracking-tile-value">DHL Express</div></div>
+            <div class="tracking-tile"><div class="tracking-tile-label">ETA</div><div class="tracking-tile-value">12 Mar 2026</div></div>
+            <div class="tracking-tile"><div class="tracking-tile-label">Destination</div><div class="tracking-tile-value">Munich, Germany</div></div>
+            <div class="tracking-tile"><div class="tracking-tile-label">Product</div><div class="tracking-tile-value">Nitrogen 5.0</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SLIDE 7 — MULTI-INTENT
+       ═══════════════════════════════════════════════════════ -->
+  <div class="slide" data-label="Multi-Intent">
+    <div class="slide-tag">Advanced</div>
+    <div class="slide-title">Multi-Intent Queries</div>
+    <div class="slide-subtitle">
+      Combine multiple requests in a single message. The AI detects each intent,
+      routes them to separate pipelines, and merges the results into one unified response.
+    </div>
+    <div class="chat-mock" style="max-width: 640px;">
+      <div class="chat-msg user">
+        <div class="chat-avatar user">PB</div>
+        <div class="chat-msg-text">Send me all product datasheets and a quotation for Hydrogen</div>
+      </div>
+      <div class="chat-msg">
+        <div class="chat-avatar ai">L</div>
+        <div>
+          <div class="chat-msg-text">
+            I've retrieved all available product datasheets along with the Hydrogen quotation document. Here are your files:
+          </div>
+          <div class="doc-mock">
+            <div class="doc-mock-icon">PDF</div>
+            <div class="doc-mock-info"><div class="doc-mock-name">Oxygen_5.0_PDS.pdf</div><div class="doc-mock-sub">Product Datasheet</div></div>
+            <div class="doc-mock-dl">↓</div>
+          </div>
+          <div class="doc-mock">
+            <div class="doc-mock-icon">PDF</div>
+            <div class="doc-mock-info"><div class="doc-mock-name">Nitrogen_5.0_PDS.pdf</div><div class="doc-mock-sub">Product Datasheet</div></div>
+            <div class="doc-mock-dl">↓</div>
+          </div>
+          <div class="doc-mock" style="border-color: rgba(59,130,246,0.15); background: rgba(59,130,246,0.06);">
+            <div class="doc-mock-icon qt">QT</div>
+            <div class="doc-mock-info"><div class="doc-mock-name">Hydrogen_Quotation_2026.pdf</div><div class="doc-mock-sub">Quotation</div></div>
+            <div class="doc-mock-dl">↓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SLIDE 8 — CONTEXT & TRANSPARENCY
+       ═══════════════════════════════════════════════════════ -->
+  <div class="slide" data-label="Transparency">
+    <div class="slide-tag">Trust & Transparency</div>
+    <div class="slide-title">Context & Sources Panel</div>
+    <div class="slide-subtitle">
+      Every response comes with full visibility — AI confidence scores, cited source documents,
+      detected intents, and contextual actions like email summary and report generation.
+    </div>
+    <div class="feature-grid" style="max-width: 750px;">
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Confidence Score</h3>
+        <p>Real-time confidence bar (0–100%) shows how sure the AI is about its answer.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📎</div>
+        <h3>Source Citations</h3>
+        <p>Every document referenced is listed with its filename, type, and a direct open link.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Detected Intents</h3>
+        <p>Multi-intent queries show which intents were classified and processed.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Quick Actions</h3>
+        <p>Email summary, generate markdown report, or update the knowledge base — one click.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SLIDE 9 — TECH STACK
+       ═══════════════════════════════════════════════════════ -->
+  <div class="slide" data-label="Tech Stack">
+    <div class="slide-tag">Under the Hood</div>
+    <div class="slide-title">Enterprise-Grade Stack</div>
+    <div class="slide-subtitle">Built on production-ready technologies trusted by enterprises worldwide.</div>
+    <div class="feature-grid" style="max-width: 900px; grid-template-columns: repeat(3, 1fr);">
+      <div class="feature-card">
+        <div class="feature-icon">⚛️</div>
+        <h3>Next.js 14</h3>
+        <p>React server components, API routes, and optimized builds.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3>Azure OpenAI</h3>
+        <p>GPT-4o-mini for intent routing and response generation. Enterprise SLA.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌲</div>
+        <h3>Pinecone</h3>
+        <p>Vector search with text-embedding-3-large (3072 dim). Sub-second retrieval.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>n8n Workflows</h3>
+        <p>Visual orchestration engine with 7 intent branches and multi-intent merging.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📁</div>
+        <h3>Google Workspace</h3>
+        <p>Drive (files), Sheets (data), Calendar (scheduling), Gmail (delivery).</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Zero Hallucination</h3>
+        <p>Grounded-only answers. Confidence gating at ≥0.6. No fabricated data.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       SLIDE 10 — CLOSING
+       ═══════════════════════════════════════════════════════ -->
+  <div class="slide" data-label="Get Started">
+    <div class="slide-tag">Ready for Your Team</div>
+    <div class="slide-title">Ask. Get Answers. Move Faster.</div>
+    <div class="slide-subtitle">
+      The Linde Gas AI Assistant brings together document retrieval, quotations, delivery tracking,
+      scheduling, and product availability — all in one conversational interface.
+      <br><br>
+      No more switching between systems. No more waiting for email replies.
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-num">7</div><div class="stat-label">Capabilities</div></div>
+      <div class="stat"><div class="stat-num">3</div><div class="stat-label">API Endpoints</div></div>
+      <div class="stat"><div class="stat-num">1</div><div class="stat-label">Interface</div></div>
+      <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Queries Handled</div></div>
+    </div>
+    <div class="cta-row">
+      <button class="cta-btn cta-primary">Request a Demo</button>
+      <button class="cta-btn cta-secondary">Contact Sales</button>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<!-- ── Navigation Bar ──────────────────────────────────── -->
+<nav class="nav-bar">
+  <div class="nav-left">
+    <div class="nav-logo">LINDE</div>
+    <div class="nav-divider"></div>
+    <div class="nav-slide-label" id="slideLabel">Welcome</div>
+  </div>
+  <div class="nav-center" id="navDots"></div>
+  <div class="nav-right">
+    <button class="nav-btn" id="prevBtn" title="Previous (←)">‹</button>
+    <span class="nav-counter" id="counter">1 / 11</span>
+    <button class="nav-btn" id="nextBtn" title="Next (→)">›</button>
+    <button class="autoplay-btn" id="autoplayBtn" title="Auto-advance slides">▶ Auto</button>
+  </div>
+</nav>
+
+<div class="key-hint"><kbd>←</kbd> <kbd>→</kbd> or click to navigate &nbsp;•&nbsp; <kbd>Space</kbd> to toggle autoplay</div>
+
+<script>
+  const deck = document.getElementById('deck');
+  const slides = deck.querySelectorAll('.slide');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const counter = document.getElementById('counter');
+  const slideLabel = document.getElementById('slideLabel');
+  const navDots = document.getElementById('navDots');
+  const autoplayBtn = document.getElementById('autoplayBtn');
+
+  let current = 0;
+  let autoplay = false;
+  let autoTimer = null;
+  const AUTOPLAY_MS = 6000;
+
+  // Build nav dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => goTo(i));
+    navDots.appendChild(dot);
+  });
+  const dots = navDots.querySelectorAll('.nav-dot');
+
+  function goTo(index) {
+    if (index < 0 || index >= slides.length || index === current) return;
+    const dir = index > current ? 1 : -1;
+    slides[current].classList.remove('active');
+    if (dir > 0) slides[current].classList.add('prev');
+    if (dir < 0) slides[current].classList.remove('prev');
+    current = index;
+    slides.forEach((s, i) => {
+      s.classList.remove('active', 'prev');
+      if (i < current) s.classList.add('prev');
+    });
+    slides[current].classList.add('active');
+    updateUI();
+    resetAutoplay();
+  }
+
+  function next() { goTo(current + 1 < slides.length ? current + 1 : 0); }
+  function prev() { goTo(current - 1 >= 0 ? current - 1 : slides.length - 1); }
+
+  function updateUI() {
+    counter.textContent = `${current + 1} / ${slides.length}`;
+    slideLabel.textContent = slides[current].dataset.label || '';
+    prevBtn.disabled = false;
+    nextBtn.disabled = false;
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  function toggleAutoplay() {
+    autoplay = !autoplay;
+    autoplayBtn.classList.toggle('on', autoplay);
+    autoplayBtn.textContent = autoplay ? '⏸ Auto' : '▶ Auto';
+    if (autoplay) {
+      autoTimer = setInterval(next, AUTOPLAY_MS);
+    } else {
+      clearInterval(autoTimer);
+    }
+  }
+
+  function resetAutoplay() {
+    if (!autoplay) return;
+    clearInterval(autoTimer);
+    autoTimer = setInterval(next, AUTOPLAY_MS);
+  }
+
+  // Event listeners
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+  autoplayBtn.addEventListener('click', toggleAutoplay);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prev(); }
+    else if (e.key === ' ') { e.preventDefault(); toggleAutoplay(); }
+  });
+
+  // Touch / swipe support
+  let touchStartX = 0;
+  deck.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+  deck.addEventListener('touchend', (e) => {
+    const diff = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(diff) > 50) { diff < 0 ? next() : prev(); }
+  }, { passive: true });
+
+  updateUI();
+</script>
+</body>
+</html>
