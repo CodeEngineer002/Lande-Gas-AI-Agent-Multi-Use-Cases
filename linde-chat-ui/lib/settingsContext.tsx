@@ -243,22 +243,51 @@ export function useTheme() {
   return { theme: resolved, toggle };
 }
 
-/** Play a short notification chime via Web Audio API */
+/**
+ * Play an iPhone-style Tri-Tone notification via Web Audio API.
+ * Three ascending sine notes (B6 → D#7 → G#7) with soft attack/decay,
+ * closely mimicking the classic iOS message sound.
+ */
 export function playResponseChime() {
   if (typeof window === 'undefined') return;
   try {
     const ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(880, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(660, ctx.currentTime + 0.15);
-    gain.gain.setValueAtTime(0.12, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + 0.35);
-    osc.onended = () => ctx.close();
+
+    // Tri-tone notes: B6, D#7, G#7 — ascending major triad
+    const notes = [
+      { freq: 1976, start: 0,    dur: 0.10 },
+      { freq: 2489, start: 0.14, dur: 0.10 },
+      { freq: 1661, start: 0.28, dur: 0.16 },
+    ];
+
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(0.18, ctx.currentTime);
+    master.connect(ctx.destination);
+
+    let lastEnd = 0;
+    for (const n of notes) {
+      const osc = ctx.createOscillator();
+      const env = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = n.freq;
+      osc.connect(env);
+      env.connect(master);
+
+      const t0 = ctx.currentTime + n.start;
+      const t1 = t0 + n.dur;
+
+      // Soft attack → sustain → smooth decay
+      env.gain.setValueAtTime(0, t0);
+      env.gain.linearRampToValueAtTime(1, t0 + 0.012);
+      env.gain.setValueAtTime(1, t0 + n.dur * 0.55);
+      env.gain.exponentialRampToValueAtTime(0.001, t1 + 0.08);
+
+      osc.start(t0);
+      osc.stop(t1 + 0.08);
+      lastEnd = Math.max(lastEnd, t1 + 0.08);
+    }
+
+    // Clean up AudioContext after all notes finish
+    setTimeout(() => ctx.close().catch(() => {}), (lastEnd - ctx.currentTime) * 1000 + 100);
   } catch { /* ignore in SSR or restricted contexts */ }
 }
