@@ -989,11 +989,99 @@
 [data-linde-branding="true"] .settings-page {
   background: transparent;
 }
+
+/* ── Settings Toggle (Linde Branded) ─────────────────────────── */
+[data-linde-branding="true"] .sp-toggle {
+  background: #dde4ec;
+  border: 1.5px solid #c0cdd8;
+  box-shadow: inset 0 1px 3px rgba(0,45,84,0.08);
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+[data-linde-branding="true"] .sp-toggle:hover {
+  background: #cdd6e0;
+  border-color: #a0b4c8;
+}
+[data-linde-branding="true"] .sp-toggle:focus-visible {
+  outline: none;
+  box-shadow: inset 0 1px 3px rgba(0,45,84,0.08), 0 0 0 3px rgba(0,45,84,0.15);
+}
+[data-linde-branding="true"] .sp-toggle-on {
+  background: #002d54 !important;
+  border-color: #001f3d !important;
+  box-shadow: 0 0 12px rgba(0,45,84,0.35), inset 0 1px 2px rgba(255,255,255,0.1) !important;
+}
+[data-linde-branding="true"] .sp-toggle-on:hover {
+  background: #003a6b !important;
+  box-shadow: 0 0 16px rgba(0,45,84,0.45), inset 0 1px 2px rgba(255,255,255,0.12) !important;
+}
+[data-linde-branding="true"] .sp-toggle-thumb {
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0,45,84,0.22), 0 0 0 1px rgba(0,45,84,0.05);
+}
+[data-linde-branding="true"] .sp-toggle-on .sp-toggle-thumb {
+  background: #ffffff;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.15);
+}
+
+/* Legacy settings toggle fallback */
 [data-linde-branding="true"] .settings-toggle-track {
   background: #c8d1da;
 }
 [data-linde-branding="true"] .settings-toggle-track[data-checked="true"] {
   background: #002d54;
+}
+
+/* ── Settings Dropdown / Select (Linde Branded) ──────────────── */
+[data-linde-branding="true"] .sp-select {
+  height: 36px;
+  padding: 0 32px 0 12px;
+  min-width: 200px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #002d54;
+  background: #ffffff;
+  border: 1.5px solid #c8d4e0;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,45,84,0.06);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  cursor: pointer;
+  /* Custom arrow */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%23002d54'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 14px;
+}
+[data-linde-branding="true"] .sp-select:hover {
+  border-color: #8fa4b8;
+  background: #f7f9fb;
+  box-shadow: 0 2px 6px rgba(0,45,84,0.1);
+}
+[data-linde-branding="true"] .sp-select:focus,
+[data-linde-branding="true"] .sp-select:focus-visible {
+  outline: none;
+  border-color: #002d54;
+  box-shadow: 0 0 0 3px rgba(0,45,84,0.12), 0 2px 6px rgba(0,45,84,0.08);
+}
+[data-linde-branding="true"] .sp-select option {
+  background: #ffffff;
+  color: #002d54;
+  font-weight: 500;
+  padding: 8px 12px;
+}
+[data-linde-branding="true"] .sp-select option:checked {
+  background: #e8eef5;
+  color: #002d54;
+}
+[data-linde-branding="true"] .sp-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f0f3f6;
+  border-color: #dde4ec;
+  color: #8a9bb0;
 }
 
 /* ── 17. CHAT BUBBLE ACTION BUTTONS — on white bg ── */
